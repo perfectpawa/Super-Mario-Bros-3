@@ -3,7 +3,7 @@
 mario.txt
 cloud.txt
 brick.txt
-goomba.txt
+koopas.txt
 #
 [OBJECTS]
 # type	x	y	extra_settings per object type
@@ -30,8 +30,9 @@ goomba.txt
 #Portal 
 50	200	160	216	180	1
 
+
+#Koopas
+3	272	10
+
 # MARIO
 0	136	90
-
-#Goomba
-2	272	10
