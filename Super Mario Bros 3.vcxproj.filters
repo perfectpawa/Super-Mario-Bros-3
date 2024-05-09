@@ -157,6 +157,7 @@
     <Text Include="scene01.txt" />
     <Text Include="scene02.txt" />
     <Text Include="scene0005.txt" />
+    <Text Include="scene000001.txt" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="mario.ico">
