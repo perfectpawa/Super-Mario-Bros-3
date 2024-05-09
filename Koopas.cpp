@@ -60,6 +60,36 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 	CGameObject::Update(dt, coObjects);
 	CCollision::GetInstance()->Process(this, dt, coObjects);
+
+	if (vy == 0 && fallCheckingObject == NULL)
+	{
+		if (vx < 0)
+		{
+			fallCheckingObject = new CFallCheckingObject(x - 16, y);
+		}
+		else
+		{
+			fallCheckingObject = new CFallCheckingObject(x + 16, y);
+			float fall_vx, _;
+			fallCheckingObject->GetSpeed(fall_vx, _);
+			fallCheckingObject->SetSpeed(-fall_vx, _);
+		}
+	}
+
+	if (fallCheckingObject != NULL) {
+		fallCheckingObject->Update(dt, coObjects);
+		
+		float _, fallCheckingObject_vy;
+		fallCheckingObject->GetSpeed(_, fallCheckingObject_vy);
+		if (fallCheckingObject_vy != 0)
+		{
+			fallCheckingObject->Delete();
+			fallCheckingObject = NULL;
+			vx = -vx;
+		}
+	}
+
+
 }
 
 
@@ -77,6 +107,10 @@ void CKoopas::Render()
 
 	CAnimations::GetInstance()->Get(aniId)->Render(x, y);
 	RenderBoundingBox();
+
+	if (fallCheckingObject != NULL) {
+		fallCheckingObject->Render();
+	}
 }
 
 void CKoopas::SetState(int state)

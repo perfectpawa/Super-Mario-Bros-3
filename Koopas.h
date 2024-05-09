@@ -1,5 +1,6 @@
 #pragma once
 #include "GameObject.h"
+#include "FallCheckingObject.h"
 
 #define KOOPAS_GRAVITY 0.002f
 #define KOOPAS_WALKING_SPEED 0.05f
@@ -41,4 +42,5 @@ protected:
 public:
 	CKoopas(float x, float y);
 	virtual void SetState(int state);
+	CGameObject* fallCheckingObject;
 };
