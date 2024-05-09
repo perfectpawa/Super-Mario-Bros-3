@@ -165,6 +165,7 @@
     <Text Include="scene0005.txt" />
     <Text Include="scene000001.txt" />
     <Text Include="koopas.txt" />
+    <Text Include="koopas_flip.txt" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="mario.ico">

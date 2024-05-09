@@ -3,14 +3,23 @@
 mario.txt
 cloud.txt
 brick.txt
+goomba.txt
 koopas.txt
+koopas_flip.txt
 #
 [OBJECTS]
 # type	x	y	extra_settings per object type
 # type: 0 = Mario , 1 = Brick, 2 = Goomba, 3 = Koopas
 # See OBJECT_TYPE constants in AssetIDs.h
 
+# MARIO
+0	136	90
 
+#Koopas
+3	272	10
+
+#GOOMBA
+2	112	160
 
 # BRICKS
 1	144	80
@@ -23,16 +32,31 @@ koopas.txt
 1	256	80
 1	272	80
 
+1	16	160
+1	16	176
+1	32	176
+1	48	176
+1	64	176
+1	80	176
+1	96	176
+1	112	176
+1	128	176
+1	144	176
+1	160	176
+1	176	176
+1	192	176
+1	208	176
+1	224	176
+1	240	176
+1	256	176
+1	272	176
+1	288	176
+1	288	160
+
 #Platform
-5 	60	180	16	15	32	51000	52000	53000
-5	100	140	16	15	32	51000	52000	53000
+5	112	128	16	15	32	51000	52000	53000
 
 #Portal 
 50	200	160	216	180	1
 
 
-#Koopas
-3	272	10
-
-# MARIO
-0	136	90

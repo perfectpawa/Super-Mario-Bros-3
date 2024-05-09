@@ -15,7 +15,10 @@
 #define KOOPAS_STATE_DIE 200
 
 #define ID_ANI_KOOPAS_WALKING 6000
-#define ID_ANI_KOOPAS_DIE 1001
+#define ID_ANI_KOOPAS_DIE 6001
+
+#define ID_ANI_KOOPAS_FLIP_WALKING 6010
+#define ID_ANI_KOOPAS_FLIP_DIE 6011
 
 class CKoopas : public CGameObject
 {

@@ -66,6 +66,10 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 void CKoopas::Render()
 {
 	int aniId = ID_ANI_KOOPAS_WALKING;
+	if (vx > 0)
+	{
+		aniId = ID_ANI_KOOPAS_FLIP_WALKING;
+	}
 	if (state == KOOPAS_STATE_DIE)
 	{
 		aniId = ID_ANI_KOOPAS_DIE;

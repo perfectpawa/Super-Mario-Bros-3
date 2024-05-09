@@ -182,6 +182,7 @@
     <Text Include="coin.txt" />
     <Text Include="goomba.txt" />
     <Text Include="koopas.txt" />
+    <Text Include="koopas_flip.txt" />
     <Text Include="mario-sample.txt" />
     <Text Include="mario.txt" />
     <Text Include="scene000001.txt" />
