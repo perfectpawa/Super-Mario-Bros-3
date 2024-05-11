@@ -5,6 +5,8 @@ CKoopas::CKoopas(float x, float y) :CGameObject(x, y)
 	this->ax = 0;
 	this->ay = KOOPAS_GRAVITY;
 	die_start = -1;
+	hide_start = -1;
+	restore_start = -1;
 	SetState(KOOPAS_STATE_WALKING);
 }
 
@@ -13,9 +15,9 @@ void CKoopas::GetBoundingBox(float& left, float& top, float& right, float& botto
 	if (state == KOOPAS_STATE_DIE)
 	{
 		left = x - KOOPAS_BBOX_WIDTH / 2;
-		top = y - KOOPAS_BBOX_HEIGHT_DIE / 2;
+		top = y - KOOPAS_BBOX_HEIGHT_HIDE / 2;
 		right = left + KOOPAS_BBOX_WIDTH;
-		bottom = top + KOOPAS_BBOX_HEIGHT_DIE;
+		bottom = top + KOOPAS_BBOX_HEIGHT_HIDE;
 	}
 	else
 	{
@@ -52,10 +54,12 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	vy += ay * dt;
 	vx += ax * dt;
 
-	if ((state == KOOPAS_STATE_DIE) && (GetTickCount64() - die_start > KOOPAS_DIE_TIMEOUT))
+	if ((state == KOOPAS_STATE_HIDE) && (GetTickCount64() - hide_start > KOOPAS_HIDE_TIMEOUT))
 	{
-		isDeleted = true;
-		return;
+		SetState(KOOPAS_STATE_RESTORE);
+	}
+	if ((state == KOOPAS_STATE_RESTORE) && (GetTickCount64() - restore_start > KOOPAS_RESTORE_TIMEOUT)) {
+		SetState(KOOPAS_STATE_WALKING);
 	}
 
 	CGameObject::Update(dt, coObjects);
@@ -100,9 +104,12 @@ void CKoopas::Render()
 	{
 		aniId = ID_ANI_KOOPAS_FLIP_WALKING;
 	}
-	if (state == KOOPAS_STATE_DIE)
+	if (state == KOOPAS_STATE_HIDE)
 	{
-		aniId = ID_ANI_KOOPAS_DIE;
+		aniId = ID_ANI_KOOPAS_HIDE;
+	}
+	if (state == KOOPAS_STATE_RESTORE) {
+		aniId = ID_ANI_KOOPAS_RESTORE;
 	}
 
 	CAnimations::GetInstance()->Get(aniId)->Render(x, y);
@@ -119,14 +126,28 @@ void CKoopas::SetState(int state)
 	switch (state)
 	{
 	case KOOPAS_STATE_DIE:
-		die_start = GetTickCount64();
-		y += (KOOPAS_BBOX_HEIGHT - KOOPAS_BBOX_HEIGHT_DIE) / 2;
+		break;
+	case KOOPAS_STATE_HIDE:
+		hide_start = GetTickCount64();
+		y += (KOOPAS_BBOX_HEIGHT - KOOPAS_BBOX_HEIGHT_HIDE) / 2;
 		vx = 0;
 		vy = 0;
 		ay = 0;
 		break;
+	case KOOPAS_STATE_RESTORE:
+		restore_start = GetTickCount64();
+		break;
+	case KOOPAS_STATE_SLIDE:
+		break;
 	case KOOPAS_STATE_WALKING:
+		y -= (KOOPAS_BBOX_HEIGHT - KOOPAS_BBOX_HEIGHT_HIDE) / 2;
+
 		vx = -KOOPAS_WALKING_SPEED;
+		this->ax = 0;
+		this->ay = KOOPAS_GRAVITY;
+		die_start = -1;
+		hide_start = -1;
+		restore_start = -1;
 		break;
 	}
 }

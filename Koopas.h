@@ -4,22 +4,30 @@
 
 #define KOOPAS_GRAVITY 0.002f
 #define KOOPAS_WALKING_SPEED 0.05f
+#define KOOPAS_SLIDE_SPEED 0.1f
 
 
 #define KOOPAS_BBOX_WIDTH 15
 #define KOOPAS_BBOX_HEIGHT 24
-#define KOOPAS_BBOX_HEIGHT_DIE 7
+#define KOOPAS_BBOX_HEIGHT_HIDE 10
 
 #define KOOPAS_DIE_TIMEOUT 500
+#define KOOPAS_HIDE_TIMEOUT 2000
+#define KOOPAS_RESTORE_TIMEOUT 1000
 
 #define KOOPAS_STATE_WALKING 100
-#define KOOPAS_STATE_DIE 200
+#define KOOPAS_STATE_HIDE 200
+#define KOOPAS_STATE_RESTORE 300
+#define KOOPAS_STATE_SLIDE 400
+#define KOOPAS_STATE_DIE 500
 
 #define ID_ANI_KOOPAS_WALKING 6000
-#define ID_ANI_KOOPAS_DIE 6001
+#define ID_ANI_KOOPAS_HIDE 6001
+#define ID_ANI_KOOPAS_RESTORE 6002
+#define ID_ANI_KOOPAS_HIDE_SLIDE 6003
+#define ID_ANI_KOOPAS_DIE 6004
 
 #define ID_ANI_KOOPAS_FLIP_WALKING 6010
-#define ID_ANI_KOOPAS_FLIP_DIE 6011
 
 class CKoopas : public CGameObject
 {
@@ -28,6 +36,8 @@ protected:
 	float ay;
 
 	ULONGLONG die_start;
+	ULONGLONG hide_start;
+	ULONGLONG restore_start;
 
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
