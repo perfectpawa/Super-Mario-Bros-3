@@ -100,17 +100,29 @@ void CMario::OnCollisionWithKoopas(LPCOLLISIONEVENT e)
 	// jump on top >> kill Koopas and deflect a bit 
 	if (e->ny < 0)
 	{
-		if (koopas->GetState() != KOOPAS_STATE_HIDE)
+		if (koopas->GetState() == KOOPAS_STATE_WALKING)
 		{
 			koopas->SetState(KOOPAS_STATE_HIDE);
 			vy = -MARIO_JUMP_DEFLECT_SPEED;
 		}
 	}
+	else if (koopas->GetState() == KOOPAS_STATE_HIDE || koopas->GetState() == KOOPAS_STATE_RESTORE) {
+		koopas->SetState(KOOPAS_STATE_SLIDE);
+		// set mario's vx sign to Koopas's vx sign
+		float mario_vx, _;
+		GetSpeed(mario_vx, _);
+		float koopas_vx, __;
+		koopas->GetSpeed(koopas_vx, __);
+		if (mario_vx * koopas_vx > 0)
+			koopas->SetSpeed(koopas_vx, __);
+		else
+			koopas->SetSpeed(-koopas_vx, __);
+	}
 	else // hit by Koopas
 	{
 		if (untouchable == 0)
 		{
-			if (koopas->GetState() != KOOPAS_STATE_HIDE)
+			if (koopas->GetState() == KOOPAS_STATE_WALKING || koopas->GetState() == KOOPAS_STATE_SLIDE)
 			{
 				if (level > MARIO_LEVEL_SMALL)
 				{

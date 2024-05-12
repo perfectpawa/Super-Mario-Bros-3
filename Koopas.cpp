@@ -1,4 +1,5 @@
 #include "Koopas.h"
+#include "Mario.h"
 
 CKoopas::CKoopas(float x, float y) :CGameObject(x, y)
 {
@@ -12,19 +13,19 @@ CKoopas::CKoopas(float x, float y) :CGameObject(x, y)
 
 void CKoopas::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
-	if (state == KOOPAS_STATE_DIE)
-	{
-		left = x - KOOPAS_BBOX_WIDTH / 2;
-		top = y - KOOPAS_BBOX_HEIGHT_HIDE / 2;
-		right = left + KOOPAS_BBOX_WIDTH;
-		bottom = top + KOOPAS_BBOX_HEIGHT_HIDE;
-	}
-	else
+	if (state == KOOPAS_STATE_WALKING)
 	{
 		left = x - KOOPAS_BBOX_WIDTH / 2;
 		top = y - KOOPAS_BBOX_HEIGHT / 2;
 		right = left + KOOPAS_BBOX_WIDTH;
 		bottom = top + KOOPAS_BBOX_HEIGHT;
+	}
+	else
+	{
+		left = x - KOOPAS_BBOX_WIDTH / 2;
+		top = y - KOOPAS_BBOX_HEIGHT_HIDE / 2;
+		right = left + KOOPAS_BBOX_WIDTH;
+		bottom = top + KOOPAS_BBOX_HEIGHT_HIDE;
 	}
 }
 
@@ -54,6 +55,11 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	vy += ay * dt;
 	vx += ax * dt;
 
+	if (state != KOOPAS_STATE_WALKING && fallCheckingObject != NULL) {
+		fallCheckingObject->Delete();
+		fallCheckingObject = NULL;
+	}
+
 	if ((state == KOOPAS_STATE_HIDE) && (GetTickCount64() - hide_start > KOOPAS_HIDE_TIMEOUT))
 	{
 		SetState(KOOPAS_STATE_RESTORE);
@@ -65,7 +71,7 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	CGameObject::Update(dt, coObjects);
 	CCollision::GetInstance()->Process(this, dt, coObjects);
 
-	if (vy == 0 && fallCheckingObject == NULL)
+	if (state == KOOPAS_STATE_WALKING && vy == 0 && fallCheckingObject == NULL)
 	{
 		if (vx < 0)
 		{
@@ -111,6 +117,9 @@ void CKoopas::Render()
 	if (state == KOOPAS_STATE_RESTORE) {
 		aniId = ID_ANI_KOOPAS_RESTORE;
 	}
+	if (state == KOOPAS_STATE_SLIDE) {
+		aniId = ID_ANI_KOOPAS_SLIDE;
+	}
 
 	CAnimations::GetInstance()->Get(aniId)->Render(x, y);
 	RenderBoundingBox();
@@ -138,9 +147,17 @@ void CKoopas::SetState(int state)
 		restore_start = GetTickCount64();
 		break;
 	case KOOPAS_STATE_SLIDE:
+		y -= (KOOPAS_BBOX_HEIGHT - KOOPAS_BBOX_HEIGHT_HIDE) / 2;
+
+		vx = KOOPAS_SLIDE_SPEED;
+		this->ax = 0;
+		this->ay = KOOPAS_GRAVITY;
+		die_start = -1;
+		hide_start = -1;
+		restore_start = -1;
 		break;
 	case KOOPAS_STATE_WALKING:
-		y -= (KOOPAS_BBOX_HEIGHT - KOOPAS_BBOX_HEIGHT_HIDE) / 2;
+		//y -= (KOOPAS_BBOX_HEIGHT - KOOPAS_BBOX_HEIGHT_HIDE) / 2;
 
 		vx = -KOOPAS_WALKING_SPEED;
 		this->ax = 0;
