@@ -84,6 +84,9 @@
     <ClCompile Include="FallCheckingObject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="VisualPlatform.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h">
@@ -158,6 +161,9 @@
     <ClInclude Include="Koopas.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="VisualPlatform.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="brick.txt">
@@ -199,6 +205,15 @@
     <Text Include="scene0005.txt">
       <Filter>Resource Files</Filter>
     </Text>
+    <Text Include="ground.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="color_box.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="question_block.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
   </ItemGroup>
   <ItemGroup>
     <Image Include="mario.ico">
@@ -207,5 +222,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="README.md">
+      <Filter>Source Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

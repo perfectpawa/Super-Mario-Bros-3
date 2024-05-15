@@ -1,5 +1,5 @@
 [SETTINGS]
-start	100
+start	10
 width	320
 height	240
 
@@ -22,3 +22,4 @@ height	240
 12	textures\enemies_2.png
 13	textures\enemies_2_flip.png
 20	textures\misc.png
+50	textures\misc_2.png

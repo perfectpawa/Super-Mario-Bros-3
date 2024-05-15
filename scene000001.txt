@@ -2,6 +2,7 @@
 [ASSETS]
 mario.txt
 cloud.txt
+ground.txt
 brick.txt
 goomba.txt
 koopas.txt
@@ -79,7 +80,7 @@ koopas_flip.txt
 
 
 #Platform
-5	112	128	10	15	32	51000	52000	53000
+5	112	128	10	15	32	151000	152000	153000
 
 #Portal 
 50	352	64	368	80	10

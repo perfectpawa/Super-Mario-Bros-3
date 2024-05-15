@@ -9,6 +9,7 @@
 #include "Portal.h"
 #include "Coin.h"
 #include "Platform.h"
+#include "VisualPlatform.h"
 
 #include "SampleKeyEventHandler.h"
 
@@ -127,17 +128,34 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		float cell_width = (float)atof(tokens[3].c_str());
 		float cell_height = (float)atof(tokens[4].c_str());
 		int length = atoi(tokens[5].c_str());
-		int sprite_begin = atoi(tokens[6].c_str());
-		int sprite_middle = atoi(tokens[7].c_str());
-		int sprite_end = atoi(tokens[8].c_str());
+		bool isDirectionColliable = (atoi(tokens[6].c_str()) != 0);
+		int sprite_begin = atoi(tokens[7].c_str());
+		int sprite_middle = atoi(tokens[8].c_str());
+		int sprite_end = atoi(tokens[9].c_str());
 
 		obj = new CPlatform(
 			x, y,
-			cell_width, cell_height, length,
+			cell_width, cell_height, length, isDirectionColliable,
 			sprite_begin, sprite_middle, sprite_end
 		);
 
 
+		break;
+	}
+
+	case OBJECT_TYPE_VISUAL_PLATFORM: {
+		float cell_width = (float)atof(tokens[3].c_str());
+		float cell_height = (float)atof(tokens[4].c_str());
+		int length = atoi(tokens[5].c_str());
+		int sprite_begin = atoi(tokens[6].c_str());
+		int sprite_middle = atoi(tokens[7].c_str());
+		int sprite_end = atoi(tokens[8].c_str());
+
+		obj = new CVisualPlatform(
+			x, y,
+			cell_width, cell_height, length,
+			sprite_begin, sprite_middle, sprite_end
+		);
 		break;
 	}
 

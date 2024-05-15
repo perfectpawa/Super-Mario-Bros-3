@@ -5,25 +5,22 @@
 // 
 // The most popular type of object in Mario! 
 // 
-class CPlatform : public CGameObject
+class CVisualPlatform : public CGameObject
 {
-protected: 
+protected:
 	int length;				// Unit: cell 
 	float cellWidth;
 	float cellHeight;
 	int spriteIdBegin, spriteIdMiddle, spriteIdEnd;
-	bool isDirectionColliable = false;
 
-public: 
-	CPlatform(float x, float y,
-		float cell_width, float cell_height, int length, bool isDirectionColliable,
+public:
+	CVisualPlatform(float x, float y,
+		float cell_width, float cell_height, int length,
 		int sprite_id_begin, int sprite_id_middle, int sprite_id_end) :CGameObject(x, y)
 	{
 		this->length = length;
 		this->cellWidth = cell_width;
 		this->cellHeight = cell_height;
-		this->isDirectionColliable = isDirectionColliable;
-
 		this->spriteIdBegin = sprite_id_begin;
 		this->spriteIdMiddle = sprite_id_middle;
 		this->spriteIdEnd = sprite_id_end;
@@ -32,9 +29,12 @@ public:
 	void Render();
 	void Update(DWORD dt) {}
 	void GetBoundingBox(float& l, float& t, float& r, float& b);
-	void RenderBoundingBox();
-	int IsDirectionColliable(float nx, float ny);
+	int IsCollidable() { return 0; };
+	int IsBlocking() { return 0; }
+
+
+
 
 };
 
-typedef CPlatform* LPPLATFORM;
+typedef CVisualPlatform* LPVISUALPLATFORM;
