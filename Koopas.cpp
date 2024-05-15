@@ -138,7 +138,7 @@ void CKoopas::Render()
 	}
 
 	CAnimations::GetInstance()->Get(aniId)->Render(x, y);
-	RenderBoundingBox();
+	//RenderBoundingBox();
 
 	if (fallCheckingObject != NULL) {
 		fallCheckingObject->Render();

@@ -49,5 +49,5 @@ void CFallCheckingObject::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 void CFallCheckingObject::Render()
 {
-	RenderBoundingBox();
+	//RenderBoundingBox();
 }
