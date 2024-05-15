@@ -78,9 +78,9 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 	if ((state == KOOPAS_STATE_HIDE) && (GetTickCount64() - hide_start > KOOPAS_HIDE_TIMEOUT))
 	{
-		SetState(KOOPAS_STATE_RESTORE);
+		SetState(KOOPAS_STATE_REVIVE);
 	}
-	if ((state == KOOPAS_STATE_RESTORE) && (GetTickCount64() - restore_start > KOOPAS_RESTORE_TIMEOUT)) {
+	if ((state == KOOPAS_STATE_REVIVE) && (GetTickCount64() - restore_start > KOOPAS_RESTORE_TIMEOUT)) {
 		SetState(KOOPAS_STATE_WALKING);
 	}
 
@@ -130,8 +130,8 @@ void CKoopas::Render()
 	{
 		aniId = ID_ANI_KOOPAS_HIDE;
 	}
-	if (state == KOOPAS_STATE_RESTORE) {
-		aniId = ID_ANI_KOOPAS_RESTORE;
+	if (state == KOOPAS_STATE_REVIVE) {
+		aniId = ID_ANI_KOOPAS_REVIVE;
 	}
 	if (state == KOOPAS_STATE_SLIDE) {
 		aniId = ID_ANI_KOOPAS_SLIDE;
@@ -159,7 +159,7 @@ void CKoopas::SetState(int state)
 		vy = 0;
 		//ay = 0;
 		break;
-	case KOOPAS_STATE_RESTORE:
+	case KOOPAS_STATE_REVIVE:
 		restore_start = GetTickCount64();
 		break;
 	case KOOPAS_STATE_SLIDE:

@@ -21,5 +21,5 @@ height	240
 11	textures\enemies_flip.png
 12	textures\enemies_2.png
 13	textures\enemies_2_flip.png
-20	textures\misc.png
-50	textures\misc_2.png
+50	textures\misc.png
+51	textures\misc_2.png

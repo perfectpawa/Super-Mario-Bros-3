@@ -181,9 +181,6 @@
     <Text Include="koopas.txt">
       <Filter>Resource Files</Filter>
     </Text>
-    <Text Include="koopas_flip.txt">
-      <Filter>Resource Files</Filter>
-    </Text>
     <Text Include="mario.txt">
       <Filter>Resource Files</Filter>
     </Text>

@@ -188,7 +188,6 @@
     <Text Include="goomba.txt" />
     <Text Include="ground.txt" />
     <Text Include="koopas.txt" />
-    <Text Include="koopas_flip.txt" />
     <Text Include="mario-sample.txt" />
     <Text Include="mario.txt" />
     <Text Include="question_block.txt" />

@@ -108,7 +108,7 @@ void CMario::OnCollisionWithKoopas(LPCOLLISIONEVENT e)
 		{
 			koopas->SetState(KOOPAS_STATE_HIDE);
 			vy = -MARIO_JUMP_DEFLECT_SPEED;
-		}else if (koopas->GetState() == KOOPAS_STATE_HIDE || koopas->GetState() == KOOPAS_STATE_RESTORE)
+		}else if (koopas->GetState() == KOOPAS_STATE_HIDE || koopas->GetState() == KOOPAS_STATE_REVIVE)
 		{
 			koopas->SetState(KOOPAS_STATE_SLIDE);
 			// set mario's vx sign to Koopas's vx sign
@@ -122,7 +122,7 @@ void CMario::OnCollisionWithKoopas(LPCOLLISIONEVENT e)
 				koopas->SetSpeed(-koopas_vx, __);
 		}
 	}
-	else if (koopas->GetState() == KOOPAS_STATE_HIDE || koopas->GetState() == KOOPAS_STATE_RESTORE) {
+	else if (koopas->GetState() == KOOPAS_STATE_HIDE || koopas->GetState() == KOOPAS_STATE_REVIVE) {
 		koopas->SetState(KOOPAS_STATE_SLIDE);
 		// set mario's vx sign to Koopas's vx sign
 		float mario_vx, _;

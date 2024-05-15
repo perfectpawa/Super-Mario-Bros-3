@@ -1,6 +1,7 @@
 #pragma once
 #include "GameObject.h"
 #include "FallCheckingObject.h"
+#include "AssetIDs.h"
 
 #define KOOPAS_GRAVITY 0.002f
 #define KOOPAS_WALKING_SPEED 0.05f
@@ -17,17 +18,11 @@
 
 #define KOOPAS_STATE_WALKING 100
 #define KOOPAS_STATE_HIDE 200
-#define KOOPAS_STATE_RESTORE 300
+#define KOOPAS_STATE_REVIVE 300
 #define KOOPAS_STATE_SLIDE 400
 #define KOOPAS_STATE_DIE 500
 
-#define ID_ANI_KOOPAS_WALKING 6000
-#define ID_ANI_KOOPAS_HIDE 6001
-#define ID_ANI_KOOPAS_RESTORE 6002
-#define ID_ANI_KOOPAS_SLIDE 6003
-#define ID_ANI_KOOPAS_DIE 6004
 
-#define ID_ANI_KOOPAS_FLIP_WALKING 6010
 
 class CKoopas : public CGameObject
 {
