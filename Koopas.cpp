@@ -138,16 +138,16 @@ void CKoopas::SetState(int state)
 		break;
 	case KOOPAS_STATE_HIDE:
 		hide_start = GetTickCount64();
-		y += (KOOPAS_BBOX_HEIGHT - KOOPAS_BBOX_HEIGHT_HIDE) / 2;
+		//y += (KOOPAS_BBOX_HEIGHT - KOOPAS_BBOX_HEIGHT_HIDE) / 2;
 		vx = 0;
 		vy = 0;
-		ay = 0;
+		//ay = 0;
 		break;
 	case KOOPAS_STATE_RESTORE:
 		restore_start = GetTickCount64();
 		break;
 	case KOOPAS_STATE_SLIDE:
-		y -= (KOOPAS_BBOX_HEIGHT - KOOPAS_BBOX_HEIGHT_HIDE);
+		//y -= (KOOPAS_BBOX_HEIGHT - KOOPAS_BBOX_HEIGHT_HIDE);
 
 		vx = KOOPAS_SLIDE_SPEED;
 		this->ax = 0;
@@ -157,7 +157,7 @@ void CKoopas::SetState(int state)
 		restore_start = -1;
 		break;
 	case KOOPAS_STATE_WALKING:
-		y -= (KOOPAS_BBOX_HEIGHT - KOOPAS_BBOX_HEIGHT_HIDE) / 2;
+		//y -= (KOOPAS_BBOX_HEIGHT - KOOPAS_BBOX_HEIGHT_HIDE) / 2;
 
 		vx = -KOOPAS_WALKING_SPEED;
 		this->ax = 0;

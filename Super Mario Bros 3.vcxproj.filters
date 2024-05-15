@@ -160,19 +160,45 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="brick.txt" />
-    <Text Include="cloud.txt" />
-    <Text Include="coin.txt" />
-    <Text Include="goomba.txt" />
-    <Text Include="mario.txt" />
-    <Text Include="mario-sample.txt" />
-    <Text Include="scene01.txt" />
-    <Text Include="scene02.txt" />
-    <Text Include="scene0005.txt" />
-    <Text Include="scene000001.txt" />
-    <Text Include="koopas.txt" />
-    <Text Include="koopas_flip.txt" />
-    <Text Include="scene001.txt" />
+    <Text Include="brick.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="cloud.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="coin.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="goomba.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="koopas.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="koopas_flip.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="mario.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="mario-sample.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="scene000001.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="scene001.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="scene01.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="scene02.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="scene0005.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
   </ItemGroup>
   <ItemGroup>
     <Image Include="mario.ico">
