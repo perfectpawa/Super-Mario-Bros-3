@@ -4,7 +4,7 @@
 
 #define KOOPAS_GRAVITY 0.002f
 #define KOOPAS_WALKING_SPEED 0.05f
-#define KOOPAS_SLIDE_SPEED 0.1f
+#define KOOPAS_SLIDE_SPEED 0.15f
 
 
 #define KOOPAS_BBOX_WIDTH 15
@@ -48,6 +48,8 @@ protected:
 	virtual void OnNoCollision(DWORD dt);
 
 	virtual void OnCollisionWith(LPCOLLISIONEVENT e);
+	virtual void OnCollisionWithGoomba(LPCOLLISIONEVENT e);
+	
 
 public:
 	CKoopas(float x, float y);

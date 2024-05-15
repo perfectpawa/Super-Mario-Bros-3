@@ -1,5 +1,7 @@
 #include "Koopas.h"
 #include "Mario.h"
+#include "Goomba.h"
+
 
 CKoopas::CKoopas(float x, float y) :CGameObject(x, y)
 {
@@ -37,6 +39,9 @@ void CKoopas::OnNoCollision(DWORD dt)
 
 void CKoopas::OnCollisionWith(LPCOLLISIONEVENT e)
 {
+	if (dynamic_cast<CGoomba*>(e->obj))
+		OnCollisionWithGoomba(e);
+
 	if (!e->obj->IsBlocking()) return;
 	if (dynamic_cast<CKoopas*>(e->obj)) return;
 
@@ -47,6 +52,17 @@ void CKoopas::OnCollisionWith(LPCOLLISIONEVENT e)
 	else if (e->nx != 0)
 	{
 		vx = -vx;
+	}
+}
+
+void CKoopas::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
+{
+	if (state != KOOPAS_STATE_SLIDE) return;
+	CGoomba* goomba = dynamic_cast<CGoomba*>(e->obj);
+
+	if (goomba->GetState() != GOOMBA_STATE_DIE)
+	{
+		goomba->SetState(GOOMBA_STATE_DIE);
 	}
 }
 
@@ -149,7 +165,7 @@ void CKoopas::SetState(int state)
 	case KOOPAS_STATE_SLIDE:
 		//y -= (KOOPAS_BBOX_HEIGHT - KOOPAS_BBOX_HEIGHT_HIDE);
 
-		vx = KOOPAS_SLIDE_SPEED;
+		vx = -KOOPAS_SLIDE_SPEED;
 		this->ax = 0;
 		this->ay = KOOPAS_GRAVITY;
 		die_start = -1;
