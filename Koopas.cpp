@@ -157,7 +157,7 @@ void CKoopas::SetState(int state)
 		restore_start = -1;
 		break;
 	case KOOPAS_STATE_WALKING:
-		//y -= (KOOPAS_BBOX_HEIGHT - KOOPAS_BBOX_HEIGHT_HIDE) / 2;
+		y -= (KOOPAS_BBOX_HEIGHT - KOOPAS_BBOX_HEIGHT_HIDE) / 2;
 
 		vx = -KOOPAS_WALKING_SPEED;
 		this->ax = 0;
