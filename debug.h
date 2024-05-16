@@ -20,4 +20,5 @@
 
 void DebugOut(const wchar_t* fmt, ...);
 void DebugOutTitle(const wchar_t* fmt, ...);
+void DebugLogOutFloat(const wchar_t* prefix, float value);
 void SetDebugWindow(HWND hwnd);

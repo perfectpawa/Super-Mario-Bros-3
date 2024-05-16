@@ -20,6 +20,13 @@ void DebugOutTitle(const wchar_t* fmt, ...)
 	SetWindowText(_hwnd, s);
 }
 
+void DebugLogOutFloat(const wchar_t* prefix, float value)
+{
+	wchar_t dbg_out[4096];
+	swprintf_s(dbg_out, L"%s: %f", prefix, value);
+	OutputDebugString(dbg_out);
+}
+
 void SetDebugWindow(HWND hwnd)
 {
 	_hwnd = hwnd;

@@ -97,58 +97,45 @@ void CMario::OnCollisionWithKoopas(LPCOLLISIONEVENT e)
 {
 	CKoopas* koopas = dynamic_cast<CKoopas*>(e->obj);
 
-	// jump on top
-	if (e->ny < 0)
-	{
-		if (koopas->GetState() == KOOPAS_STATE_WALKING)
-		{
-			koopas->SetState(KOOPAS_STATE_HIDE);
-			vy = -MARIO_JUMP_DEFLECT_SPEED;
-		} else if (koopas->GetState() == KOOPAS_STATE_SLIDE)
-		{
-			koopas->SetState(KOOPAS_STATE_HIDE);
-			vy = -MARIO_JUMP_DEFLECT_SPEED;
-		}else if (koopas->GetState() == KOOPAS_STATE_HIDE || koopas->GetState() == KOOPAS_STATE_REVIVE)
-		{
-			koopas->SetState(KOOPAS_STATE_SLIDE);
-			// set mario's vx sign to Koopas's vx sign
-			float mario_vx, _;
-			GetSpeed(mario_vx, _);
-			float koopas_vx, __;
-			koopas->GetSpeed(koopas_vx, __);
-			if (mario_vx * koopas_vx >= 0)
-				koopas->SetSpeed(koopas_vx, __);
-			else
-				koopas->SetSpeed(-koopas_vx, __);
-		}
-	}
-	else if (koopas->GetState() == KOOPAS_STATE_HIDE || koopas->GetState() == KOOPAS_STATE_REVIVE) {
+	if (koopas->GetState() == KOOPAS_STATE_HIDE || koopas->GetState() == KOOPAS_STATE_REVIVE) {
 		koopas->SetState(KOOPAS_STATE_SLIDE);
-		// set mario's vx sign to Koopas's vx sign
-		float mario_vx, _;
-		GetSpeed(mario_vx, _);
-		float koopas_vx, __;
-		koopas->GetSpeed(koopas_vx, __);
-		if (mario_vx * koopas_vx >= 0)
-			koopas->SetSpeed(koopas_vx, __);
+
+		float koopas_x, koopas_y;
+		koopas->GetPosition(koopas_x, koopas_y);
+		if (koopas_x < x)
+			koopas->SetSpeed(-KOOPAS_SLIDE_SPEED, 0);
 		else
-			koopas->SetSpeed(-koopas_vx, __);
+			koopas->SetSpeed(KOOPAS_SLIDE_SPEED, 0);
+
 	}
-	else // hit by Koopas
-	{
-		if (untouchable == 0)
-		{
-			if (koopas->GetState() == KOOPAS_STATE_WALKING || koopas->GetState() == KOOPAS_STATE_SLIDE)
+	else {
+		if (e->ny < 0) {
+			if (koopas->GetState() == KOOPAS_STATE_WALKING)
 			{
-				if (level > MARIO_LEVEL_SMALL)
+				koopas->SetState(KOOPAS_STATE_HIDE);
+				vy = -MARIO_JUMP_DEFLECT_SPEED;
+			}
+			else if (koopas->GetState() == KOOPAS_STATE_SLIDE)
+			{
+				koopas->SetState(KOOPAS_STATE_HIDE);
+				vy = -MARIO_JUMP_DEFLECT_SPEED;
+			}
+		}
+		else {
+			if (untouchable == 0)
+			{
+				if (koopas->GetState() == KOOPAS_STATE_WALKING || koopas->GetState() == KOOPAS_STATE_SLIDE)
 				{
-					level = MARIO_LEVEL_SMALL;
-					StartUntouchable();
-				}
-				else
-				{
-					DebugOut(L">>> Mario DIE >>> \n");
-					SetState(MARIO_STATE_DIE);
+					if (level > MARIO_LEVEL_SMALL)
+					{
+						//level = MARIO_LEVEL_SMALL;
+						StartUntouchable();
+					}
+					else
+					{
+						DebugOut(L">>> Mario DIE >>> \n");
+						//SetState(MARIO_STATE_DIE);
+					}
 				}
 			}
 		}
