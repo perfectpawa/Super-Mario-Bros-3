@@ -10,6 +10,11 @@
 #include "Coin.h"
 #include "Platform.h"
 #include "VisualPlatform.h"
+#include "Goomba.h"
+#include "Koopas.h"
+#include "Brick.h"
+#include "QuestionBlock.h"
+#include "Mario.h"
 
 #include "SampleKeyEventHandler.h"
 
@@ -120,6 +125,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_GOOMBA: obj = new CGoomba(x,y); break;
 	case OBJECT_TYPE_KOOPAS: obj = new CKoopas(x, y); break;
 	case OBJECT_TYPE_BRICK: obj = new CBrick(x,y); break;
+	case OBJECT_TYPE_QUESTION_BLOCK: obj = new CQuestionBlock(x, y); break;
 	case OBJECT_TYPE_COIN: obj = new CCoin(x, y); break;
 
 	case OBJECT_TYPE_PLATFORM:
@@ -129,13 +135,14 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		float cell_height = (float)atof(tokens[4].c_str());
 		int length = atoi(tokens[5].c_str());
 		bool isDirectionColliable = (atoi(tokens[6].c_str()) != 0);
-		int sprite_begin = atoi(tokens[7].c_str());
-		int sprite_middle = atoi(tokens[8].c_str());
-		int sprite_end = atoi(tokens[9].c_str());
+		bool isVertical = (atoi(tokens[7].c_str()) != 0);
+		int sprite_begin = atoi(tokens[8].c_str());
+		int sprite_middle = atoi(tokens[9].c_str());
+		int sprite_end = atoi(tokens[10].c_str());
 
 		obj = new CPlatform(
 			x, y,
-			cell_width, cell_height, length, isDirectionColliable,
+			cell_width, cell_height, length, isDirectionColliable, isVertical,
 			sprite_begin, sprite_middle, sprite_end
 		);
 

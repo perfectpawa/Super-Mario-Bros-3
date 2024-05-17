@@ -138,7 +138,7 @@ void CKoopas::Render()
 	}
 
 	CAnimations::GetInstance()->Get(aniId)->Render(x, y);
-	//RenderBoundingBox();
+	RenderBoundingBox();
 
 	if (fallCheckingObject != NULL) {
 		fallCheckingObject->Render();
@@ -154,17 +154,15 @@ void CKoopas::SetState(int state)
 		break;
 	case KOOPAS_STATE_HIDE:
 		hide_start = GetTickCount64();
-		//y += (KOOPAS_BBOX_HEIGHT - KOOPAS_BBOX_HEIGHT_HIDE) / 2;
+		y -= KOOPAS_BBOX_HEIGHT_HIDE / 2;
 		vx = 0;
 		vy = 0;
-		//ay = 0;
 		break;
 	case KOOPAS_STATE_REVIVE:
 		restore_start = GetTickCount64();
 		break;
 	case KOOPAS_STATE_SLIDE:
-		//y -= (KOOPAS_BBOX_HEIGHT - KOOPAS_BBOX_HEIGHT_HIDE);
-
+		y -= KOOPAS_BBOX_HEIGHT_HIDE / 2;
 		vx = KOOPAS_SLIDE_SPEED;
 		this->ax = 0;
 		this->ay = KOOPAS_GRAVITY;
