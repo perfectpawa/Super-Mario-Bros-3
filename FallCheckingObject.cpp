@@ -1,4 +1,5 @@
 #include "FallCheckingObject.h"
+#include "Mario.h"
 
 CFallCheckingObject::CFallCheckingObject(float x, float y) :CGameObject(x, y)
 {
@@ -24,8 +25,9 @@ void CFallCheckingObject::OnNoCollision(DWORD dt)
 
 void CFallCheckingObject::OnCollisionWith(LPCOLLISIONEVENT e)
 {
-	if (!e->obj->IsBlocking()) return;
 	if (dynamic_cast<CFallCheckingObject*>(e->obj)) return;
+	if (!e->obj->IsBlocking()) return;
+
 
 	if (e->ny != 0)
 	{
@@ -49,5 +51,5 @@ void CFallCheckingObject::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 void CFallCheckingObject::Render()
 {
-	//RenderBoundingBox();
+	RenderBoundingBox();
 }

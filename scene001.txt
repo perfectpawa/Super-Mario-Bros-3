@@ -1,6 +1,7 @@
 # list of object assets to load in this scene
 [ASSETS]
 mario.txt
+goomba.txt
 koopas.txt
 brick.txt
 question_block.txt
@@ -46,7 +47,22 @@ tube.txt
 #TUBE
 50	360	144	32	16	3	0	1	70010	70020	70020
 
+#GOOMBA
+10	224	176
+
+10	528	176
+
+10	832	160
+10	880	160
+10	994	160
+
+
+
+
+#KOOPAS
+20	576	136
+
 
 
 # MARIO
-0	20	10
+0	16	10

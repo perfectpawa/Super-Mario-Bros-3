@@ -52,6 +52,10 @@ void CKoopas::OnCollisionWith(LPCOLLISIONEVENT e)
 	else if (e->nx != 0)
 	{
 		vx = -vx;
+		if (fallCheckingObject != NULL) {
+			fallCheckingObject->Delete();
+			fallCheckingObject = NULL;
+		}
 	}
 }
 
