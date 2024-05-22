@@ -26,16 +26,10 @@ void CFallCheckingObject::OnNoCollision(DWORD dt)
 void CFallCheckingObject::OnCollisionWith(LPCOLLISIONEVENT e)
 {
 	if (dynamic_cast<CFallCheckingObject*>(e->obj)) return;
-	if (!e->obj->IsBlocking()) return;
-
 
 	if (e->ny != 0)
 	{
 		vy = 0;
-	}
-	else if (e->nx != 0)
-	{
-		vx = -vx;
 	}
 }
 

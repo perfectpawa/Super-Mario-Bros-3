@@ -4,3 +4,7 @@
 
 todo:
 - thêm rào chắn mario đi khỏi rìa map
+- tối ưu cái check fall
+- thêm spawn point
+- goomba có cánh
+- background

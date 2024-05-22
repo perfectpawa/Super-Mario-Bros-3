@@ -4,6 +4,8 @@
 #include "Animation.h"
 #include "Animations.h"
 
+#include "Koopas.h"
+
 #include "debug.h"
 
 #define MARIO_WALKING_SPEED		0.1f
@@ -33,6 +35,8 @@
 #define MARIO_STATE_SIT				600
 #define MARIO_STATE_SIT_RELEASE		601
 
+#define MARIO_STATE_HOLD_KOOPAS		700
+
 
 #pragma region ANIMATION_ID
 
@@ -59,6 +63,12 @@
 
 #define ID_ANI_MARIO_DIE 999
 
+#define ID_ANI_MARIO_PICK_UP_RIGHT 1700
+#define ID_ANI_MARIO_PICK_UP_LEFT 1701
+
+#define ID_ANI_MARIO_KICK_RIGHT 1710
+#define ID_ANI_MARIO_KICK_LEFT 1711
+
 // SMALL MARIO
 #define ID_ANI_MARIO_SMALL_IDLE_RIGHT 1100
 #define ID_ANI_MARIO_SMALL_IDLE_LEFT 1102
@@ -77,6 +87,12 @@
 
 #define ID_ANI_MARIO_SMALL_JUMP_RUN_RIGHT 1600
 #define ID_ANI_MARIO_SMALL_JUMP_RUN_LEFT 1601
+
+#define ID_ANI_MARIO_SMALL_PICK_UP_RIGHT 1800
+#define ID_ANI_MARIO_SMALL_PICK_UP_LEFT 1801
+
+#define ID_ANI_MARIO_SMALL_KICK_RIGHT 1810
+#define ID_ANI_MARIO_SMALL_KICK_LEFT 1811
 
 #pragma endregion
 
@@ -113,6 +129,9 @@ class CMario : public CGameObject
 	ULONGLONG untouchable_start;
 	BOOLEAN isOnPlatform;
 	int coin; 
+	
+	bool wantPickUp = false;
+	CKoopas* koopasPickedUp = NULL;
 
 	void OnCollisionWithGoomba(LPCOLLISIONEVENT e);
 	void OnCollisionWithKoopas(LPCOLLISIONEVENT e);
@@ -145,7 +164,8 @@ public:
 		return (state != MARIO_STATE_DIE); 
 	}
 
-	int IsBlocking() { return (state != MARIO_STATE_DIE && untouchable==0); }
+	//int IsBlocking() { return (state != MARIO_STATE_DIE && untouchable == 0); }
+	int IsBlocking() { return 0; }
 
 	void OnNoCollision(DWORD dt);
 	void OnCollisionWith(LPCOLLISIONEVENT e);
@@ -154,4 +174,5 @@ public:
 	void StartUntouchable() { untouchable = 1; untouchable_start = GetTickCount64(); }
 
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
+	void SetWantPickUp(bool b) { wantPickUp = b; }
 };

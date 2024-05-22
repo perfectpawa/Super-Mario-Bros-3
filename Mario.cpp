@@ -27,6 +27,32 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 
 	isOnPlatform = false;
 
+	if (koopasPickedUp != NULL && !wantPickUp) {
+		koopasPickedUp->SetState(KOOPAS_STATE_SLIDE);
+		float koopas_x, koopas_y;
+		koopasPickedUp->GetPosition(koopas_x, koopas_y);
+		if (koopas_x < x)
+			koopasPickedUp->SetSpeed(-KOOPAS_SLIDE_SPEED, 0);
+		else
+			koopasPickedUp->SetSpeed(KOOPAS_SLIDE_SPEED, 0);
+
+		koopasPickedUp = NULL;
+	}
+
+	if (koopasPickedUp != NULL) {
+		if (koopasPickedUp->GetState() == KOOPAS_STATE_WALKING) {
+			koopasPickedUp = NULL;
+		}
+		else {
+			int offset = 12;
+			if (nx < 0)
+				offset *= -1;
+			if(x != 0) 
+				koopasPickedUp->SetPosition(x + offset, y);
+		}
+	}
+
+
 	CCollision::GetInstance()->Process(this, dt, coObjects);
 }
 
@@ -34,6 +60,7 @@ void CMario::OnNoCollision(DWORD dt)
 {
 	x += vx * dt;
 	y += vy * dt;
+
 }
 
 void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
@@ -97,7 +124,15 @@ void CMario::OnCollisionWithKoopas(LPCOLLISIONEVENT e)
 {
 	CKoopas* koopas = dynamic_cast<CKoopas*>(e->obj);
 
+	if (koopas == koopasPickedUp) return;
+
 	if (koopas->GetState() == KOOPAS_STATE_HIDE || koopas->GetState() == KOOPAS_STATE_REVIVE) {
+
+		if (wantPickUp) {
+			koopasPickedUp = koopas;
+			return;
+		}
+
 		koopas->SetState(KOOPAS_STATE_SLIDE);
 
 		float koopas_x, koopas_y;
@@ -128,13 +163,13 @@ void CMario::OnCollisionWithKoopas(LPCOLLISIONEVENT e)
 				{
 					if (level > MARIO_LEVEL_SMALL)
 					{
-						//level = MARIO_LEVEL_SMALL;
+						level = MARIO_LEVEL_SMALL;
 						StartUntouchable();
 					}
 					else
 					{
 						DebugOut(L">>> Mario DIE >>> \n");
-						//SetState(MARIO_STATE_DIE);
+						SetState(MARIO_STATE_DIE);
 					}
 				}
 			}
@@ -284,6 +319,8 @@ void CMario::Render()
 
 	if (state == MARIO_STATE_DIE)
 		aniId = ID_ANI_MARIO_DIE;
+	else if (state == MARIO_STATE_HOLD_KOOPAS)
+		aniId = ID_ANI_MARIO_SIT_LEFT;
 	else if (level == MARIO_LEVEL_BIG)
 		aniId = GetAniIdBig();
 	else if (level == MARIO_LEVEL_SMALL)
@@ -294,6 +331,20 @@ void CMario::Render()
 	//RenderBoundingBox();
 	
 	DebugOutTitle(L"Coins: %d", coin);
+
+	if (koopasPickedUp != NULL) {
+		if (koopasPickedUp->GetState() == KOOPAS_STATE_WALKING) {
+			koopasPickedUp = NULL;
+		}
+		else {
+			int offset = 12;
+			if (nx < 0)
+				offset *= -1;
+			if (x != 0)
+				koopasPickedUp->SetPosition(x + offset, y);
+		}
+	}
+
 }
 
 void CMario::SetState(int state)
@@ -370,6 +421,9 @@ void CMario::SetState(int state)
 		vy = -MARIO_JUMP_DEFLECT_SPEED;
 		vx = 0;
 		ax = 0;
+		break;
+
+	case MARIO_STATE_HOLD_KOOPAS:
 		break;
 	}
 
