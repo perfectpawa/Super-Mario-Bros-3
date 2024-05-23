@@ -107,7 +107,9 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	float x = (float)atof(tokens[1].c_str());
 	float y = (float)atof(tokens[2].c_str());
 
-	CGameObject *obj = NULL;
+	CGameObject* enemyObj = NULL;
+	CGameObject* terrainObj = NULL;
+	CGameObject* backgroundObj = NULL;
 
 	switch (object_type)
 	{
@@ -117,16 +119,19 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 			DebugOut(L"[ERROR] MARIO object was created before!\n");
 			return;
 		}
-		obj = new CMario(x,y); 
-		player = (CMario*)obj;  
+		/*obj = new CMario(x,y); 
+		player = (CMario*)obj;  */
+
+		player = new CMario(x, y);
+		player->SetPosition(x, y);
 
 		DebugOut(L"[INFO] Player object has been created!\n");
 		break;
-	case OBJECT_TYPE_GOOMBA: obj = new CGoomba(x,y); break;
-	case OBJECT_TYPE_KOOPAS: obj = new CKoopas(x, y); break;
-	case OBJECT_TYPE_BRICK: obj = new CBrick(x,y); break;
-	case OBJECT_TYPE_QUESTION_BLOCK: obj = new CQuestionBlock(x, y); break;
-	case OBJECT_TYPE_COIN: obj = new CCoin(x, y); break;
+	case OBJECT_TYPE_GOOMBA: enemyObj = new CGoomba(x,y); break;
+	case OBJECT_TYPE_KOOPAS: enemyObj = new CKoopas(x, y); break;
+	case OBJECT_TYPE_BRICK: enemyObj = new CBrick(x,y); break;
+	case OBJECT_TYPE_QUESTION_BLOCK: enemyObj = new CQuestionBlock(x, y); break;
+	case OBJECT_TYPE_COIN: enemyObj = new CCoin(x, y); break;
 
 	case OBJECT_TYPE_PLATFORM:
 	{
@@ -140,7 +145,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		int sprite_middle = atoi(tokens[9].c_str());
 		int sprite_end = atoi(tokens[10].c_str());
 
-		obj = new CPlatform(
+		terrainObj = new CPlatform(
 			x, y,
 			cell_width, cell_height, length, isDirectionColliable, isVertical,
 			sprite_begin, sprite_middle, sprite_end
@@ -158,7 +163,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		int sprite_middle = atoi(tokens[7].c_str());
 		int sprite_end = atoi(tokens[8].c_str());
 
-		obj = new CVisualPlatform(
+		terrainObj = new CVisualPlatform(
 			x, y,
 			cell_width, cell_height, length,
 			sprite_begin, sprite_middle, sprite_end
@@ -171,21 +176,24 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		float r = (float)atof(tokens[3].c_str());
 		float b = (float)atof(tokens[4].c_str());
 		int scene_id = atoi(tokens[5].c_str());
-		obj = new CPortal(x, y, r, b, scene_id);
+		terrainObj = new CPortal(x, y, r, b, scene_id);
 	}
 	break;
-
 
 	default:
 		DebugOut(L"[ERROR] Invalid object type: %d\n", object_type);
 		return;
 	}
 
-	// General object setup
-	obj->SetPosition(x, y);
+	if (enemyObj != NULL)
+		enemyObjs.push_back(enemyObj);
 
+	if (terrainObj != NULL)
+		terrainObjs.push_back(terrainObj);
 
-	objects.push_back(obj);
+	if (backgroundObj != NULL)
+		backgroundObjs.push_back(backgroundObj);
+
 }
 
 void CPlayScene::LoadAssets(LPCWSTR assetFile)
@@ -260,22 +268,30 @@ void CPlayScene::Load()
 
 void CPlayScene::Update(DWORD dt)
 {
-	// We know that Mario is the first object in the list hence we won't add him into the colliable object list
-	// TO-DO: This is a "dirty" way, need a more organized way 
-
 	vector<LPGAMEOBJECT> coObjects;
-	for (size_t i = 1; i < objects.size(); i++)
-	{
-		coObjects.push_back(objects[i]);
-	}
+	//push back all objects in enemyObjs and terrainObjs to coObjects
+	for (int i = 0; i < enemyObjs.size(); i++)
+		coObjects.push_back(enemyObjs[i]);
+	for (int i = 0; i < terrainObjs.size(); i++)
+		coObjects.push_back(terrainObjs[i]);
 
-	for (size_t i = 0; i < objects.size(); i++)
-	{
-		objects[i]->Update(dt, &coObjects);
-	}
+	//update enemyObjs
+	for (int i = 0; i < enemyObjs.size(); i++)
+		enemyObjs[i]->Update(dt, &coObjects);
+
+	//update terrainObjs
+	for (int i = 0; i < terrainObjs.size(); i++)
+		terrainObjs[i]->Update(dt, &coObjects);
+
+	//update backgroundObjs
+	for (int i = 0; i < backgroundObjs.size(); i++)
+		backgroundObjs[i]->Update(dt, &coObjects);
 
 	// skip the rest if scene was already unloaded (Mario::Update might trigger PlayScene::Unload)
 	if (player == NULL) return; 
+
+	// Update player
+	player->Update(dt, &coObjects);
 
 	// Update camera to follow mario
 	float cx, cy;
@@ -294,8 +310,20 @@ void CPlayScene::Update(DWORD dt)
 
 void CPlayScene::Render()
 {
-	for (int i = 0; i < objects.size(); i++)
-		objects[i]->Render();
+	//render backgroundObjs
+	for (int i = 0; i < backgroundObjs.size(); i++)
+		backgroundObjs[i]->Render();
+
+	//render terrainObjs
+	for (int i = 0; i < terrainObjs.size(); i++)
+		terrainObjs[i]->Render();
+
+	//render enemyObjs
+	for (int i = 0; i < enemyObjs.size(); i++)
+		enemyObjs[i]->Render();
+
+	//render player
+	player->Render();
 }
 
 /*
@@ -304,11 +332,27 @@ void CPlayScene::Render()
 void CPlayScene::Clear()
 {
 	vector<LPGAMEOBJECT>::iterator it;
-	for (it = objects.begin(); it != objects.end(); it++)
+
+	//clear enemyObjs
+	for (it = enemyObjs.begin(); it != enemyObjs.end(); it++)
 	{
 		delete (*it);
 	}
-	objects.clear();
+	enemyObjs.clear();
+
+	//clear terrainObjs
+	for (it = terrainObjs.begin(); it != terrainObjs.end(); it++)
+	{
+		delete (*it);
+	}
+	terrainObjs.clear();
+
+	//clear backgroundObjs
+	for (it = backgroundObjs.begin(); it != backgroundObjs.end(); it++)
+	{
+		delete (*it);
+	}
+	backgroundObjs.clear();
 }
 
 /*
@@ -319,10 +363,21 @@ void CPlayScene::Clear()
 */
 void CPlayScene::Unload()
 {
-	for (int i = 0; i < objects.size(); i++)
-		delete objects[i];
+	//unload enemyObjs
+	for (int i = 0; i < enemyObjs.size(); i++)
+		delete enemyObjs[i];
+	enemyObjs.clear();
 
-	objects.clear();
+	//unload terrainObjs
+	for (int i = 0; i < terrainObjs.size(); i++)
+		delete terrainObjs[i];
+	terrainObjs.clear();
+
+	//unload backgroundObjs
+	for (int i = 0; i < backgroundObjs.size(); i++)
+		delete backgroundObjs[i];
+	backgroundObjs.clear();
+
 	player = NULL;
 
 	DebugOut(L"[INFO] Scene %d unloaded! \n", id);
@@ -333,7 +388,8 @@ bool CPlayScene::IsGameObjectDeleted(const LPGAMEOBJECT& o) { return o == NULL; 
 void CPlayScene::PurgeDeletedObjects()
 {
 	vector<LPGAMEOBJECT>::iterator it;
-	for (it = objects.begin(); it != objects.end(); it++)
+	//check in enemyObjs
+	for (it = enemyObjs.begin(); it != enemyObjs.end(); it++)
 	{
 		LPGAMEOBJECT o = *it;
 		if (o->IsDeleted())
@@ -342,10 +398,38 @@ void CPlayScene::PurgeDeletedObjects()
 			*it = NULL;
 		}
 	}
+	enemyObjs.erase(
+		std::remove_if(enemyObjs.begin(), enemyObjs.end(), CPlayScene::IsGameObjectDeleted),
+		enemyObjs.end());
+
+	//check in terrainObjs
+	for (it = terrainObjs.begin(); it != terrainObjs.end(); it++)
+	{
+		LPGAMEOBJECT o = *it;
+		if (o->IsDeleted())
+		{
+			delete o;
+			*it = NULL;
+		}
+	}
+	terrainObjs.erase(
+		std::remove_if(terrainObjs.begin(), terrainObjs.end(), CPlayScene::IsGameObjectDeleted),
+		terrainObjs.end());
+
+	//check in backgroundObjs
+	for (it = backgroundObjs.begin(); it != backgroundObjs.end(); it++)
+	{
+		LPGAMEOBJECT o = *it;
+		if (o->IsDeleted())
+		{
+			delete o;
+			*it = NULL;
+		}
+	}
+	backgroundObjs.erase(
+		std::remove_if(backgroundObjs.begin(), backgroundObjs.end(), CPlayScene::IsGameObjectDeleted),
+		backgroundObjs.end());
 
 	// NOTE: remove_if will swap all deleted items to the end of the vector
 	// then simply trim the vector, this is much more efficient than deleting individual items
-	objects.erase(
-		std::remove_if(objects.begin(), objects.end(), CPlayScene::IsGameObjectDeleted),
-		objects.end());
 }

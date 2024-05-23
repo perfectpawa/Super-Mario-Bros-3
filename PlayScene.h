@@ -15,7 +15,9 @@ protected:
 	// A play scene has to have player, right? 
 	LPGAMEOBJECT player;					
 
-	vector<LPGAMEOBJECT> objects;
+	vector<LPGAMEOBJECT> enemyObjs;
+	vector<LPGAMEOBJECT> terrainObjs;
+	vector<LPGAMEOBJECT> backgroundObjs;
 
 	void _ParseSection_SPRITES(string line);
 	void _ParseSection_ANIMATIONS(string line);

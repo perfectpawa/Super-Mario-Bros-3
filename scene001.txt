@@ -10,9 +10,6 @@ color_box.txt
 tube.txt
 #
 [OBJECTS]
-#USELESS_BRICK
-60	-16	0
-
 #QUESTION_BLOCK
 61	176	128
 61	192	128
