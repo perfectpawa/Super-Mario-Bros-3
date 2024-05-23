@@ -8,6 +8,7 @@
 #include "Koopas.h"
 #include "Coin.h"
 #include "Portal.h"
+#include "SpawnCheck.h"
 
 #include "Collision.h"
 
@@ -85,6 +86,8 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithPortal(e);
 	else if (dynamic_cast<CKoopas*>(e->obj))
 		OnCollisionWithKoopas(e);
+	else if (dynamic_cast<CSpawnCheck*>(e->obj))
+		OnCollisionWithSpawnCheck(e);
 }
 
 void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
@@ -188,6 +191,14 @@ void CMario::OnCollisionWithPortal(LPCOLLISIONEVENT e)
 {
 	CPortal* p = (CPortal*)e->obj;
 	CGame::GetInstance()->InitiateSwitchScene(p->GetSceneId());
+}
+
+void CMario:: OnCollisionWithSpawnCheck(LPCOLLISIONEVENT e)
+{
+	//delete spawn check
+	e->obj->Delete();
+	DebugOut(L"---Collision with spawn check---- \n");
+
 }
 
 //

@@ -15,6 +15,7 @@
 #include "Brick.h"
 #include "QuestionBlock.h"
 #include "Mario.h"
+#include "SpawnCheck.h"
 
 #include "SampleKeyEventHandler.h"
 
@@ -133,6 +134,8 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_QUESTION_BLOCK: enemyObj = new CQuestionBlock(x, y); break;
 	case OBJECT_TYPE_COIN: enemyObj = new CCoin(x, y); break;
 
+	case OBJECT_TYPE_SPAWN_CHECK: enemyObj = new CSpawnCheck(); break;
+
 	case OBJECT_TYPE_PLATFORM:
 	{
 
@@ -185,14 +188,20 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		return;
 	}
 
-	if (enemyObj != NULL)
+	if (enemyObj != NULL) {
 		enemyObjs.push_back(enemyObj);
+		enemyObj->SetPosition(x, y);
+	}
 
-	if (terrainObj != NULL)
+	if (terrainObj != NULL) {
 		terrainObjs.push_back(terrainObj);
+		terrainObj->SetPosition(x, y);
+	}
 
-	if (backgroundObj != NULL)
+	if (backgroundObj != NULL) {
 		backgroundObjs.push_back(backgroundObj);
+		backgroundObj->SetPosition(x, y);
+	}
 
 }
 
@@ -276,8 +285,13 @@ void CPlayScene::Update(DWORD dt)
 		coObjects.push_back(terrainObjs[i]);
 
 	//update enemyObjs
-	for (int i = 0; i < enemyObjs.size(); i++)
+	for (int i = 0; i < enemyObjs.size(); i++) {
+		if (dynamic_cast<CSpawnCheck*>(enemyObjs[i])) {
+			DebugOut(L"Detect SpawnPoint\n");
+			break;
+		}
 		enemyObjs[i]->Update(dt, &coObjects);
+	}
 
 	//update terrainObjs
 	for (int i = 0; i < terrainObjs.size(); i++)

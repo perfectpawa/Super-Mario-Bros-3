@@ -27,6 +27,8 @@
 
 #define OBJECT_TYPE_PORTAL	1000
 
+#define OBJECT_TYPE_SPAWN_CHECK	9999
+
 
 #pragma region MARIO 
 
