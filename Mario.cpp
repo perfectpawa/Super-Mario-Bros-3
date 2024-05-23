@@ -27,6 +27,8 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 
 	isOnPlatform = false;
 
+	CCollision::GetInstance()->Process(this, dt, coObjects);
+
 	if (koopasPickedUp != NULL && !wantPickUp) {
 		koopasPickedUp->SetState(KOOPAS_STATE_SLIDE);
 		float koopas_x, koopas_y;
@@ -53,7 +55,6 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	}
 
 
-	CCollision::GetInstance()->Process(this, dt, coObjects);
 }
 
 void CMario::OnNoCollision(DWORD dt)
@@ -245,6 +246,31 @@ int CMario::GetAniIdSmall()
 					aniId = ID_ANI_MARIO_SMALL_WALKING_LEFT;
 			}
 
+	if (koopasPickedUp != NULL)
+	{
+		if (!isOnPlatform) {
+			if (nx > 0)
+				aniId = ID_ANI_MARIO_SMALL_PICK_UP_JUMP_RIGHT;
+			else
+				aniId = ID_ANI_MARIO_SMALL_PICK_UP_JUMP_LEFT;
+		}
+		else {
+			if (vx == 0) {
+				if (nx > 0)
+					aniId = ID_ANI_MARIO_SMALL_PICK_UP_IDLE_RIGHT;
+				else
+					aniId = ID_ANI_MARIO_SMALL_PICK_UP_IDLE_LEFT;
+			}
+			else {
+				if (nx > 0)
+					aniId = ID_ANI_MARIO_SMALL_PICK_UP_RIGHT;
+				else
+					aniId = ID_ANI_MARIO_SMALL_PICK_UP_LEFT;
+			}
+		}
+
+	}
+
 	if (aniId == -1) aniId = ID_ANI_MARIO_SMALL_IDLE_RIGHT;
 
 	return aniId;
@@ -306,6 +332,30 @@ int CMario::GetAniIdBig()
 				else if (ax == -MARIO_ACCEL_WALK_X)
 					aniId = ID_ANI_MARIO_WALKING_LEFT;
 			}
+
+	if (koopasPickedUp != NULL) {
+		if (!isOnPlatform) {
+			if (nx > 0)
+				aniId = ID_ANI_MARIO_PICK_UP_JUMP_RIGHT;
+			else
+				aniId = ID_ANI_MARIO_PICK_UP_JUMP_LEFT;
+		}
+		else {
+			if (vx == 0) {
+				if (nx > 0)
+					aniId = ID_ANI_MARIO_PICK_UP_IDLE_RIGHT;
+				else
+					aniId = ID_ANI_MARIO_PICK_UP_IDLE_LEFT;
+			}
+			else {
+				if (nx > 0)
+					aniId = ID_ANI_MARIO_PICK_UP_RIGHT;
+				else
+					aniId = ID_ANI_MARIO_PICK_UP_LEFT;
+			}
+		}
+
+	}
 
 	if (aniId == -1) aniId = ID_ANI_MARIO_IDLE_RIGHT;
 
@@ -421,9 +471,6 @@ void CMario::SetState(int state)
 		vy = -MARIO_JUMP_DEFLECT_SPEED;
 		vx = 0;
 		ax = 0;
-		break;
-
-	case MARIO_STATE_HOLD_KOOPAS:
 		break;
 	}
 
