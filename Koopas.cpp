@@ -10,6 +10,7 @@ CKoopas::CKoopas(float x, float y) :CGameObject(x, y)
 	die_start = -1;
 	hide_start = -1;
 	restore_start = -1;
+	fallCheckingObject = new CFallCheckingObject(x - 16, y);
 	SetState(KOOPAS_STATE_WALKING);
 }
 
@@ -52,10 +53,6 @@ void CKoopas::OnCollisionWith(LPCOLLISIONEVENT e)
 	else if (e->nx != 0)
 	{
 		vx = -vx;
-		if (fallCheckingObject != NULL) {
-			fallCheckingObject->Delete();
-			fallCheckingObject = NULL;
-		}
 	}
 }
 
@@ -72,13 +69,21 @@ void CKoopas::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 
 void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
+	float fallCheckingObject_xy, fallCheckingObject_vy;
+	fallCheckingObject->GetSpeed(fallCheckingObject_xy, fallCheckingObject_vy);
+	if (fallCheckingObject_vy != 0 && vy == 0)
+	{
+		vx = -vx;
+		if(vx > 0)
+			fallCheckingObject->SetPosition(x + 16, y);
+		else
+			fallCheckingObject->SetPosition(x - 16, y);
+
+		fallCheckingObject->SetSpeed(-fallCheckingObject_xy, fallCheckingObject_vy);
+	}
+
 	vy += ay * dt;
 	vx += ax * dt;
-
-	if (state != KOOPAS_STATE_WALKING && fallCheckingObject != NULL) {
-		fallCheckingObject->Delete();
-		fallCheckingObject = NULL;
-	}
 
 	if ((state == KOOPAS_STATE_HIDE) && (GetTickCount64() - hide_start > KOOPAS_HIDE_TIMEOUT))
 	{
@@ -88,33 +93,8 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		SetState(KOOPAS_STATE_WALKING);
 	}
 
-	if (state == KOOPAS_STATE_WALKING && vy == 0 && fallCheckingObject == NULL)
-	{
-		if (vx < 0)
-		{
-			fallCheckingObject = new CFallCheckingObject(x - 16, y);
-		}
-		else
-		{
-			fallCheckingObject = new CFallCheckingObject(x + 16, y);
-			float fall_vx, _;
-			fallCheckingObject->GetSpeed(fall_vx, _);
-			fallCheckingObject->SetSpeed(-fall_vx, _);
-		}
-	}
 
-	if (fallCheckingObject != NULL) {
-		fallCheckingObject->Update(dt, coObjects);
-		
-		float _, fallCheckingObject_vy;
-		fallCheckingObject->GetSpeed(_, fallCheckingObject_vy);
-		if (fallCheckingObject_vy != 0)
-		{
-			fallCheckingObject->Delete();
-			fallCheckingObject = NULL;
-			vx = -vx;
-		}
-	}
+	fallCheckingObject->Update(dt, coObjects);
 
 	CGameObject::Update(dt, coObjects);
 	CCollision::GetInstance()->Process(this, dt, coObjects);
@@ -181,6 +161,9 @@ void CKoopas::SetState(int state)
 		die_start = -1;
 		hide_start = -1;
 		restore_start = -1;
+
+		fallCheckingObject->SetPosition(x - 16, y);
+
 		break;
 	}
 }
