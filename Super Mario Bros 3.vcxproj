@@ -154,6 +154,7 @@
     <ClCompile Include="Sprites.cpp" />
     <ClCompile Include="Textures.cpp" />
     <ClCompile Include="Utils.cpp" />
+    <ClCompile Include="Venus.cpp" />
     <ClCompile Include="VisualPlatform.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -172,6 +173,7 @@
     <ClInclude Include="KeyEventHandler.h" />
     <ClInclude Include="Koopas.h" />
     <ClInclude Include="Mario.h" />
+    <ClInclude Include="Venus.h" />
     <ClInclude Include="Platform.h" />
     <ClInclude Include="PlayScene.h" />
     <ClInclude Include="Portal.h" />
@@ -191,6 +193,7 @@
     <Text Include="cloud.txt" />
     <Text Include="coin.txt" />
     <Text Include="color_box.txt" />
+    <Text Include="fire_shot.txt" />
     <Text Include="goomba.txt" />
     <Text Include="ground.txt" />
     <Text Include="koopas.txt" />
@@ -203,6 +206,7 @@
     <Text Include="scene01.txt" />
     <Text Include="scene02.txt" />
     <Text Include="tube.txt" />
+    <Text Include="venus.txt" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

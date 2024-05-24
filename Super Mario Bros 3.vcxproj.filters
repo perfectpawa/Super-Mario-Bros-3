@@ -117,6 +117,9 @@
     <ClCompile Include="Background.cpp">
       <Filter>Source Files\GameObject</Filter>
     </ClCompile>
+    <ClCompile Include="Venus.cpp">
+      <Filter>Source Files\GameObject</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AssetIDs.h">
@@ -203,6 +206,9 @@
     <ClInclude Include="Background.h">
       <Filter>Header Files\GameObject</Filter>
     </ClInclude>
+    <ClInclude Include="Venus.h">
+      <Filter>Header Files\GameObject</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="mario.txt">
@@ -252,6 +258,12 @@
     </Text>
     <Text Include="tube.txt">
       <Filter>Resource Files\Misc</Filter>
+    </Text>
+    <Text Include="venus.txt">
+      <Filter>Resource Files\Enemies</Filter>
+    </Text>
+    <Text Include="fire_shot.txt">
+      <Filter>Resource Files\Enemies</Filter>
     </Text>
   </ItemGroup>
   <ItemGroup>
