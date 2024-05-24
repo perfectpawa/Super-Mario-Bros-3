@@ -143,6 +143,7 @@
     <ClCompile Include="Koopas.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Mario.cpp" />
+    <ClCompile Include="Mushroom.cpp" />
     <ClCompile Include="Platform.cpp" />
     <ClCompile Include="PlayScene.cpp" />
     <ClCompile Include="Portal.cpp" />
@@ -173,6 +174,7 @@
     <ClInclude Include="KeyEventHandler.h" />
     <ClInclude Include="Koopas.h" />
     <ClInclude Include="Mario.h" />
+    <ClInclude Include="Mushroom.h" />
     <ClInclude Include="Venus.h" />
     <ClInclude Include="Platform.h" />
     <ClInclude Include="PlayScene.h" />
@@ -199,6 +201,7 @@
     <Text Include="koopas.txt" />
     <Text Include="main-settings.txt" />
     <Text Include="mario.txt" />
+    <Text Include="mushroom.txt" />
     <Text Include="question_block.txt" />
     <Text Include="scene000001.txt" />
     <Text Include="scene0005.txt" />

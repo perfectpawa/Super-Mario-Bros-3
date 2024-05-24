@@ -3,6 +3,7 @@
 mario.txt
 goomba.txt
 koopas.txt
+mushroom.txt
 brick.txt
 question_block.txt
 ground.txt
@@ -10,6 +11,9 @@ color_box.txt
 tube.txt
 #
 [OBJECTS]
+#MUSHROOM
+80	192	112
+
 #QUESTION_BLOCK
 61	176	128
 61	192	128
@@ -70,6 +74,8 @@ tube.txt
 
 #GOOMBA
 10	994	160
+
+
 
 
 # MARIO

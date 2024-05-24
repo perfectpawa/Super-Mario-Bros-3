@@ -19,6 +19,8 @@
 #include "Koopas.h"
 #include "Mario.h"
 
+#include "Mushroom.h"
+
 #include "SpawnCheck.h"
 #include "Background.h"
 
@@ -136,10 +138,12 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_GOOMBA: enemyObj = new CGoomba(x,y); break;
 	case OBJECT_TYPE_KOOPAS: enemyObj = new CKoopas(x, y); break;
 	case OBJECT_TYPE_BRICK: enemyObj = new CBrick(x,y); break;
-	case OBJECT_TYPE_QUESTION_BLOCK: enemyObj = new CQuestionBlock(x, y); break;
-	case OBJECT_TYPE_COIN: enemyObj = new CCoin(x, y); break;
-
 	case OBJECT_TYPE_SPAWN_CHECK: enemyObj = new CSpawnCheck(); break;
+	case OBJECT_TYPE_MUSHROOM: enemyObj = new CMushroom(x, y); break;
+
+	case OBJECT_TYPE_QUESTION_BLOCK: terrainObj = new CQuestionBlock(x, y); break;
+	case OBJECT_TYPE_COIN: terrainObj = new CCoin(x, y); break;
+
 
 	case OBJECT_TYPE_PLATFORM:
 	{

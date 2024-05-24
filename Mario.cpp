@@ -6,6 +6,7 @@
 
 #include "Goomba.h"
 #include "Koopas.h"
+#include "Mushroom.h"
 #include "Coin.h"
 #include "Portal.h"
 #include "SpawnCheck.h"
@@ -88,6 +89,8 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithKoopas(e);
 	else if (dynamic_cast<CSpawnCheck*>(e->obj))
 		OnCollisionWithSpawnCheck(e);
+	else if (dynamic_cast<CMushroom*>(e->obj)) 
+		OnCollisionWithMushroom(e);
 }
 
 void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
@@ -200,6 +203,19 @@ void CMario:: OnCollisionWithSpawnCheck(LPCOLLISIONEVENT e)
 	DebugOut(L"---Collision with spawn check---- \n");
 
 }
+
+void CMario::OnCollisionWithMushroom(LPCOLLISIONEVENT e)
+{
+	CMushroom* mushroom = dynamic_cast<CMushroom*>(e->obj);
+	if (level == MARIO_LEVEL_SMALL)
+	{
+		level = MARIO_LEVEL_BIG;
+		y -= (MARIO_BIG_BBOX_HEIGHT - MARIO_SMALL_BBOX_HEIGHT) / 2;
+	}
+
+	mushroom->Delete();
+}
+
 
 //
 // Get animation ID for small Mario
