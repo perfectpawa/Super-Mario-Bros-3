@@ -84,12 +84,9 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	{
 		SetState(KOOPAS_STATE_REVIVE);
 	}
-	if ((state == KOOPAS_STATE_REVIVE) && (GetTickCount64() - restore_start > KOOPAS_RESTORE_TIMEOUT)) {
+	if ((state == KOOPAS_STATE_REVIVE) && (GetTickCount64() - restore_start > KOOPAS_REVIVE_TIMEOUT)) {
 		SetState(KOOPAS_STATE_WALKING);
 	}
-
-	CGameObject::Update(dt, coObjects);
-	CCollision::GetInstance()->Process(this, dt, coObjects);
 
 	if (state == KOOPAS_STATE_WALKING && vy == 0 && fallCheckingObject == NULL)
 	{
@@ -119,7 +116,8 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		}
 	}
 
-
+	CGameObject::Update(dt, coObjects);
+	CCollision::GetInstance()->Process(this, dt, coObjects);
 }
 
 

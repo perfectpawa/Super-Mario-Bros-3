@@ -1,5 +1,4 @@
 #include "FallCheckingObject.h"
-#include "Mario.h"
 
 CFallCheckingObject::CFallCheckingObject(float x, float y) :CGameObject(x, y)
 {

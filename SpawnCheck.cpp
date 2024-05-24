@@ -8,11 +8,6 @@ void CSpawnCheck::GetBoundingBox(float& left, float& top, float& right, float& b
 	bottom = top + SPAWN_CHECK_BBOX_HEIGHT;
 }
 
-void CSpawnCheck::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
-{
-	CGameObject::Update(dt, coObjects);
-}
-
 void CSpawnCheck::Render()
 {
 	RenderBoundingBox();

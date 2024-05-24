@@ -6,16 +6,21 @@
 #include "Utils.h"
 #include "Textures.h"
 #include "Sprites.h"
+
 #include "Portal.h"
 #include "Coin.h"
-#include "Platform.h"
-#include "VisualPlatform.h"
-#include "Goomba.h"
-#include "Koopas.h"
 #include "Brick.h"
 #include "QuestionBlock.h"
+
+#include "Platform.h"
+#include "VisualPlatform.h"
+
+#include "Goomba.h"
+#include "Koopas.h"
 #include "Mario.h"
+
 #include "SpawnCheck.h"
+#include "Background.h"
 
 #include "SampleKeyEventHandler.h"
 
@@ -180,8 +185,16 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		float b = (float)atof(tokens[4].c_str());
 		int scene_id = atoi(tokens[5].c_str());
 		terrainObj = new CPortal(x, y, r, b, scene_id);
+		break;
+
 	}
-	break;
+
+	case OBJECT_TYPE_BACKGROUND: {
+		int spriteId = atoi(tokens[3].c_str());
+
+		backgroundObj = new CBackground(x, y, spriteId);
+		break;
+	}
 
 	default:
 		DebugOut(L"[ERROR] Invalid object type: %d\n", object_type);
@@ -287,7 +300,6 @@ void CPlayScene::Update(DWORD dt)
 	//update enemyObjs
 	for (int i = 0; i < enemyObjs.size(); i++) {
 		if (dynamic_cast<CSpawnCheck*>(enemyObjs[i])) {
-			DebugOut(L"Detect SpawnPoint\n");
 			break;
 		}
 		enemyObjs[i]->Update(dt, &coObjects);

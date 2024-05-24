@@ -144,7 +144,6 @@ class CMario : public CGameObject
 	int level; 
 	int untouchable; 
 	ULONGLONG untouchable_start;
-	ULONGLONG kick_start;
 	BOOLEAN isOnPlatform;
 	int coin; 
 	
