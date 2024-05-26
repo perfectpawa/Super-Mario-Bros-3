@@ -220,8 +220,13 @@ void CMario::OnCollisionWithMushroom(LPCOLLISIONEVENT e)
 }
 
 void CMario::OnCollisionWithQuestionBlock(LPCOLLISIONEVENT e) {
+	if (e->ny <= 0) return;
+
 	CQuestionBlock* questionBlock = dynamic_cast<CQuestionBlock*>(e->obj);
-	questionBlock->SpawnMusroom();
+	if (questionBlock->GetState() == QBLOCK_STATE_IDLE) {
+		questionBlock->SetState(QBLOCK_STATE_GET_HIT);
+		questionBlock->GetReward();
+	}
 }
 
 //

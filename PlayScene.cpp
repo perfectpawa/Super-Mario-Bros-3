@@ -146,7 +146,11 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_SPAWN_CHECK: enemyObj = new CSpawnCheck(); break;
 	case OBJECT_TYPE_MUSHROOM: enemyObj = new CMushroom(x, y); break;
 
-	case OBJECT_TYPE_QUESTION_BLOCK: terrainObj = new CQuestionBlock(x, y); break;
+	case OBJECT_TYPE_QUESTION_BLOCK: {
+		int type = atoi(tokens[3].c_str());
+		terrainObj = new CQuestionBlock(x, y, type);
+		break;
+	}
 	case OBJECT_TYPE_COIN: terrainObj = new CCoin(x, y); break;
 
 
@@ -398,6 +402,13 @@ void CPlayScene::Clear()
 		delete (*it);
 	}
 	backgroundObjs.clear();
+
+	//clear RTSpawnObjs
+	for (it = RTSpawnObjs.begin(); it != RTSpawnObjs.end(); it++)
+	{
+		delete (*it);
+	}
+	RTSpawnObjs.clear();
 }
 
 /*
@@ -422,6 +433,11 @@ void CPlayScene::Unload()
 	for (int i = 0; i < backgroundObjs.size(); i++)
 		delete backgroundObjs[i];
 	backgroundObjs.clear();
+
+	//unload RTSpawnObjs
+	for (int i = 0; i < RTSpawnObjs.size(); i++)
+		delete RTSpawnObjs[i];
+	RTSpawnObjs.clear();
 
 	player = NULL;
 
@@ -474,6 +490,20 @@ void CPlayScene::PurgeDeletedObjects()
 	backgroundObjs.erase(
 		std::remove_if(backgroundObjs.begin(), backgroundObjs.end(), CPlayScene::IsGameObjectDeleted),
 		backgroundObjs.end());
+
+	//check in RTSpawnObjs
+	for (it = RTSpawnObjs.begin(); it != RTSpawnObjs.end(); it++)
+	{
+		LPGAMEOBJECT o = *it;
+		if (o->IsDeleted())
+		{
+			delete o;
+			*it = NULL;
+		}
+	}
+	RTSpawnObjs.erase(
+		std::remove_if(RTSpawnObjs.begin(), RTSpawnObjs.end(), CPlayScene::IsGameObjectDeleted),
+		RTSpawnObjs.end());
 
 	// NOTE: remove_if will swap all deleted items to the end of the vector
 	// then simply trim the vector, this is much more efficient than deleting individual items

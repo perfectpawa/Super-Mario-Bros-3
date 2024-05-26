@@ -44,6 +44,7 @@ protected:
 
 	virtual void OnCollisionWith(LPCOLLISIONEVENT e);
 	virtual void OnCollisionWithGoomba(LPCOLLISIONEVENT e);
+	virtual void OnCollisionWithQuestionBlock(LPCOLLISIONEVENT e);
 	
 
 public:

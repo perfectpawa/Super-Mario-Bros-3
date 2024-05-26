@@ -1,6 +1,7 @@
 #include "Koopas.h"
 #include "Mario.h"
 #include "Goomba.h"
+#include "QuestionBlock.h"
 
 
 CKoopas::CKoopas(float x, float y) :CGameObject(x, y)
@@ -43,6 +44,9 @@ void CKoopas::OnCollisionWith(LPCOLLISIONEVENT e)
 	if (dynamic_cast<CGoomba*>(e->obj))
 		OnCollisionWithGoomba(e);
 
+	if (dynamic_cast<CQuestionBlock*>(e->obj))
+		OnCollisionWithQuestionBlock(e);
+
 	if (!e->obj->IsBlocking()) return;
 	if (dynamic_cast<CKoopas*>(e->obj)) return;
 
@@ -64,6 +68,19 @@ void CKoopas::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 	if (goomba->GetState() != GOOMBA_STATE_DIE)
 	{
 		goomba->SetState(GOOMBA_STATE_DIE);
+	}
+}
+
+void CKoopas::OnCollisionWithQuestionBlock(LPCOLLISIONEVENT e)
+{
+	if (state != KOOPAS_STATE_SLIDE) return;
+	if(e->ny != 0) return;
+	CQuestionBlock* questionBlock = dynamic_cast<CQuestionBlock*>(e->obj);
+
+	if (questionBlock->GetState() == QBLOCK_STATE_IDLE)
+	{
+		questionBlock->SetState(QBLOCK_STATE_GET_HIT);
+		questionBlock->GetReward();
 	}
 }
 
