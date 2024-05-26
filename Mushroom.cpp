@@ -5,7 +5,7 @@
 CMushroom::CMushroom(float x, float y) :CGameObject(x, y)
 {
 	this->ax = 0;
-	this->start_y = y - 16;
+	this->start_y = y - 12;
 	SetState(MUSHROOM_STATE_IDLE);
 }
 
@@ -43,18 +43,17 @@ void CMushroom::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	vy += ay * dt;
 	vx += ax * dt;
 
-	CGameObject::Update(dt, coObjects);
-	CCollision::GetInstance()->Process(this, dt, coObjects);
-
-	if(state == MUSHROOM_STATE_IDLE)
+	if (state == MUSHROOM_STATE_IDLE)
 	{
-		float posx, posy;
-		GetPosition(posx, posy);
-		if (posy <= start_y)
+		if (y <= start_y)
 		{
+			SetPosition(x, start_y);
 			SetState(MUSHROOM_STATE_WALKING);
 		}
 	}
+
+	CGameObject::Update(dt, coObjects);
+	CCollision::GetInstance()->Process(this, dt, coObjects);
 }
 
 

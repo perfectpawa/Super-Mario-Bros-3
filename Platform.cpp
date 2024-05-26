@@ -32,7 +32,7 @@ void CPlatform::Render()
 {
 
 	if (this->length <= 0) return; 
-	RenderBoundingBox();
+	//RenderBoundingBox();
 	if (spriteIdBegin == -1) return;
 	if (this->isVertical) {
 		float yy = y;

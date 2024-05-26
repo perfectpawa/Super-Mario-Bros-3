@@ -17,6 +17,8 @@
 
 #include "Goomba.h"
 #include "Koopas.h"
+#include "Venus.h"
+
 #include "Mario.h"
 
 #include "Mushroom.h"
@@ -145,6 +147,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_BRICK: enemyObj = new CBrick(x,y); break;
 	case OBJECT_TYPE_SPAWN_CHECK: enemyObj = new CSpawnCheck(); break;
 	case OBJECT_TYPE_MUSHROOM: enemyObj = new CMushroom(x, y); break;
+	case OBJECT_TYPE_VENUS: enemyObj = new CVenus(x, y); break;
 
 	case OBJECT_TYPE_QUESTION_BLOCK: {
 		int type = atoi(tokens[3].c_str());

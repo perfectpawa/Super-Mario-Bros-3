@@ -9,8 +9,12 @@ question_block.txt
 ground.txt
 color_box.txt
 tube.txt
+venus.txt
 #
 [OBJECTS]
+# MARIO
+0	300	128
+
 #QUESTION_BLOCK
 61	176	128	1
 61	192	128	1
@@ -47,6 +51,8 @@ tube.txt
 
 
 ##### ENEMIES #####
+#VENUS
+30	360	152
 
 #GOOMBA
 10	224	176
@@ -72,8 +78,3 @@ tube.txt
 #GOOMBA
 10	994	160
 
-
-
-
-# MARIO
-0	16	128

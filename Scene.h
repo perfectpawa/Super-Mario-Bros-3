@@ -23,6 +23,7 @@ public:
 	virtual void Render() = 0; 
 
 	virtual void AddObject(LPGAMEOBJECT obj, int type) = 0;
+	virtual LPGAMEOBJECT GetPlayer() = 0;
 };
 typedef CScene * LPSCENE;
 

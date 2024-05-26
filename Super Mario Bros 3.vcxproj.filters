@@ -13,9 +13,6 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Resource Files\Enemies">
-      <UniqueIdentifier>{b2222408-0825-4174-9e7b-72ed746e8dec}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Resource Files\Scenes">
       <UniqueIdentifier>{3ef81220-760e-495e-9137-03555425d661}</UniqueIdentifier>
     </Filter>
@@ -34,32 +31,23 @@
     <Filter Include="Source Files\Visual">
       <UniqueIdentifier>{9b95890e-8b3e-47f0-9642-5720f0418e88}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Tool">
+      <UniqueIdentifier>{8bdfa766-6a14-46b0-af59-00d94263f512}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\KeyEventHandler">
+      <UniqueIdentifier>{33367770-b639-4157-a82a-68cd02b80c1f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Tool">
+      <UniqueIdentifier>{c6a0a2b7-de33-4e42-b4b2-9faaf501bb78}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\KeyEventHandler">
+      <UniqueIdentifier>{ca0a52c9-3836-4714-a869-211ea3c6caba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Creature">
+      <UniqueIdentifier>{b2222408-0825-4174-9e7b-72ed746e8dec}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Collision.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="debug.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Game.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="PlayScene.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SampleKeyEventHandler.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Scene.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Utils.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="FallCheckingObject.h">
       <Filter>Header Files\GameObject</Filter>
     </ClCompile>
@@ -123,30 +111,33 @@
     <ClCompile Include="Mushroom.cpp">
       <Filter>Source Files\GameObject</Filter>
     </ClCompile>
+    <ClCompile Include="SampleKeyEventHandler.cpp">
+      <Filter>Source Files\KeyEventHandler</Filter>
+    </ClCompile>
+    <ClCompile Include="Collision.cpp">
+      <Filter>Source Files\Tool</Filter>
+    </ClCompile>
+    <ClCompile Include="debug.cpp">
+      <Filter>Source Files\Tool</Filter>
+    </ClCompile>
+    <ClCompile Include="Game.cpp">
+      <Filter>Source Files\Tool</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files\Tool</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayScene.cpp">
+      <Filter>Source Files\Tool</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene.cpp">
+      <Filter>Source Files\Tool</Filter>
+    </ClCompile>
+    <ClCompile Include="Utils.cpp">
+      <Filter>Source Files\Tool</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AssetIDs.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Collision.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="debug.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Game.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="KeyEventHandler.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SampleKeyEventHandler.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Utils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="GameObject.h">
@@ -210,24 +201,42 @@
       <Filter>Header Files\GameObject</Filter>
     </ClInclude>
     <ClInclude Include="Mushroom.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils.h">
+      <Filter>Header Files\Tool</Filter>
+    </ClInclude>
+    <ClInclude Include="Collision.h">
+      <Filter>Header Files\Tool</Filter>
+    </ClInclude>
+    <ClInclude Include="debug.h">
+      <Filter>Header Files\Tool</Filter>
+    </ClInclude>
+    <ClInclude Include="Game.h">
+      <Filter>Header Files\Tool</Filter>
     </ClInclude>
     <ClInclude Include="PlayScene.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Tool</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene.h">
+      <Filter>Header Files\Tool</Filter>
+    </ClInclude>
+    <ClInclude Include="SampleKeyEventHandler.h">
+      <Filter>Header Files\KeyEventHandler</Filter>
+    </ClInclude>
+    <ClInclude Include="KeyEventHandler.h">
+      <Filter>Header Files\KeyEventHandler</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="mario.txt">
-      <Filter>Resource Files</Filter>
-    </Text>
     <Text Include="main-settings.txt">
       <Filter>Resource Files</Filter>
     </Text>
     <Text Include="goomba.txt">
-      <Filter>Resource Files\Enemies</Filter>
+      <Filter>Resource Files\Creature</Filter>
     </Text>
     <Text Include="koopas.txt">
-      <Filter>Resource Files\Enemies</Filter>
+      <Filter>Resource Files\Creature</Filter>
     </Text>
     <Text Include="scene000001.txt">
       <Filter>Resource Files\Scenes</Filter>
@@ -266,12 +275,17 @@
       <Filter>Resource Files\Misc</Filter>
     </Text>
     <Text Include="venus.txt">
-      <Filter>Resource Files\Enemies</Filter>
+      <Filter>Resource Files\Creature</Filter>
     </Text>
     <Text Include="fire_shot.txt">
-      <Filter>Resource Files\Enemies</Filter>
+      <Filter>Resource Files\Creature</Filter>
     </Text>
-    <Text Include="mushroom.txt" />
+    <Text Include="mario.txt">
+      <Filter>Resource Files\Creature</Filter>
+    </Text>
+    <Text Include="mushroom.txt">
+      <Filter>Resource Files\Creature</Filter>
+    </Text>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

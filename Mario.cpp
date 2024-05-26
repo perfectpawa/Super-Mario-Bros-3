@@ -11,6 +11,7 @@
 #include "Portal.h"
 #include "SpawnCheck.h"
 #include "QuestionBlock.h"
+#include "Venus.h"
 
 #include "Collision.h"
 
@@ -94,6 +95,8 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithMushroom(e);
 	else if (dynamic_cast<CQuestionBlock*>(e->obj))
 		OnCollisionWithQuestionBlock(e);
+	else if (dynamic_cast<CVenus*>(e->obj))
+		OnCollisionWithVenus(e);
 }
 
 void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
@@ -226,6 +229,31 @@ void CMario::OnCollisionWithQuestionBlock(LPCOLLISIONEVENT e) {
 	if (questionBlock->GetState() == QBLOCK_STATE_IDLE) {
 		questionBlock->SetState(QBLOCK_STATE_GET_HIT);
 		questionBlock->GetReward();
+	}
+}
+
+void CMario::OnCollisionWithVenus(LPCOLLISIONEVENT e)
+{
+	//if mario is on top of venus, venus cant change state
+	if (e->ny < 0)
+	{
+		CVenus* venus = dynamic_cast<CVenus*>(e->obj);
+	}
+	else
+	{
+		if (untouchable == 0)
+		{
+			if (level > MARIO_LEVEL_SMALL)
+			{
+				level = MARIO_LEVEL_SMALL;
+				StartUntouchable();
+			}
+			else
+			{
+				DebugOut(L">>> Mario DIE >>> \n");
+				SetState(MARIO_STATE_DIE);
+			}
+		}
 	}
 }
 
@@ -417,7 +445,7 @@ void CMario::Render()
 
 	animations->Get(aniId)->Render(x, y);
 
-	//RenderBoundingBox();
+	RenderBoundingBox();
 	
 	DebugOutTitle(L"Coins: %d", coin);
 
