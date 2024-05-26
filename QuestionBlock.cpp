@@ -1,4 +1,6 @@
 #include "QuestionBlock.h"
+#include "Mario.h"
+#include "Mushroom.h"
 
 void CQuestionBlock::Render()
 {
@@ -13,4 +15,10 @@ void CQuestionBlock::GetBoundingBox(float& l, float& t, float& r, float& b)
 	t = y - QBLOCK_BBOX_HEIGHT / 2;
 	r = l + QBLOCK_BBOX_WIDTH;
 	b = t + QBLOCK_BBOX_HEIGHT;
+}
+
+void CQuestionBlock::SpawnMusroom()
+{
+	CMushroom* mushroom = new CMushroom(x, y - 16);
+	CGame::GetInstance()->GetCurrentScene()->AddObject(mushroom, 3);
 }

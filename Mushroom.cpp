@@ -33,7 +33,6 @@ void CMushroom::OnCollisionWith(LPCOLLISIONEVENT e)
 	{
 		vx = -vx;
 	}
-	//if (dynamic_cast<CMario*>(e->obj))
 }
 
 void CMushroom::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)

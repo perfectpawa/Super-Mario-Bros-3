@@ -10,6 +10,7 @@
 #include "Coin.h"
 #include "Portal.h"
 #include "SpawnCheck.h"
+#include "QuestionBlock.h"
 
 #include "Collision.h"
 
@@ -91,6 +92,8 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithSpawnCheck(e);
 	else if (dynamic_cast<CMushroom*>(e->obj)) 
 		OnCollisionWithMushroom(e);
+	else if (dynamic_cast<CQuestionBlock*>(e->obj))
+		OnCollisionWithQuestionBlock(e);
 }
 
 void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
@@ -210,12 +213,16 @@ void CMario::OnCollisionWithMushroom(LPCOLLISIONEVENT e)
 	if (level == MARIO_LEVEL_SMALL)
 	{
 		level = MARIO_LEVEL_BIG;
-		y -= (MARIO_BIG_BBOX_HEIGHT - MARIO_SMALL_BBOX_HEIGHT) / 2;
+		y -= (float)(MARIO_BIG_BBOX_HEIGHT - MARIO_SMALL_BBOX_HEIGHT) / 2;
 	}
 
 	mushroom->Delete();
 }
 
+void CMario::OnCollisionWithQuestionBlock(LPCOLLISIONEVENT e) {
+	CQuestionBlock* questionBlock = dynamic_cast<CQuestionBlock*>(e->obj);
+	questionBlock->SpawnMusroom();
+}
 
 //
 // Get animation ID for small Mario
@@ -537,7 +544,7 @@ void CMario::SetLevel(int l)
 	// Adjust position to avoid falling off platform
 	if (this->level == MARIO_LEVEL_SMALL)
 	{
-		y -= (MARIO_BIG_BBOX_HEIGHT - MARIO_SMALL_BBOX_HEIGHT) / 2;
+		y -= (float)(MARIO_BIG_BBOX_HEIGHT - MARIO_SMALL_BBOX_HEIGHT) / 2;
 	}
 	level = l;
 }

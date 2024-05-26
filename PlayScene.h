@@ -14,6 +14,7 @@ protected:
 	vector<LPGAMEOBJECT> enemyObjs;
 	vector<LPGAMEOBJECT> terrainObjs;
 	vector<LPGAMEOBJECT> backgroundObjs;
+	vector<LPGAMEOBJECT> RTSpawnObjs;
 
 	void _ParseSection_SPRITES(string line);
 	void _ParseSection_ANIMATIONS(string line);
@@ -22,6 +23,8 @@ protected:
 	void _ParseSection_OBJECTS(string line);
 
 	void LoadAssets(LPCWSTR assetFile);
+
+	virtual void AddObject(LPGAMEOBJECT obj, int type);
 	
 public: 
 	CPlayScene(int id, LPCWSTR filePath);

@@ -46,6 +46,11 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath):
 
 #define MAX_SCENE_LINE 1024
 
+#define OBJECT_TYPE_PLAYER	0
+#define OBJECT_TYPE_ENEMY	1
+#define OBJECT_TYPE_TERRAIN	2
+#define OBJECT_TYPE_RTS_OBJECT	3
+
 void CPlayScene::_ParseSection_SPRITES(string line)
 {
 	vector<string> tokens = split(line);
@@ -300,6 +305,8 @@ void CPlayScene::Update(DWORD dt)
 		coObjects.push_back(enemyObjs[i]);
 	for (int i = 0; i < terrainObjs.size(); i++)
 		coObjects.push_back(terrainObjs[i]);
+	for (int i = 0; i < RTSpawnObjs.size(); i++)
+		coObjects.push_back(RTSpawnObjs[i]);
 
 	//update enemyObjs
 	for (int i = 0; i < enemyObjs.size(); i++) {
@@ -316,6 +323,10 @@ void CPlayScene::Update(DWORD dt)
 	//update backgroundObjs
 	for (int i = 0; i < backgroundObjs.size(); i++)
 		backgroundObjs[i]->Update(dt, &coObjects);
+
+	//update real time spawn objects
+	for (int i = 0; i < RTSpawnObjs.size(); i++)
+		RTSpawnObjs[i]->Update(dt, &coObjects);
 
 	// skip the rest if scene was already unloaded (Mario::Update might trigger PlayScene::Unload)
 	if (player == NULL) return; 
@@ -351,6 +362,10 @@ void CPlayScene::Render()
 	//render enemyObjs
 	for (int i = 0; i < enemyObjs.size(); i++)
 		enemyObjs[i]->Render();
+
+	//render real time spawn objects
+	for (int i = 0; i < RTSpawnObjs.size(); i++)
+		RTSpawnObjs[i]->Render();
 
 	//render player
 	player->Render();
@@ -462,4 +477,16 @@ void CPlayScene::PurgeDeletedObjects()
 
 	// NOTE: remove_if will swap all deleted items to the end of the vector
 	// then simply trim the vector, this is much more efficient than deleting individual items
+}
+
+void CPlayScene::AddObject(LPGAMEOBJECT obj, int type)
+{
+	switch (type)
+	{
+	case OBJECT_TYPE_PLAYER: player = obj; break;
+	case OBJECT_TYPE_ENEMY: enemyObjs.push_back(obj); break;
+	case OBJECT_TYPE_TERRAIN: terrainObjs.push_back(obj); break;
+	case OBJECT_TYPE_BACKGROUND: backgroundObjs.push_back(obj); break;
+	case OBJECT_TYPE_RTS_OBJECT: RTSpawnObjs.push_back(obj); break;
+	}
 }
