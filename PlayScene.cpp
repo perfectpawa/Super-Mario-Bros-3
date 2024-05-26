@@ -359,6 +359,10 @@ void CPlayScene::Render()
 	for (int i = 0; i < backgroundObjs.size(); i++)
 		backgroundObjs[i]->Render();
 
+	//render real time spawn objects
+	for (int i = 0; i < RTSpawnObjs.size(); i++)
+		RTSpawnObjs[i]->Render();
+
 	//render terrainObjs
 	for (int i = 0; i < terrainObjs.size(); i++)
 		terrainObjs[i]->Render();
@@ -367,9 +371,7 @@ void CPlayScene::Render()
 	for (int i = 0; i < enemyObjs.size(); i++)
 		enemyObjs[i]->Render();
 
-	//render real time spawn objects
-	for (int i = 0; i < RTSpawnObjs.size(); i++)
-		RTSpawnObjs[i]->Render();
+
 
 	//render player
 	player->Render();

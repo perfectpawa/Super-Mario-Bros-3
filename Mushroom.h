@@ -9,6 +9,7 @@
 #define MUSHROOM_BBOX_WIDTH 16
 #define MUSHROOM_BBOX_HEIGHT 14
 
+#define MUSHROOM_STATE_IDLE 10
 #define MUSHROOM_STATE_WALKING 100
 
 class CMushroom : public CGameObject
@@ -16,6 +17,8 @@ class CMushroom : public CGameObject
 protected:
 	float ax;
 	float ay;
+
+	float start_y;
 
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 

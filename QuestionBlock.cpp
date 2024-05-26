@@ -44,6 +44,6 @@ void CQuestionBlock::GetReward()
 
 void CQuestionBlock::SpawnMusroom()
 {
-	CMushroom* mushroom = new CMushroom(x, y - 16);
+	CMushroom* mushroom = new CMushroom(x, y);
 	CGame::GetInstance()->GetCurrentScene()->AddObject(mushroom, 3);
 }
