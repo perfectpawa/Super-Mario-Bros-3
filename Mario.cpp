@@ -12,6 +12,7 @@
 #include "SpawnCheck.h"
 #include "QuestionBlock.h"
 #include "Venus.h"
+#include "FireShot.h"
 
 #include "Collision.h"
 
@@ -65,7 +66,6 @@ void CMario::OnNoCollision(DWORD dt)
 {
 	x += vx * dt;
 	y += vy * dt;
-
 }
 
 void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
@@ -97,6 +97,8 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithQuestionBlock(e);
 	else if (dynamic_cast<CVenus*>(e->obj))
 		OnCollisionWithVenus(e);
+	else if (dynamic_cast<CFireShot*>(e->obj))
+		OnCollisionWithFireShot(e);
 }
 
 void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
@@ -254,6 +256,25 @@ void CMario::OnCollisionWithVenus(LPCOLLISIONEVENT e)
 				SetState(MARIO_STATE_DIE);
 			}
 		}
+	}
+}
+
+void CMario::OnCollisionWithFireShot(LPCOLLISIONEVENT e)
+{
+	CFireShot* fireShot = dynamic_cast<CFireShot*>(e->obj);
+	if (untouchable == 0)
+	{
+		if (level > MARIO_LEVEL_SMALL)
+		{
+			level = MARIO_LEVEL_SMALL;
+			StartUntouchable();
+		}
+		else
+		{
+			DebugOut(L">>> Mario DIE >>> \n");
+			SetState(MARIO_STATE_DIE);
+		}
+		fireShot->Delete();
 	}
 }
 

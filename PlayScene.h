@@ -13,6 +13,7 @@ protected:
 
 	vector<LPGAMEOBJECT> enemyObjs;
 	vector<LPGAMEOBJECT> terrainObjs;
+	vector<LPGAMEOBJECT> frontTerrainObjs;
 	vector<LPGAMEOBJECT> backgroundObjs;
 	vector<LPGAMEOBJECT> RTSpawnObjs;
 

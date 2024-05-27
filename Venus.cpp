@@ -1,4 +1,5 @@
 #include "Venus.h"
+#include "FireShot.h"
 #include "debug.h"
 
 CVenus::CVenus(float x, float y) : CGameObject(x, y)
@@ -56,6 +57,8 @@ void CVenus::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	else if (state == VENUS_STATE_AIM && GetTickCount64() - aimTime > VENUS_AIM_TIME)
 	{
 		SetState(VENUS_STATE_FIRE);
+		CFireShot* fire = new CFireShot(x, y - 8, mx, my);
+		CGame::GetInstance()->GetCurrentScene()->AddObject(fire, 3);
 	}
 	else if (state == VENUS_STATE_FIRE && GetTickCount64() - fireTime > VENUS_FIRE_TIME)
 	{

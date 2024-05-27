@@ -124,6 +124,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 
 	CGameObject* enemyObj = NULL;
 	CGameObject* terrainObj = NULL;
+	CGameObject* frontTerrainObj = NULL;
 	CGameObject* backgroundObj = NULL;
 
 	switch (object_type)
@@ -165,17 +166,25 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		int length = atoi(tokens[5].c_str());
 		bool isDirectionColliable = (atoi(tokens[6].c_str()) != 0);
 		bool isVertical = (atoi(tokens[7].c_str()) != 0);
-		int sprite_begin = atoi(tokens[8].c_str());
-		int sprite_middle = atoi(tokens[9].c_str());
-		int sprite_end = atoi(tokens[10].c_str());
+		bool isFront = (atoi(tokens[8].c_str()) != 0);
+		int sprite_begin = atoi(tokens[9].c_str());
+		int sprite_middle = atoi(tokens[10].c_str());
+		int sprite_end = atoi(tokens[11].c_str());
 
-		terrainObj = new CPlatform(
-			x, y,
-			cell_width, cell_height, length, isDirectionColliable, isVertical,
-			sprite_begin, sprite_middle, sprite_end
-		);
-
-
+		if (isFront) {
+			frontTerrainObj = new CPlatform(
+				x, y,
+				cell_width, cell_height, length, isDirectionColliable, isVertical,
+				sprite_begin, sprite_middle, sprite_end
+			);
+		}
+		else {
+			terrainObj = new CPlatform(
+				x, y,
+				cell_width, cell_height, length, isDirectionColliable, isVertical,
+				sprite_begin, sprite_middle, sprite_end
+			);
+		}
 		break;
 	}
 
@@ -225,6 +234,11 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	if (terrainObj != NULL) {
 		terrainObjs.push_back(terrainObj);
 		terrainObj->SetPosition(x, y);
+	}
+
+	if (frontTerrainObj != NULL) {
+		frontTerrainObjs.push_back(frontTerrainObj);
+		frontTerrainObj->SetPosition(x, y);
 	}
 
 	if (backgroundObj != NULL) {
@@ -312,6 +326,8 @@ void CPlayScene::Update(DWORD dt)
 		coObjects.push_back(enemyObjs[i]);
 	for (int i = 0; i < terrainObjs.size(); i++)
 		coObjects.push_back(terrainObjs[i]);
+	for (int i = 0; i < terrainObjs.size(); i++)
+		coObjects.push_back(terrainObjs[i]);
 	for (int i = 0; i < RTSpawnObjs.size(); i++)
 		coObjects.push_back(RTSpawnObjs[i]);
 
@@ -326,6 +342,10 @@ void CPlayScene::Update(DWORD dt)
 	//update terrainObjs
 	for (int i = 0; i < terrainObjs.size(); i++)
 		terrainObjs[i]->Update(dt, &coObjects);
+
+	//update frontTerrainObjs
+	for (int i = 0; i < frontTerrainObjs.size(); i++)
+		frontTerrainObjs[i]->Update(dt, &coObjects);
 
 	//update backgroundObjs
 	for (int i = 0; i < backgroundObjs.size(); i++)
@@ -367,14 +387,18 @@ void CPlayScene::Render()
 		RTSpawnObjs[i]->Render();
 
 	//render terrainObjs
-	for (int i = 0; i < terrainObjs.size(); i++)
+
+	for (int i = 0; i < terrainObjs.size(); i++) {
 		terrainObjs[i]->Render();
+	}
 
 	//render enemyObjs
 	for (int i = 0; i < enemyObjs.size(); i++)
 		enemyObjs[i]->Render();
 
-
+	//render frontTerrainObjs
+	for (int i = 0; i < frontTerrainObjs.size(); i++)
+		frontTerrainObjs[i]->Render();
 
 	//render player
 	player->Render();
@@ -400,6 +424,13 @@ void CPlayScene::Clear()
 		delete (*it);
 	}
 	terrainObjs.clear();
+
+	//clear frontTerrainObjs
+	for (it = frontTerrainObjs.begin(); it != frontTerrainObjs.end(); it++)
+	{
+		delete (*it);
+	}
+	frontTerrainObjs.clear();
 
 	//clear backgroundObjs
 	for (it = backgroundObjs.begin(); it != backgroundObjs.end(); it++)
@@ -433,6 +464,11 @@ void CPlayScene::Unload()
 	for (int i = 0; i < terrainObjs.size(); i++)
 		delete terrainObjs[i];
 	terrainObjs.clear();
+
+	//unload frontTerrainObjs
+	for (int i = 0; i < frontTerrainObjs.size(); i++)
+		delete frontTerrainObjs[i];
+	frontTerrainObjs.clear();
 
 	//unload backgroundObjs
 	for (int i = 0; i < backgroundObjs.size(); i++)
@@ -482,6 +518,20 @@ void CPlayScene::PurgeDeletedObjects()
 		std::remove_if(terrainObjs.begin(), terrainObjs.end(), CPlayScene::IsGameObjectDeleted),
 		terrainObjs.end());
 
+	//check in frontTerrainObjs
+	for (it = frontTerrainObjs.begin(); it != frontTerrainObjs.end(); it++)
+	{
+		LPGAMEOBJECT o = *it;
+		if (o->IsDeleted())
+		{
+			delete o;
+			*it = NULL;
+		}
+	}
+	frontTerrainObjs.erase(
+		std::remove_if(frontTerrainObjs.begin(), frontTerrainObjs.end(), CPlayScene::IsGameObjectDeleted),
+		frontTerrainObjs.end());
+
 	//check in backgroundObjs
 	for (it = backgroundObjs.begin(); it != backgroundObjs.end(); it++)
 	{
@@ -514,7 +564,7 @@ void CPlayScene::PurgeDeletedObjects()
 	// then simply trim the vector, this is much more efficient than deleting individual items
 }
 
-void CPlayScene::AddObject(LPGAMEOBJECT obj, int type)
+void CPlayScene::AddObject(LPGAMEOBJECT obj, int type = OBJECT_TYPE_RTS_OBJECT)
 {
 	switch (type)
 	{
