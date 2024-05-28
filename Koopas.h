@@ -30,6 +30,8 @@ protected:
 	float ax;
 	float ay;
 
+	bool isPickedUp = false;
+
 	ULONGLONG die_start;
 	ULONGLONG hide_start;
 	ULONGLONG restore_start;
@@ -48,7 +50,9 @@ protected:
 	
 
 public:
+	CGameObject* fallCheckingObject;
+
 	CKoopas(float x, float y);
 	virtual void SetState(int state);
-	CGameObject* fallCheckingObject;
+	void SetIsPickedUp(bool isPickedUp) { this->isPickedUp = isPickedUp; }
 };

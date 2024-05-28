@@ -43,19 +43,22 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		else
 			koopasPickedUp->SetSpeed(KOOPAS_SLIDE_SPEED, 0);
 
+		koopasPickedUp->SetIsPickedUp(false);
 		koopasPickedUp = NULL;
 	}
 
 	if (koopasPickedUp != NULL) {
 		if (koopasPickedUp->GetState() == KOOPAS_STATE_WALKING) {
+			koopasPickedUp->SetIsPickedUp(false);
 			koopasPickedUp = NULL;
 		}
 		else {
 			int offset = 12;
 			if (nx < 0)
 				offset *= -1;
-			if(x != 0) 
+			if (x != 0) {
 				koopasPickedUp->SetPosition(x + offset, y);
+			}
 		}
 	}
 
@@ -145,6 +148,7 @@ void CMario::OnCollisionWithKoopas(LPCOLLISIONEVENT e)
 
 		if (wantPickUp) {
 			koopasPickedUp = koopas;
+			koopasPickedUp->SetIsPickedUp(true);
 			return;
 		}
 
@@ -469,20 +473,6 @@ void CMario::Render()
 	RenderBoundingBox();
 	
 	DebugOutTitle(L"Coins: %d", coin);
-
-	if (koopasPickedUp != NULL) {
-		if (koopasPickedUp->GetState() == KOOPAS_STATE_WALKING) {
-			koopasPickedUp = NULL;
-		}
-		else {
-			int offset = 12;
-			if (nx < 0)
-				offset *= -1;
-			if (x != 0)
-				koopasPickedUp->SetPosition(x + offset, y);
-		}
-	}
-
 }
 
 void CMario::SetState(int state)

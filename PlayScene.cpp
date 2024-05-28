@@ -236,7 +236,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 
 	case OBJECT_TYPE_TILE_BACKGROUND: {
 		int length = atoi(tokens[3].c_str());
-		int width = atoi(tokens[4].c_str());
+		float width = (float)atof(tokens[4].c_str());
 		int spriteId = atoi(tokens[5].c_str());
 		float posX = x, posY = y;
 		for (int i = 0; i < length; i++) {
@@ -382,7 +382,7 @@ void CPlayScene::Update(DWORD dt)
 	player->Update(dt, &coObjects);
 
 	//add player to coObjects
-	coObjects.push_back(player);
+	//coObjects.push_back(player);
 
 
 	//update real time spawn objects
@@ -404,8 +404,8 @@ void CPlayScene::Update(DWORD dt)
 	player->GetPosition(cx, cy);
 
 	CGame *game = CGame::GetInstance();
-	cx -= game->GetBackBufferWidth() / 2;
-	cy -= game->GetBackBufferHeight() / 2;
+	cx -= (float)game->GetBackBufferWidth() / 2;
+	cy -= (float)game->GetBackBufferHeight() / 2;
 
 	if (cx < 0) cx = 0;
 
@@ -431,7 +431,7 @@ void CPlayScene::Update(DWORD dt)
 	tileBackgroundObjs[0]->GetPosition(posX, posY);
 	posX -= 16;
 	float maxPosX = cx + 16 * (tileBackgroundObjs.size() - 1);
-	for (int i = tileBackgroundObjs.size() - 1; i >= 0; i--) {
+	for (int i = (int)tileBackgroundObjs.size() - 1; i >= 0; i--) {
 		float x, y;
 		tileBackgroundObjs[i]->GetPosition(x, y);
 		if (x > maxPosX) {

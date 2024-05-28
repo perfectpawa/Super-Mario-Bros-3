@@ -1,5 +1,4 @@
 #include "Koopas.h"
-#include "Mario.h"
 #include "Goomba.h"
 #include "QuestionBlock.h"
 
@@ -86,6 +85,7 @@ void CKoopas::OnCollisionWithQuestionBlock(LPCOLLISIONEVENT e)
 
 void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
+
 	float fallCheckingObject_xy, fallCheckingObject_vy;
 	fallCheckingObject->GetSpeed(fallCheckingObject_xy, fallCheckingObject_vy);
 	if (fallCheckingObject_vy != 0 && vy == 0)
@@ -97,6 +97,10 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			fallCheckingObject->SetPosition(x - 16, y);
 
 		fallCheckingObject->SetSpeed(-fallCheckingObject_xy, fallCheckingObject_vy);
+	}
+
+	if (isPickedUp) {
+		ay = 0;
 	}
 
 	vy += ay * dt;
@@ -161,8 +165,7 @@ void CKoopas::SetState(int state)
 	case KOOPAS_STATE_SLIDE:
 		y -= KOOPAS_BBOX_HEIGHT_HIDE / 2;
 		vx = KOOPAS_SLIDE_SPEED;
-		this->ax = 0;
-		this->ay = KOOPAS_GRAVITY;
+		ay = KOOPAS_GRAVITY;
 		die_start = -1;
 		hide_start = -1;
 		restore_start = -1;
@@ -171,8 +174,7 @@ void CKoopas::SetState(int state)
 		y -= (float)(KOOPAS_BBOX_HEIGHT - KOOPAS_BBOX_HEIGHT_HIDE) / 2;
 
 		vx = -KOOPAS_WALKING_SPEED;
-		this->ax = 0;
-		this->ay = KOOPAS_GRAVITY;
+		ay = KOOPAS_GRAVITY;
 		die_start = -1;
 		hide_start = -1;
 		restore_start = -1;
