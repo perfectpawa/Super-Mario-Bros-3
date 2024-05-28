@@ -152,7 +152,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 
 	case OBJECT_TYPE_QUESTION_BLOCK: {
 		int type = atoi(tokens[3].c_str());
-		terrainObj = new CQuestionBlock(x, y, type);
+		frontTerrainObj = new CQuestionBlock(x, y, type);
 		break;
 	}
 	case OBJECT_TYPE_COIN: terrainObj = new CCoin(x, y); break;
@@ -326,18 +326,12 @@ void CPlayScene::Update(DWORD dt)
 		coObjects.push_back(enemyObjs[i]);
 	for (int i = 0; i < terrainObjs.size(); i++)
 		coObjects.push_back(terrainObjs[i]);
-	for (int i = 0; i < terrainObjs.size(); i++)
-		coObjects.push_back(terrainObjs[i]);
+	for (int i = 0; i < frontTerrainObjs.size(); i++)
+		coObjects.push_back(frontTerrainObjs[i]);
 	for (int i = 0; i < RTSpawnObjs.size(); i++)
 		coObjects.push_back(RTSpawnObjs[i]);
 
-	//update enemyObjs
-	for (int i = 0; i < enemyObjs.size(); i++) {
-		if (dynamic_cast<CSpawnCheck*>(enemyObjs[i])) {
-			break;
-		}
-		enemyObjs[i]->Update(dt, &coObjects);
-	}
+
 
 	//update terrainObjs
 	for (int i = 0; i < terrainObjs.size(); i++)
@@ -351,15 +345,30 @@ void CPlayScene::Update(DWORD dt)
 	for (int i = 0; i < backgroundObjs.size(); i++)
 		backgroundObjs[i]->Update(dt, &coObjects);
 
+
+	// skip the rest if scene was already unloaded (Mario::Update might trigger PlayScene::Unload)
+	if (player == NULL) return;
+
+	// Update player
+	player->Update(dt, &coObjects);
+
+	//add player to coObjects
+	coObjects.push_back(player);
+
+
 	//update real time spawn objects
 	for (int i = 0; i < RTSpawnObjs.size(); i++)
 		RTSpawnObjs[i]->Update(dt, &coObjects);
 
-	// skip the rest if scene was already unloaded (Mario::Update might trigger PlayScene::Unload)
-	if (player == NULL) return; 
+	//update enemyObjs
+	for (int i = 0; i < enemyObjs.size(); i++) {
+		if (dynamic_cast<CSpawnCheck*>(enemyObjs[i])) {
+			break;
+		}
+		enemyObjs[i]->Update(dt, &coObjects);
+	}
 
-	// Update player
-	player->Update(dt, &coObjects);
+
 
 	// Update camera to follow mario
 	float cx, cy;
@@ -382,15 +391,15 @@ void CPlayScene::Render()
 	for (int i = 0; i < backgroundObjs.size(); i++)
 		backgroundObjs[i]->Render();
 
-	//render real time spawn objects
-	for (int i = 0; i < RTSpawnObjs.size(); i++)
-		RTSpawnObjs[i]->Render();
-
 	//render terrainObjs
 
 	for (int i = 0; i < terrainObjs.size(); i++) {
 		terrainObjs[i]->Render();
 	}
+
+	//render real time spawn objects
+	for (int i = 0; i < RTSpawnObjs.size(); i++)
+		RTSpawnObjs[i]->Render();
 
 	//render enemyObjs
 	for (int i = 0; i < enemyObjs.size(); i++)

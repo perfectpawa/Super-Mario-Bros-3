@@ -2,8 +2,8 @@
 #include "GameObject.h"
 #include "AssetIDs.h"
 
-#define BBOX_WIDTH 9
-#define BBOX_HEIGHT 9
+#define FIRE_BBOX_WIDTH 9
+#define FIRE_BBOX_HEIGHT 9
 
 #define FIRE_SPEED 0.05f
 

@@ -13,10 +13,10 @@ CFireShot::CFireShot(float x, float y, float vx, float vy) :CGameObject(x, y)
 void CFireShot::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
 
-	left = x - BBOX_WIDTH / 2;
-	top = y - BBOX_HEIGHT / 2;
-	right = left + BBOX_WIDTH;
-	bottom = top + BBOX_HEIGHT;
+	left = x - FIRE_BBOX_WIDTH / 2;
+	top = y - FIRE_BBOX_HEIGHT / 2;
+	right = left + FIRE_BBOX_WIDTH;
+	bottom = top + FIRE_BBOX_HEIGHT;
 }
 
 void CFireShot::OnNoCollision(DWORD dt)

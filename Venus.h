@@ -3,7 +3,7 @@
 #include "AssetIDs.h"
 
 #define VENUS_BBOX_WIDTH 15
-#define VENUS_BBOX_HEIGHT 31
+#define VENUS_BBOX_HEIGHT 40
 
 #define VENUS_GROW_SPEED 0.05f
 #define VENUS_ATK_RANGE 160
@@ -43,8 +43,6 @@ protected:
 	virtual int IsCollidable() { return 1; };
 	virtual int IsBlocking() { return 0; }
 	virtual void OnNoCollision(DWORD dt);
-
-	virtual void OnCollisionWith(LPCOLLISIONEVENT e);
 
 
 public:

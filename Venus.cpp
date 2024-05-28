@@ -1,5 +1,6 @@
 #include "Venus.h"
 #include "FireShot.h"
+#include "Mario.h"
 #include "debug.h"
 
 CVenus::CVenus(float x, float y) : CGameObject(x, y)
@@ -10,7 +11,7 @@ CVenus::CVenus(float x, float y) : CGameObject(x, y)
 	this->aimTime = 0;
 	this->fireTime = 0;
 	this->idlePosY = y;
-	this->firePosY = y - VENUS_BBOX_HEIGHT;
+	this->firePosY = y - VENUS_BBOX_HEIGHT + 9;
 	this->SetState(VENUS_STATE_IDLE);
 }
 
@@ -28,11 +29,6 @@ void CVenus::OnNoCollision(DWORD dt)
 {
 	y += vy * dt;
 };
-
-void CVenus::OnCollisionWith(LPCOLLISIONEVENT e)
-{
-
-}
 
 void CVenus::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {

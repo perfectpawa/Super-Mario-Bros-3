@@ -236,10 +236,10 @@ void CMario::OnCollisionWithQuestionBlock(LPCOLLISIONEVENT e) {
 
 void CMario::OnCollisionWithVenus(LPCOLLISIONEVENT e)
 {
-	//if mario is on top of venus, venus cant change state
-	if (e->ny < 0)
+	CVenus* venus = dynamic_cast<CVenus*>(e->obj);
+	if (venus->GetState() == VENUS_STATE_IDLE)
 	{
-		CVenus* venus = dynamic_cast<CVenus*>(e->obj);
+		
 	}
 	else
 	{
