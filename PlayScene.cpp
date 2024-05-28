@@ -215,9 +215,39 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	}
 
 	case OBJECT_TYPE_BACKGROUND: {
-		int spriteId = atoi(tokens[3].c_str());
+		float cell_width = (float)atof(tokens[3].c_str());
+		float cell_height = (float)atof(tokens[4].c_str());
+		int length = atoi(tokens[5].c_str());
+		int sprite_begin = atoi(tokens[6].c_str());
+		int sprite_middle = -1;
+		int sprite_end = -1;
+		if (length > 1) {
+			int sprite_middle = atoi(tokens[7].c_str());
+			int sprite_end = atoi(tokens[8].c_str());
+		}
 
-		backgroundObj = new CBackground(x, y, spriteId);
+		backgroundObj = new CBackground(
+			x, y,
+			cell_width, cell_height, length,
+			sprite_begin, sprite_middle, sprite_end
+		);
+		break;
+	}
+
+	case OBJECT_TYPE_TILE_BACKGROUND: {
+		int length = atoi(tokens[3].c_str());
+		int width = atoi(tokens[4].c_str());
+		int spriteId = atoi(tokens[5].c_str());
+		float posX = x, posY = y;
+		for (int i = 0; i < length; i++) {
+			CBackground* tileBackgroundObj = new CBackground(
+				posX, posY,
+				width, 240, 1,
+				spriteId, -1, -1
+			);
+			tileBackgroundObjs.push_back(tileBackgroundObj);
+			posX += width;
+		}
 		break;
 	}
 
@@ -245,7 +275,6 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		backgroundObjs.push_back(backgroundObj);
 		backgroundObj->SetPosition(x, y);
 	}
-
 }
 
 void CPlayScene::LoadAssets(LPCWSTR assetFile)
@@ -383,10 +412,51 @@ void CPlayScene::Update(DWORD dt)
 	CGame::GetInstance()->SetCamPos(cx, 0.0f /*cy*/);
 
 	PurgeDeletedObjects();
+
+	//for all item in tilebackground, if x of item is < cx, update to x = last item x + width
+	float posX, posY;
+	tileBackgroundObjs[tileBackgroundObjs.size() - 1]->GetPosition(posX, posY);
+	posX += 16;
+	for (int i = 0; i < tileBackgroundObjs.size(); i++) {
+		float x, y;
+		tileBackgroundObjs[i]->GetPosition(x, y);
+		if (x < cx) {
+			tileBackgroundObjs[i]->SetPosition(posX, y);
+			posX += 16;
+		}
+		else
+			break;
+	}
+	//for last to first, if x of item is > cx + width, update to x = first item x - width
+	tileBackgroundObjs[0]->GetPosition(posX, posY);
+	posX -= 16;
+	float maxPosX = cx + 16 * (tileBackgroundObjs.size() - 1);
+	for (int i = tileBackgroundObjs.size() - 1; i >= 0; i--) {
+		float x, y;
+		tileBackgroundObjs[i]->GetPosition(x, y);
+		if (x > maxPosX) {
+			tileBackgroundObjs[i]->SetPosition(posX, y);
+			posX -= 16;
+		}
+		else
+			break;
+	}
+
+	//sort tileBackgroundObjs by x
+	sort(tileBackgroundObjs.begin(), tileBackgroundObjs.end(), [](LPGAMEOBJECT a, LPGAMEOBJECT b) {
+		float x1, y1, x2, y2;
+		a->GetPosition(x1, y1);
+		b->GetPosition(x2, y2);
+		return x1 < x2;
+	});
 }
 
 void CPlayScene::Render()
 {
+	//render tileBackgroundObjs
+	for (int i = 0; i < tileBackgroundObjs.size(); i++)
+		tileBackgroundObjs[i]->Render();
+
 	//render backgroundObjs
 	for (int i = 0; i < backgroundObjs.size(); i++)
 		backgroundObjs[i]->Render();

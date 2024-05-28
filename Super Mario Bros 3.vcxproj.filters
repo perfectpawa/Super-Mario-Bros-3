@@ -304,6 +304,9 @@
     <Text Include="mushroom.txt">
       <Filter>Resource Files\Creature</Filter>
     </Text>
+    <Text Include="background.txt">
+      <Filter>Resource Files\Misc</Filter>
+    </Text>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

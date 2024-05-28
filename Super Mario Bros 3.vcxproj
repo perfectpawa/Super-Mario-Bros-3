@@ -193,6 +193,7 @@
     <ClInclude Include="VisualPlatform.h" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="background.txt" />
     <Text Include="brick.txt" />
     <Text Include="cloud.txt" />
     <Text Include="coin.txt" />

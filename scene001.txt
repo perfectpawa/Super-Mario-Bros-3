@@ -1,5 +1,6 @@
 # list of object assets to load in this scene
 [ASSETS]
+background.txt
 mario.txt
 goomba.txt
 koopas.txt
@@ -14,6 +15,10 @@ venus.txt
 [OBJECTS]
 # MARIO
 0	16	128
+
+# TILE_BACKGROUND
+# id	start_x	start_y	length	width	sprite_id
+8100	0	120	20	16	41000
 
 #QUESTION_BLOCK
 61	176	128	1
