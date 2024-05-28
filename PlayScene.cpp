@@ -250,8 +250,8 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		int sprite_middle = -1;
 		int sprite_end = -1;
 		if (length > 1) {
-			int sprite_middle = atoi(tokens[7].c_str());
-			int sprite_end = atoi(tokens[8].c_str());
+			sprite_middle = atoi(tokens[7].c_str());
+			sprite_end = atoi(tokens[8].c_str());
 		}
 
 		backgroundObj = new CBackground(
@@ -448,7 +448,7 @@ void CPlayScene::Update(DWORD dt)
 	for (int i = 0; i < tileBackgroundObjs.size(); i++) {
 		float x, y;
 		tileBackgroundObjs[i]->GetPosition(x, y);
-		if (x < cx) {
+		if (x < cx - 16) {
 			tileBackgroundObjs[i]->SetPosition(posX, y);
 			posX += 16;
 		}

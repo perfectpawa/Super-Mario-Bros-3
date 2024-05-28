@@ -23,5 +23,6 @@ height	240
 13	textures\enemies_2_flip.png
 50	textures\misc.png
 51	textures\misc_2.png
+52	textures\misc_3.png
 60	textures\sky-background.png
 70	textures\tiles.png
