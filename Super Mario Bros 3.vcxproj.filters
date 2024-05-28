@@ -150,6 +150,9 @@
     <ClCompile Include="FireShot.cpp">
       <Filter>Source Files\GameObject</Filter>
     </ClCompile>
+    <ClCompile Include="ColorBox.cpp">
+      <Filter>Source Files\GameObject\Misc</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AssetIDs.h">
@@ -244,6 +247,9 @@
     </ClInclude>
     <ClInclude Include="FireShot.h">
       <Filter>Header Files\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="ColorBox.h">
+      <Filter>Header Files\GameObject\Misc</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
