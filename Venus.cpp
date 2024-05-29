@@ -5,7 +5,6 @@
 
 CVenus::CVenus(float x, float y) : CGameObject(x, y)
 {
-	this->ay = 0;
 	this->player = CGame::GetInstance()->GetCurrentScene()->GetPlayer();;
 	this->idleTime = 0;
 	this->aimTime = 0;

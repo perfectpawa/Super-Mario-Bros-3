@@ -43,9 +43,6 @@
     <Filter Include="Source Files\KeyEventHandler">
       <UniqueIdentifier>{ca0a52c9-3836-4714-a869-211ea3c6caba}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource Files\Creature">
-      <UniqueIdentifier>{b2222408-0825-4174-9e7b-72ed746e8dec}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\GameObject\Misc">
       <UniqueIdentifier>{e444b42a-97ef-4588-b7b4-741499e020de}</UniqueIdentifier>
     </Filter>
@@ -64,14 +61,32 @@
     <Filter Include="Source Files\GameObject\Item">
       <UniqueIdentifier>{01c5f93a-0fd3-48fc-8cf5-3810e9654ded}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\Enemy">
+      <UniqueIdentifier>{b2222408-0825-4174-9e7b-72ed746e8dec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Item">
+      <UniqueIdentifier>{3f81ae19-2daf-48ca-96ae-7209613aec48}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Core">
+      <UniqueIdentifier>{2ac614bc-fe20-4213-b2ea-ca95df744c91}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Scene">
+      <UniqueIdentifier>{816112a3-4a1a-46e1-b4c5-8c3875ad4aa0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GameObject\CheckingObj">
+      <UniqueIdentifier>{1e315a12-c758-41e5-b920-ded054de2e9d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Core">
+      <UniqueIdentifier>{ed90412d-e09b-455a-83ff-5490dd299e38}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Scene">
+      <UniqueIdentifier>{90f7d934-235d-43e3-b4e1-56a60398a182}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\GameObject\CheckingObj">
+      <UniqueIdentifier>{1435589a-e982-4089-b118-7ff113b3af7d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="FallCheckingObject.h">
-      <Filter>Header Files\GameObject</Filter>
-    </ClCompile>
-    <ClCompile Include="FallCheckingObject.cpp">
-      <Filter>Source Files\GameObject</Filter>
-    </ClCompile>
     <ClCompile Include="GameObject.cpp">
       <Filter>Source Files\GameObject</Filter>
     </ClCompile>
@@ -90,28 +105,10 @@
     <ClCompile Include="Textures.cpp">
       <Filter>Source Files\Visual</Filter>
     </ClCompile>
-    <ClCompile Include="SpawnCheck.cpp">
-      <Filter>Source Files\GameObject</Filter>
-    </ClCompile>
     <ClCompile Include="SampleKeyEventHandler.cpp">
       <Filter>Source Files\KeyEventHandler</Filter>
     </ClCompile>
-    <ClCompile Include="Collision.cpp">
-      <Filter>Source Files\Tool</Filter>
-    </ClCompile>
     <ClCompile Include="debug.cpp">
-      <Filter>Source Files\Tool</Filter>
-    </ClCompile>
-    <ClCompile Include="Game.cpp">
-      <Filter>Source Files\Tool</Filter>
-    </ClCompile>
-    <ClCompile Include="main.cpp">
-      <Filter>Source Files\Tool</Filter>
-    </ClCompile>
-    <ClCompile Include="PlayScene.cpp">
-      <Filter>Source Files\Tool</Filter>
-    </ClCompile>
-    <ClCompile Include="Scene.cpp">
       <Filter>Source Files\Tool</Filter>
     </ClCompile>
     <ClCompile Include="Utils.cpp">
@@ -147,9 +144,6 @@
     <ClCompile Include="VisualPlatform.cpp">
       <Filter>Source Files\GameObject\Misc</Filter>
     </ClCompile>
-    <ClCompile Include="FireShot.cpp">
-      <Filter>Source Files\GameObject</Filter>
-    </ClCompile>
     <ClCompile Include="ColorBox.cpp">
       <Filter>Source Files\GameObject\Misc</Filter>
     </ClCompile>
@@ -158,6 +152,33 @@
     </ClCompile>
     <ClCompile Include="Mushroom.cpp">
       <Filter>Source Files\GameObject\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="Game.cpp">
+      <Filter>Source Files\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayScene.cpp">
+      <Filter>Source Files\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene.cpp">
+      <Filter>Source Files\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="FallCheckingObject.cpp">
+      <Filter>Source Files\GameObject\CheckingObj</Filter>
+    </ClCompile>
+    <ClCompile Include="SpawnCheck.cpp">
+      <Filter>Source Files\GameObject\CheckingObj</Filter>
+    </ClCompile>
+    <ClCompile Include="FireShot.cpp">
+      <Filter>Source Files\GameObject\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Collision.cpp">
+      <Filter>Source Files\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="FallCheckingObject.h">
+      <Filter>Header Files\GameObject\CheckingObj</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -191,25 +212,10 @@
     <ClInclude Include="Textures.h">
       <Filter>Header Files\Visual</Filter>
     </ClInclude>
-    <ClInclude Include="SpawnCheck.h">
-      <Filter>Header Files\GameObject</Filter>
-    </ClInclude>
     <ClInclude Include="Utils.h">
       <Filter>Header Files\Tool</Filter>
     </ClInclude>
-    <ClInclude Include="Collision.h">
-      <Filter>Header Files\Tool</Filter>
-    </ClInclude>
     <ClInclude Include="debug.h">
-      <Filter>Header Files\Tool</Filter>
-    </ClInclude>
-    <ClInclude Include="Game.h">
-      <Filter>Header Files\Tool</Filter>
-    </ClInclude>
-    <ClInclude Include="PlayScene.h">
-      <Filter>Header Files\Tool</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene.h">
       <Filter>Header Files\Tool</Filter>
     </ClInclude>
     <ClInclude Include="SampleKeyEventHandler.h">
@@ -245,9 +251,6 @@
     <ClInclude Include="VisualPlatform.h">
       <Filter>Header Files\GameObject\Misc</Filter>
     </ClInclude>
-    <ClInclude Include="FireShot.h">
-      <Filter>Header Files\GameObject</Filter>
-    </ClInclude>
     <ClInclude Include="ColorBox.h">
       <Filter>Header Files\GameObject\Misc</Filter>
     </ClInclude>
@@ -257,16 +260,34 @@
     <ClInclude Include="Mushroom.h">
       <Filter>Header Files\GameObject\Item</Filter>
     </ClInclude>
+    <ClInclude Include="Game.h">
+      <Filter>Header Files\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayScene.h">
+      <Filter>Header Files\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene.h">
+      <Filter>Header Files\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Collision.h">
+      <Filter>Header Files\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="FireShot.h">
+      <Filter>Header Files\GameObject\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="SpawnCheck.h">
+      <Filter>Header Files\GameObject\CheckingObj</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="main-settings.txt">
       <Filter>Resource Files</Filter>
     </Text>
     <Text Include="goomba.txt">
-      <Filter>Resource Files\Creature</Filter>
+      <Filter>Resource Files\Enemy</Filter>
     </Text>
     <Text Include="koopas.txt">
-      <Filter>Resource Files\Creature</Filter>
+      <Filter>Resource Files\Enemy</Filter>
     </Text>
     <Text Include="scene000001.txt">
       <Filter>Resource Files\Scenes</Filter>
@@ -289,9 +310,6 @@
     <Text Include="cloud.txt">
       <Filter>Resource Files\Misc</Filter>
     </Text>
-    <Text Include="coin.txt">
-      <Filter>Resource Files\Misc</Filter>
-    </Text>
     <Text Include="color_box.txt">
       <Filter>Resource Files\Misc</Filter>
     </Text>
@@ -305,19 +323,22 @@
       <Filter>Resource Files\Misc</Filter>
     </Text>
     <Text Include="venus.txt">
-      <Filter>Resource Files\Creature</Filter>
+      <Filter>Resource Files\Enemy</Filter>
     </Text>
     <Text Include="fire_shot.txt">
-      <Filter>Resource Files\Creature</Filter>
-    </Text>
-    <Text Include="mario.txt">
-      <Filter>Resource Files\Creature</Filter>
-    </Text>
-    <Text Include="mushroom.txt">
-      <Filter>Resource Files\Creature</Filter>
+      <Filter>Resource Files\Enemy</Filter>
     </Text>
     <Text Include="background.txt">
       <Filter>Resource Files\Misc</Filter>
+    </Text>
+    <Text Include="mushroom.txt">
+      <Filter>Resource Files\Item</Filter>
+    </Text>
+    <Text Include="coin.txt">
+      <Filter>Resource Files\Item</Filter>
+    </Text>
+    <Text Include="mario.txt">
+      <Filter>Resource Files</Filter>
     </Text>
   </ItemGroup>
   <ItemGroup>

@@ -22,8 +22,6 @@
 class CVenus : public CGameObject
 {
 protected:
-	float ay = 0;
-
 	float mx = 0;
 	float my = -1;
 
