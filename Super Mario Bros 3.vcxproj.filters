@@ -58,6 +58,12 @@
     <Filter Include="Header Files\GameObject\Enemy">
       <UniqueIdentifier>{f4bccfd9-e867-4557-8df6-1211ccde36ea}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\GameObject\Item">
+      <UniqueIdentifier>{6368cf5c-8e56-4183-90fb-740271282e19}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\GameObject\Item">
+      <UniqueIdentifier>{01c5f93a-0fd3-48fc-8cf5-3810e9654ded}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FallCheckingObject.h">
@@ -85,9 +91,6 @@
       <Filter>Source Files\Visual</Filter>
     </ClCompile>
     <ClCompile Include="SpawnCheck.cpp">
-      <Filter>Source Files\GameObject</Filter>
-    </ClCompile>
-    <ClCompile Include="Mushroom.cpp">
       <Filter>Source Files\GameObject</Filter>
     </ClCompile>
     <ClCompile Include="SampleKeyEventHandler.cpp">
@@ -120,9 +123,6 @@
     <ClCompile Include="Brick.cpp">
       <Filter>Source Files\GameObject\Misc</Filter>
     </ClCompile>
-    <ClCompile Include="Coin.cpp">
-      <Filter>Source Files\GameObject\Misc</Filter>
-    </ClCompile>
     <ClCompile Include="Goomba.cpp">
       <Filter>Source Files\GameObject\Enemy</Filter>
     </ClCompile>
@@ -152,6 +152,12 @@
     </ClCompile>
     <ClCompile Include="ColorBox.cpp">
       <Filter>Source Files\GameObject\Misc</Filter>
+    </ClCompile>
+    <ClCompile Include="Coin.cpp">
+      <Filter>Source Files\GameObject\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="Mushroom.cpp">
+      <Filter>Source Files\GameObject\Item</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -188,9 +194,6 @@
     <ClInclude Include="SpawnCheck.h">
       <Filter>Header Files\GameObject</Filter>
     </ClInclude>
-    <ClInclude Include="Mushroom.h">
-      <Filter>Header Files\GameObject</Filter>
-    </ClInclude>
     <ClInclude Include="Utils.h">
       <Filter>Header Files\Tool</Filter>
     </ClInclude>
@@ -221,9 +224,6 @@
     <ClInclude Include="Brick.h">
       <Filter>Header Files\GameObject\Misc</Filter>
     </ClInclude>
-    <ClInclude Include="Coin.h">
-      <Filter>Header Files\GameObject\Misc</Filter>
-    </ClInclude>
     <ClInclude Include="Goomba.h">
       <Filter>Header Files\GameObject\Enemy</Filter>
     </ClInclude>
@@ -250,6 +250,12 @@
     </ClInclude>
     <ClInclude Include="ColorBox.h">
       <Filter>Header Files\GameObject\Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="Coin.h">
+      <Filter>Header Files\GameObject\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="Mushroom.h">
+      <Filter>Header Files\GameObject\Item</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

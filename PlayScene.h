@@ -12,6 +12,7 @@ protected:
 	LPGAMEOBJECT player;					
 
 	vector<LPGAMEOBJECT> enemyObjs;
+	vector<LPGAMEOBJECT> itemObjs;
 	vector<LPGAMEOBJECT> terrainObjs;
 	vector<LPGAMEOBJECT> frontTerrainObjs;
 	vector<LPGAMEOBJECT> tileBackgroundObjs;

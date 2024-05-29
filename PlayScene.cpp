@@ -53,6 +53,7 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath):
 #define OBJECT_TYPE_ENEMY	1
 #define OBJECT_TYPE_TERRAIN	2
 #define OBJECT_TYPE_RTS_OBJECT	3
+#define OBJECT_TYPE_ITEM	4
 
 void CPlayScene::_ParseSection_SPRITES(string line)
 {
@@ -124,6 +125,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	float y = (float)atof(tokens[2].c_str());
 
 	CGameObject* enemyObj = NULL;
+	CGameObject* itemObj = NULL;
 	CGameObject* terrainObj = NULL;
 	CGameObject* frontTerrainObj = NULL;
 	CGameObject* backgroundObj = NULL;
@@ -156,7 +158,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		frontTerrainObj = new CQuestionBlock(x, y, type);
 		break;
 	}
-	case OBJECT_TYPE_COIN: terrainObj = new CCoin(x, y); break;
+	case OBJECT_TYPE_COIN: itemObj = new CCoin(x, y); break;
 
 
 	case OBJECT_TYPE_PLATFORM:
@@ -289,6 +291,11 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		enemyObj->SetPosition(x, y);
 	}
 
+	if (itemObj != NULL) {
+		itemObjs.push_back(itemObj);
+		itemObj->SetPosition(x, y);
+	}
+
 	if (terrainObj != NULL) {
 		terrainObjs.push_back(terrainObj);
 		terrainObj->SetPosition(x, y);
@@ -381,6 +388,8 @@ void CPlayScene::Update(DWORD dt)
 	//push back all objects in enemyObjs and terrainObjs to coObjects
 	for (int i = 0; i < enemyObjs.size(); i++)
 		coObjects.push_back(enemyObjs[i]);
+	for (int i = 0; i < itemObjs.size(); i++)
+		coObjects.push_back(itemObjs[i]);
 	for (int i = 0; i < terrainObjs.size(); i++)
 		coObjects.push_back(terrainObjs[i]);
 	for (int i = 0; i < frontTerrainObjs.size(); i++)
@@ -425,6 +434,9 @@ void CPlayScene::Update(DWORD dt)
 		enemyObjs[i]->Update(dt, &coObjects);
 	}
 
+	//update itemObjs
+	for (int i = 0; i < itemObjs.size(); i++)
+		itemObjs[i]->Update(dt, &coObjects);
 
 
 	// Update camera to follow mario
@@ -503,6 +515,10 @@ void CPlayScene::Render()
 	for (int i = 0; i < enemyObjs.size(); i++)
 		enemyObjs[i]->Render();
 
+	//render itemObjs
+	for (int i = 0; i < itemObjs.size(); i++)
+		itemObjs[i]->Render();
+
 	//render frontTerrainObjs
 	for (int i = 0; i < frontTerrainObjs.size(); i++)
 		frontTerrainObjs[i]->Render();
@@ -524,6 +540,13 @@ void CPlayScene::Clear()
 		delete (*it);
 	}
 	enemyObjs.clear();
+
+	//clear itemObjs
+	for (it = itemObjs.begin(); it != itemObjs.end(); it++)
+	{
+		delete (*it);
+	}
+	itemObjs.clear();
 
 	//clear terrainObjs
 	for (it = terrainObjs.begin(); it != terrainObjs.end(); it++)
@@ -566,6 +589,11 @@ void CPlayScene::Unload()
 	for (int i = 0; i < enemyObjs.size(); i++)
 		delete enemyObjs[i];
 	enemyObjs.clear();
+
+	//unload itemObjs
+	for (int i = 0; i < itemObjs.size(); i++)
+		delete itemObjs[i];
+	itemObjs.clear();
 
 	//unload terrainObjs
 	for (int i = 0; i < terrainObjs.size(); i++)
@@ -610,6 +638,20 @@ void CPlayScene::PurgeDeletedObjects()
 	enemyObjs.erase(
 		std::remove_if(enemyObjs.begin(), enemyObjs.end(), CPlayScene::IsGameObjectDeleted),
 		enemyObjs.end());
+
+	//check in itemObjs
+	for (it = itemObjs.begin(); it != itemObjs.end(); it++)
+	{
+		LPGAMEOBJECT o = *it;
+		if (o->IsDeleted())
+		{
+			delete o;
+			*it = NULL;
+		}
+	}
+	itemObjs.erase(
+		std::remove_if(itemObjs.begin(), itemObjs.end(), CPlayScene::IsGameObjectDeleted),
+		itemObjs.end());
 
 	//check in terrainObjs
 	for (it = terrainObjs.begin(); it != terrainObjs.end(); it++)
@@ -677,6 +719,7 @@ void CPlayScene::AddObject(LPGAMEOBJECT obj, int type = OBJECT_TYPE_RTS_OBJECT)
 	{
 	case OBJECT_TYPE_PLAYER: player = obj; break;
 	case OBJECT_TYPE_ENEMY: enemyObjs.push_back(obj); break;
+	case OBJECT_TYPE_ITEM: itemObjs.push_back(obj); break;
 	case OBJECT_TYPE_TERRAIN: terrainObjs.push_back(obj); break;
 	case OBJECT_TYPE_BACKGROUND: backgroundObjs.push_back(obj); break;
 	case OBJECT_TYPE_RTS_OBJECT: RTSpawnObjs.push_back(obj); break;

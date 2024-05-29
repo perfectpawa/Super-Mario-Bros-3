@@ -11,10 +11,14 @@ ground.txt
 color_box.txt
 tube.txt
 venus.txt
+coin.txt
 #
 [OBJECTS]
 # MARIO
-0	936	128
+0	16	128
+
+#COIN
+70	32	128
 
 # TILE_BACKGROUND
 # id	start_x	start_y	length	width	sprite_id
@@ -52,17 +56,17 @@ venus.txt
 
 
 #QUESTION_BLOCK
-61	176	128	1
-61	192	128	1
+61	176	128	0
+61	192	128	0
 
-61	224	96	1
-61	240	96	1
+61	224	80	0
+61	240	80	1
 
-61	416	96	1
+61	416	96	0
 
 61	656	160	1
 
-61	704	128	1
+61	704	128	0
 
 #GROUND
 50	0	192	16	16	39	0	0	0	51001	51002	51003

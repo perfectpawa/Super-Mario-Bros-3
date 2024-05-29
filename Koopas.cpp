@@ -1,5 +1,6 @@
 #include "Koopas.h"
 #include "Goomba.h"
+#include "FallCheckingObject.h"
 #include "QuestionBlock.h"
 
 
@@ -48,6 +49,7 @@ void CKoopas::OnCollisionWith(LPCOLLISIONEVENT e)
 
 	if (!e->obj->IsBlocking()) return;
 	if (dynamic_cast<CKoopas*>(e->obj)) return;
+	if (dynamic_cast<CFallCheckingObject*>(e->obj)) return;
 
 	if (e->ny != 0)
 	{
@@ -78,8 +80,7 @@ void CKoopas::OnCollisionWithQuestionBlock(LPCOLLISIONEVENT e)
 
 	if (questionBlock->GetState() == QBLOCK_STATE_IDLE)
 	{
-		questionBlock->SetState(QBLOCK_STATE_GET_HIT);
-		questionBlock->GetReward();
+		questionBlock->SetState(QBLOCK_STATE_BOUND_UP);
 	}
 }
 
@@ -88,7 +89,7 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 	float fallCheckingObject_xy, fallCheckingObject_vy;
 	fallCheckingObject->GetSpeed(fallCheckingObject_xy, fallCheckingObject_vy);
-	if (fallCheckingObject_vy != 0 && vy == 0)
+	if (fallCheckingObject_vy != 0 && vy == 0 && state == KOOPAS_STATE_WALKING)
 	{
 		vx = -vx;
 		if(vx > 0)

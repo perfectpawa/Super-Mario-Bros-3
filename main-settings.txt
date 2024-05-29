@@ -24,5 +24,6 @@ height	240
 50	textures\misc.png
 51	textures\misc_2.png
 52	textures\misc_3.png
+55	textures\misc_flip.png
 60	textures\sky-background.png
 70	textures\tiles.png

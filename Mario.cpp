@@ -233,8 +233,9 @@ void CMario::OnCollisionWithQuestionBlock(LPCOLLISIONEVENT e) {
 
 	CQuestionBlock* questionBlock = dynamic_cast<CQuestionBlock*>(e->obj);
 	if (questionBlock->GetState() == QBLOCK_STATE_IDLE) {
-		questionBlock->SetState(QBLOCK_STATE_GET_HIT);
-		questionBlock->GetReward();
+		questionBlock->SetState(QBLOCK_STATE_BOUND_UP);
+		if (questionBlock->GetRewardType() == REWARD_COIN)
+			coin++;
 	}
 }
 
