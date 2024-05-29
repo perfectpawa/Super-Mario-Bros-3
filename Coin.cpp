@@ -37,8 +37,6 @@ void CCoinEffect::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	y += vy * dt;
 
-	DebugOut(L"vy: %f\n", vy);
-
 	if(y <= maxPosy)
 	{
 		vy = COIN_EFFECT_SPEED;

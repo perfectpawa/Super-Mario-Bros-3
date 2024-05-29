@@ -11,6 +11,15 @@ CVenus::CVenus(float x, float y) : CGameObject(x, y)
 	this->fireTime = 0;
 	this->idlePosY = y;
 	this->firePosY = y - VENUS_BBOX_HEIGHT + 9;
+
+	this->checkIn = new CVenusChecking(x, firePosY + 9, 32, 16);
+	this->checkOutLeft = new CVenusChecking(x - 24, y - VENUS_BBOX_HEIGHT * 1.5f, 8, 80);
+	this->checkOutRight = new CVenusChecking(x + 24, y - VENUS_BBOX_HEIGHT * 1.5f, 8, 80);
+
+	CGame::GetInstance()->GetCurrentScene()->AddObject(checkIn, 3);
+	CGame::GetInstance()->GetCurrentScene()->AddObject(checkOutLeft, 3);
+	CGame::GetInstance()->GetCurrentScene()->AddObject(checkOutRight, 3);
+
 	this->SetState(VENUS_STATE_IDLE);
 }
 
@@ -31,6 +40,22 @@ void CVenus::OnNoCollision(DWORD dt)
 
 void CVenus::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
+	CGameObject::Update(dt, coObjects);
+	CCollision::GetInstance()->Process(this, dt, coObjects);
+
+	if ((checkOutLeft->IsDetectPlayer() || checkOutRight->IsDetectPlayer()) && canGrowUp == false) {
+		canGrowUp = true;
+		checkOutLeft->SetDetectPlayer(false);
+		checkOutRight->SetDetectPlayer(false);
+	}
+	if (checkIn->IsDetectPlayer())
+	{
+		canGrowUp = false;
+		checkIn->SetDetectPlayer(false);
+		checkOutLeft->SetDetectPlayer(false);
+		checkOutRight->SetDetectPlayer(false);
+	}
+
 	float playerX, playerY, length = 0;
 	player->GetPosition(playerX, playerY);
 
@@ -40,7 +65,7 @@ void CVenus::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	mx /= length;
 	my /= length;
 
-	if (state == VENUS_STATE_IDLE && length < VENUS_ATK_RANGE && GetTickCount64() - idleTime > VENUS_IDLE_TIME) {
+	if (canGrowUp && state == VENUS_STATE_IDLE && length < VENUS_ATK_RANGE && GetTickCount64() - idleTime > VENUS_IDLE_TIME) {
 		SetState(VENUS_STATE_GROW_UP);
 	}
 	else if (state == VENUS_STATE_GROW_UP && y <= firePosY)
@@ -61,9 +86,6 @@ void CVenus::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	{
 		SetState(VENUS_STATE_IDLE);
 	}
-
-	CGameObject::Update(dt, coObjects);
-	CCollision::GetInstance()->Process(this, dt, coObjects);
 }
 
 
@@ -85,6 +107,10 @@ void CVenus::Render()
 
 	CAnimations::GetInstance()->Get(aniId)->Render(x, y);
 	RenderBoundingBox();
+
+	checkIn->Render();
+	checkOutLeft->Render();
+	checkOutRight->Render();
 }
 
 void CVenus::SetState(int state)
@@ -110,4 +136,39 @@ void CVenus::SetState(int state)
 		vy = VENUS_GROW_SPEED;
 		break;
 	}
+}
+
+
+//Checking
+CVenusChecking::CVenusChecking(float x, float y, float width, float height) : CGameObject(x, y)
+{
+	this->width = width;
+	this->height = height;
+}
+
+void CVenusChecking::GetBoundingBox(float& left, float& top, float& right, float& bottom)
+{
+	left = x - width / 2;
+	top = y - height / 2;
+	right = left + width;
+	bottom = top + height;
+
+}
+
+void CVenusChecking::Render()
+{
+	RenderBoundingBox();
+}
+
+void CVenusChecking::OnCollisionWith(LPCOLLISIONEVENT e)
+{
+	if (dynamic_cast<CMario*>(e->obj)) {
+		SetDetectPlayer(true);
+	}
+}
+
+void CVenusChecking::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
+{
+	CGameObject::Update(dt, coObjects);
+	CCollision::GetInstance()->Process(this, dt, coObjects);
 }

@@ -54,7 +54,7 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath):
 #define OBJECT_TYPE_PLAYER	0
 #define OBJECT_TYPE_ENEMY	1
 #define OBJECT_TYPE_TERRAIN	2
-#define OBJECT_TYPE_RTS_OBJECT	3
+#define OBJECT_TYPE_DETECT	3
 #define OBJECT_TYPE_ITEM	4
 
 void CPlayScene::_ParseSection_SPRITES(string line)
@@ -401,10 +401,8 @@ void CPlayScene::Update(DWORD dt)
 		coObjects.push_back(terrainObjs[i]);
 	for (int i = 0; i < frontTerrainObjs.size(); i++)
 		coObjects.push_back(frontTerrainObjs[i]);
-	for (int i = 0; i < RTSpawnObjs.size(); i++)
-		coObjects.push_back(RTSpawnObjs[i]);
-
-
+	for (int i = 0; i < detectObjs.size(); i++)
+		coObjects.push_back(detectObjs[i]);
 
 	//update terrainObjs
 	for (int i = 0; i < terrainObjs.size(); i++)
@@ -429,10 +427,13 @@ void CPlayScene::Update(DWORD dt)
 	//coObjects.push_back(player);
 
 
-	//update real time spawn objects
-	for (int i = 0; i < RTSpawnObjs.size(); i++)
-		RTSpawnObjs[i]->Update(dt, &coObjects);
-
+	//update detect objects, coObjects of dectect only include player
+	vector<LPGAMEOBJECT> detectCoObjects;
+	detectCoObjects.push_back(player);
+	for (int i = 0; i < detectObjs.size(); i++) {
+		detectObjs[i]->Update(dt, &detectCoObjects);
+	}
+	
 	//update enemyObjs
 	for (int i = 0; i < enemyObjs.size(); i++) {
 		if (dynamic_cast<CSpawnCheck*>(enemyObjs[i])) {
@@ -514,13 +515,13 @@ void CPlayScene::Render()
 		terrainObjs[i]->Render();
 	}
 
-	//render real time spawn objects
-	for (int i = 0; i < RTSpawnObjs.size(); i++)
-		RTSpawnObjs[i]->Render();
-
 	//render enemyObjs
 	for (int i = 0; i < enemyObjs.size(); i++)
 		enemyObjs[i]->Render();
+
+	//render detectObjs
+	for (int i = 0; i < detectObjs.size(); i++)
+		detectObjs[i]->Render();
 
 	//render itemObjs
 	for (int i = 0; i < itemObjs.size(); i++)
@@ -576,12 +577,12 @@ void CPlayScene::Clear()
 	}
 	backgroundObjs.clear();
 
-	//clear RTSpawnObjs
-	for (it = RTSpawnObjs.begin(); it != RTSpawnObjs.end(); it++)
+	//clear detectObjs
+	for (it = detectObjs.begin(); it != detectObjs.end(); it++)
 	{
 		delete (*it);
 	}
-	RTSpawnObjs.clear();
+	detectObjs.clear();
 }
 
 /*
@@ -617,10 +618,10 @@ void CPlayScene::Unload()
 		delete backgroundObjs[i];
 	backgroundObjs.clear();
 
-	//unload RTSpawnObjs
-	for (int i = 0; i < RTSpawnObjs.size(); i++)
-		delete RTSpawnObjs[i];
-	RTSpawnObjs.clear();
+	//unload dectectObjs
+	for (int i = 0; i < detectObjs.size(); i++)
+		delete detectObjs[i];
+	detectObjs.clear();
 
 	player = NULL;
 
@@ -702,8 +703,8 @@ void CPlayScene::PurgeDeletedObjects()
 		std::remove_if(backgroundObjs.begin(), backgroundObjs.end(), CPlayScene::IsGameObjectDeleted),
 		backgroundObjs.end());
 
-	//check in RTSpawnObjs
-	for (it = RTSpawnObjs.begin(); it != RTSpawnObjs.end(); it++)
+	//check in detectObjs
+	for (it = detectObjs.begin(); it != detectObjs.end(); it++)
 	{
 		LPGAMEOBJECT o = *it;
 		if (o->IsDeleted())
@@ -712,15 +713,15 @@ void CPlayScene::PurgeDeletedObjects()
 			*it = NULL;
 		}
 	}
-	RTSpawnObjs.erase(
-		std::remove_if(RTSpawnObjs.begin(), RTSpawnObjs.end(), CPlayScene::IsGameObjectDeleted),
-		RTSpawnObjs.end());
+	detectObjs.erase(
+		std::remove_if(detectObjs.begin(), detectObjs.end(), CPlayScene::IsGameObjectDeleted),
+		detectObjs.end());
 
 	// NOTE: remove_if will swap all deleted items to the end of the vector
 	// then simply trim the vector, this is much more efficient than deleting individual items
 }
 
-void CPlayScene::AddObject(LPGAMEOBJECT obj, int type = OBJECT_TYPE_RTS_OBJECT)
+void CPlayScene::AddObject(LPGAMEOBJECT obj, int type)
 {
 	switch (type)
 	{
@@ -729,6 +730,6 @@ void CPlayScene::AddObject(LPGAMEOBJECT obj, int type = OBJECT_TYPE_RTS_OBJECT)
 	case OBJECT_TYPE_ITEM: itemObjs.push_back(obj); break;
 	case OBJECT_TYPE_TERRAIN: terrainObjs.push_back(obj); break;
 	case OBJECT_TYPE_BACKGROUND: backgroundObjs.push_back(obj); break;
-	case OBJECT_TYPE_RTS_OBJECT: RTSpawnObjs.push_back(obj); break;
+	case OBJECT_TYPE_DETECT: detectObjs.push_back(obj); break;
 	}
 }

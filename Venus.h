@@ -17,7 +17,25 @@
 #define VENUS_STATE_FIRE	40
 #define VENUS_STATE_GROW_DOWN	50
 
+class CVenusChecking : public CGameObject
+{
+protected:
+	float width;
+	float height;
 
+	bool detectPlayer = false;
+
+	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
+	virtual int IsCollidable() { return 1; };
+	virtual int IsBlocking() { return 0; }
+	virtual void OnCollisionWith(LPCOLLISIONEVENT e);
+	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
+public:
+	CVenusChecking(float x, float y, float width, float height);
+	bool IsDetectPlayer() const { return detectPlayer; };
+	void SetDetectPlayer(bool detectPlayer) { this->detectPlayer = detectPlayer; };
+	virtual void Render();
+};
 
 class CVenus : public CGameObject
 {
@@ -32,7 +50,12 @@ protected:
 	float idlePosY = 0;
 	float firePosY = 0;
 
+	bool canGrowUp = true;
+
 	LPGAMEOBJECT player = NULL;
+	CVenusChecking* checkIn = NULL;
+	CVenusChecking* checkOutLeft = NULL;
+	CVenusChecking* checkOutRight = NULL;
 
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);

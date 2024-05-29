@@ -17,7 +17,7 @@ protected:
 	vector<LPGAMEOBJECT> frontTerrainObjs;
 	vector<LPGAMEOBJECT> tileBackgroundObjs;
 	vector<LPGAMEOBJECT> backgroundObjs;
-	vector<LPGAMEOBJECT> RTSpawnObjs;
+	vector<LPGAMEOBJECT> detectObjs;
 
 	void _ParseSection_SPRITES(string line);
 	void _ParseSection_ANIMATIONS(string line);

@@ -30,6 +30,6 @@ protected:
 public:
 	CParaGoomba(float x, float y);
 	virtual void SetState(int state);
-	bool IsHaveWing() { return haveWing; }
+	bool IsHaveWing() const { return haveWing; }
 	void BreakWing() { haveWing = false; }
 };
