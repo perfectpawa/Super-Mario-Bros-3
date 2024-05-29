@@ -5,7 +5,7 @@
 CMushroom::CMushroom(float x, float y) :CGameObject(x, y)
 {
 	this->ax = 0;
-	this->start_y = y - 12;
+	this->start_y = y - 6;
 	SetState(MUSHROOM_STATE_IDLE);
 }
 

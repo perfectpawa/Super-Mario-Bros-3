@@ -278,6 +278,9 @@
     <ClInclude Include="SpawnCheck.h">
       <Filter>Header Files\GameObject\CheckingObj</Filter>
     </ClInclude>
+    <ClInclude Include="ParaGoomba.h">
+      <Filter>Header Files\GameObject\Enemy</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="main-settings.txt">

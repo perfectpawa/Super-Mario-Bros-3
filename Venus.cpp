@@ -31,16 +31,14 @@ void CVenus::OnNoCollision(DWORD dt)
 
 void CVenus::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	float playerX, playerY, length;
+	float playerX, playerY, length = 0;
 	player->GetPosition(playerX, playerY);
 
-	if (state != VENUS_STATE_AIM && state != VENUS_STATE_FIRE) {
-		mx = playerX - x;
-		my = playerY - y;
-		length = sqrt(mx * mx + my * my);
-		mx /= length;
-		my /= length;
-	}
+	mx = playerX - x;
+	my = playerY - y;
+	length = sqrt(mx * mx + my * my);
+	mx /= length;
+	my /= length;
 
 	if (state == VENUS_STATE_IDLE && length < VENUS_ATK_RANGE && GetTickCount64() - idleTime > VENUS_IDLE_TIME) {
 		SetState(VENUS_STATE_GROW_UP);

@@ -179,6 +179,7 @@
     <ClInclude Include="Koopas.h" />
     <ClInclude Include="Mario.h" />
     <ClInclude Include="Mushroom.h" />
+    <ClInclude Include="ParaGoomba.h" />
     <ClInclude Include="PlayScene.h" />
     <ClInclude Include="Venus.h" />
     <ClInclude Include="Platform.h" />
