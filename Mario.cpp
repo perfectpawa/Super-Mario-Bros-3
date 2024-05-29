@@ -5,6 +5,7 @@
 #include "Game.h"
 
 #include "Goomba.h"
+#include "ParaGoomba.h"
 #include "Koopas.h"
 #include "Mushroom.h"
 #include "Coin.h"
@@ -111,11 +112,19 @@ void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 	// jump on top >> kill Goomba and deflect a bit 
 	if (e->ny < 0)
 	{
-		if (goomba->GetState() != GOOMBA_STATE_DIE)
+		//check is para goomba
+		if (dynamic_cast<CParaGoomba*>(goomba))
 		{
-			goomba->SetState(GOOMBA_STATE_DIE);
-			vy = -MARIO_JUMP_DEFLECT_SPEED;
+			CParaGoomba* paraGoomba = dynamic_cast<CParaGoomba*>(goomba);
+			if (paraGoomba->IsHaveWing())
+				paraGoomba->BreakWing();
+			else if (goomba->GetState() != GOOMBA_STATE_DIE)
+				goomba->SetState(GOOMBA_STATE_DIE);
 		}
+		else if (goomba->GetState() != GOOMBA_STATE_DIE)
+			goomba->SetState(GOOMBA_STATE_DIE);
+
+		vy = -MARIO_JUMP_DEFLECT_SPEED;
 	}
 	else // hit by Goomba
 	{

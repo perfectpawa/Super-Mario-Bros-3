@@ -180,6 +180,9 @@
     <ClCompile Include="FallCheckingObject.h">
       <Filter>Header Files\GameObject\CheckingObj</Filter>
     </ClCompile>
+    <ClCompile Include="ParaGoomba.cpp">
+      <Filter>Source Files\GameObject\Enemy</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AssetIDs.h">

@@ -2,19 +2,10 @@
 #include "Goomba.h"
 #include "AssetIDs.h"
 
-#define GOOMBA_GRAVITY 0.002f
-#define GOOMBA_WALKING_SPEED 0.05f
-
-
-#define GOOMBA_BBOX_WIDTH 16
-#define GOOMBA_BBOX_HEIGHT 14
-#define GOOMBA_BBOX_HEIGHT_DIE 7
-
-#define GOOMBA_DIE_TIMEOUT 500
+#define PARA_GOOMBA_BBOX_WIDTH 20
+#define PARA_GOOMBA_BBOX_HEIGHT 16
 
 #define GOOMBA_STATE_FLY 10
-#define GOOMBA_STATE_WALKING 100
-#define GOOMBA_STATE_DIE 200
 
 class CParaGoomba : public CGoomba
 {
@@ -24,7 +15,7 @@ protected:
 
 	ULONGLONG die_start;
 
-	bool haveWing = false;
+	bool haveWing = true;
 
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
@@ -39,4 +30,6 @@ protected:
 public:
 	CParaGoomba(float x, float y);
 	virtual void SetState(int state);
+	bool IsHaveWing() { return haveWing; }
+	void BreakWing() { haveWing = false; }
 };

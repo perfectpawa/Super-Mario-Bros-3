@@ -17,6 +17,8 @@
 #include "ColorBox.h"
 
 #include "Goomba.h"
+#include "ParaGoomba.h"
+
 #include "Koopas.h"
 #include "Venus.h"
 
@@ -146,7 +148,12 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 
 		DebugOut(L"[INFO] Player object has been created!\n");
 		break;
-	case OBJECT_TYPE_GOOMBA: enemyObj = new CGoomba(x,y); break;
+	case OBJECT_TYPE_GOOMBA: {
+		int type = atoi(tokens[3].c_str());
+		if (type == 1) enemyObj = new CParaGoomba(x, y);
+		else enemyObj = new CGoomba(x, y);
+		break;
+	}
 	case OBJECT_TYPE_KOOPAS: enemyObj = new CKoopas(x, y); break;
 	case OBJECT_TYPE_BRICK: enemyObj = new CBrick(x,y); break;
 	case OBJECT_TYPE_SPAWN_CHECK: enemyObj = new CSpawnCheck(); break;
