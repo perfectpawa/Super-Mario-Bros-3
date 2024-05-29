@@ -525,6 +525,12 @@ void CGame::SwitchScene()
 	s->Load();
 }
 
+void CGame::ReloadScene()
+{
+	scenes[current_scene]->Unload();
+	scenes[current_scene]->Load();
+}
+
 void CGame::InitiateSwitchScene(int scene_id)
 {
 	next_scene = scene_id;
