@@ -17,9 +17,6 @@ coin.txt
 # MARIO
 0	16	128
 
-#COIN
-70	32	128
-
 # TILE_BACKGROUND
 # id	start_x	start_y	length	width	sprite_id
 8100	0	120	21	16	41000

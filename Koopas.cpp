@@ -87,17 +87,19 @@ void CKoopas::OnCollisionWithQuestionBlock(LPCOLLISIONEVENT e)
 void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 
-	float fallCheckingObject_xy, fallCheckingObject_vy;
-	fallCheckingObject->GetSpeed(fallCheckingObject_xy, fallCheckingObject_vy);
+	float fallCheckingObject_vx, fallCheckingObject_vy;
+	fallCheckingObject->GetSpeed(fallCheckingObject_vx, fallCheckingObject_vy);
 	if (fallCheckingObject_vy != 0 && vy == 0 && state == KOOPAS_STATE_WALKING)
 	{
 		vx = -vx;
-		if(vx > 0)
-			fallCheckingObject->SetPosition(x + 16, y);
+		if (vx > 0) 
+			fallCheckingObject->SetPosition(x + 16, y);	
 		else
 			fallCheckingObject->SetPosition(x - 16, y);
+	
+		if(vx * fallCheckingObject_vx < 0)
+			fallCheckingObject->SetSpeed(-fallCheckingObject_vx, fallCheckingObject_vy);
 
-		fallCheckingObject->SetSpeed(-fallCheckingObject_xy, fallCheckingObject_vy);
 	}
 
 	if (isPickedUp) {
@@ -181,6 +183,12 @@ void CKoopas::SetState(int state)
 		restore_start = -1;
 
 		fallCheckingObject->SetPosition(x - 16, y);
+		
+		float fallCheckingObject_vx, fallCheckingObject_vy;
+		fallCheckingObject->GetSpeed(fallCheckingObject_vx, fallCheckingObject_vy);
+		
+		if(vx * fallCheckingObject_vx < 0)
+			fallCheckingObject->SetSpeed(-fallCheckingObject_vx, fallCheckingObject_vy);
 
 		break;
 	}
