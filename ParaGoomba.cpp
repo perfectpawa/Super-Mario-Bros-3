@@ -10,13 +10,7 @@ CParaGoomba::CParaGoomba(float x, float y) :CGoomba(x, y)
 
 void CParaGoomba::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
-	if (haveWing) {
-		left = x - PARA_GOOMBA_BBOX_WIDTH / 2;
-		top = y - PARA_GOOMBA_BBOX_HEIGHT / 2;
-		right = left + PARA_GOOMBA_BBOX_WIDTH;
-		bottom = top + PARA_GOOMBA_BBOX_HEIGHT;
-	}
-	else if (state == GOOMBA_STATE_DIE)
+	if (state == GOOMBA_STATE_DIE)
 	{
 		left = x - GOOMBA_BBOX_WIDTH / 2;
 		top = y - GOOMBA_BBOX_HEIGHT_DIE / 2;
@@ -77,12 +71,8 @@ void CParaGoomba::Render()
 		aniId = ID_ANI_PARA_GOOMBA_DIE;
 	}
 
-	if (haveWing) {
-		aniId = ID_ANI_PARA_GOOMBA_GEARING;
-	}
-
 	CAnimations::GetInstance()->Get(aniId)->Render(x, y);
-	RenderBoundingBox();
+	//RenderBoundingBox();
 }
 
 void CParaGoomba::SetState(int state)
@@ -92,7 +82,7 @@ void CParaGoomba::SetState(int state)
 	{
 	case GOOMBA_STATE_DIE:
 		die_start = GetTickCount64();
-		y += (float)(GOOMBA_BBOX_HEIGHT - GOOMBA_BBOX_HEIGHT_DIE) / 2;
+		y += (GOOMBA_BBOX_HEIGHT - GOOMBA_BBOX_HEIGHT_DIE) / 2;
 		vx = 0;
 		vy = 0;
 		ay = 0;

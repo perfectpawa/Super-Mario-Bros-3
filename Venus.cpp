@@ -43,11 +43,6 @@ void CVenus::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	CGameObject::Update(dt, coObjects);
 	CCollision::GetInstance()->Process(this, dt, coObjects);
 
-	if ((checkOutLeft->IsDetectPlayer() || checkOutRight->IsDetectPlayer()) && canGrowUp == false) {
-		canGrowUp = true;
-		checkOutLeft->SetDetectPlayer(false);
-		checkOutRight->SetDetectPlayer(false);
-	}
 	if (checkIn->IsDetectPlayer())
 	{
 		canGrowUp = false;
@@ -55,6 +50,13 @@ void CVenus::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		checkOutLeft->SetDetectPlayer(false);
 		checkOutRight->SetDetectPlayer(false);
 	}
+
+	if ((checkOutLeft->IsDetectPlayer() || checkOutRight->IsDetectPlayer()) && canGrowUp == false) {
+		canGrowUp = true;
+		checkOutLeft->SetDetectPlayer(false);
+		checkOutRight->SetDetectPlayer(false);
+	}
+
 
 	float playerX, playerY, length = 0;
 	player->GetPosition(playerX, playerY);

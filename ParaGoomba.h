@@ -5,6 +5,10 @@
 #define PARA_GOOMBA_BBOX_WIDTH 20
 #define PARA_GOOMBA_BBOX_HEIGHT 16
 
+#define PARA_GOOMBA_FLY_SPEED 0.5f
+#define PARA_GOOMBA_FLY_TIMEOUT 1.0f
+
+
 #define GOOMBA_STATE_FLY 10
 
 class CParaGoomba : public CGoomba
@@ -14,6 +18,7 @@ protected:
 	float ay;
 
 	ULONGLONG die_start;
+	ULONGLONG fly_start;
 
 	bool haveWing = true;
 
