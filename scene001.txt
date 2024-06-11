@@ -2,9 +2,10 @@
 [ASSETS]
 background.txt
 mario.txt
+racoon_mario.txt
 goomba.txt
 koopas.txt
-mushroom.txt
+reward.txt
 brick.txt
 question_block.txt
 ground.txt

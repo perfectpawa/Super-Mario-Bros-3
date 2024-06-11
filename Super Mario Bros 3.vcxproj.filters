@@ -331,13 +331,16 @@
     <Text Include="background.txt">
       <Filter>Resource Files\Misc</Filter>
     </Text>
-    <Text Include="mushroom.txt">
+    <Text Include="reward.txt">
       <Filter>Resource Files\Item</Filter>
     </Text>
     <Text Include="coin.txt">
       <Filter>Resource Files\Item</Filter>
     </Text>
     <Text Include="mario.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="racoon_mario.txt">
       <Filter>Resource Files</Filter>
     </Text>
   </ItemGroup>

@@ -427,6 +427,89 @@ int CMario::GetAniIdBig()
 	return aniId;
 }
 
+int CMario::GetAniIdRacoon()
+{
+	int aniId = -1;
+	if (!isOnPlatform)
+	{
+		if (abs(ax) == MARIO_ACCEL_RUN_X)
+		{
+			if (nx >= 0)
+				aniId = ID_ANI_RACOON_MARIO_JUMP_RUN_RIGHT;
+			else
+				aniId = ID_ANI_RACOON_MARIO_JUMP_RUN_LEFT;
+		}
+		else
+		{
+			if (nx >= 0)
+				aniId = ID_ANI_RACOON_MARIO_JUMP_WALK_RIGHT;
+			else
+				aniId = ID_ANI_RACOON_MARIO_JUMP_WALK_LEFT;
+		}
+	}
+	else
+		if (isSitting)
+		{
+			if (nx > 0)
+				aniId = ID_ANI_RACOON_MARIO_SIT_RIGHT;
+			else
+				aniId = ID_ANI_RACOON_MARIO_SIT_LEFT;
+		}
+		else
+			if (vx == 0)
+			{
+				if (nx > 0) aniId = ID_ANI_RACOON_MARIO_IDLE_RIGHT;
+				else aniId = ID_ANI_RACOON_MARIO_IDLE_LEFT;
+			}
+			else if (vx > 0)
+			{
+				if (ax < 0)
+					aniId = ID_ANI_RACOON_MARIO_BRACE_RIGHT;
+				else if (ax == MARIO_ACCEL_RUN_X)
+					aniId = ID_ANI_RACOON_MARIO_RUNNING_RIGHT;
+				else if (ax == MARIO_ACCEL_WALK_X)
+					aniId = ID_ANI_RACOON_MARIO_WALKING_RIGHT;
+			}
+			else // vx < 0
+			{
+				if (ax > 0)
+					aniId = ID_ANI_RACOON_MARIO_BRACE_LEFT;
+				else if (ax == -MARIO_ACCEL_RUN_X)
+					aniId = ID_ANI_RACOON_MARIO_RUNNING_LEFT;
+				else if (ax == -MARIO_ACCEL_WALK_X)
+					aniId = ID_ANI_RACOON_MARIO_WALKING_LEFT;
+			}
+
+	if (koopasPickedUp != NULL) {
+		if (!isOnPlatform) {
+			if (nx > 0)
+				aniId = ID_ANI_RACOON_MARIO_PICK_UP_JUMP_RIGHT;
+			else
+				aniId = ID_ANI_RACOON_MARIO_PICK_UP_JUMP_LEFT;
+		}
+		else {
+			if (vx == 0) {
+				if (nx > 0)
+					aniId = ID_ANI_RACOON_MARIO_PICK_UP_IDLE_RIGHT;
+				else
+					aniId = ID_ANI_RACOON_MARIO_PICK_UP_IDLE_LEFT;
+			}
+			else {
+				if (nx > 0)
+					aniId = ID_ANI_RACOON_MARIO_PICK_UP_RIGHT;
+				else
+					aniId = ID_ANI_RACOON_MARIO_PICK_UP_LEFT;
+			}
+		}
+
+	}
+
+	if (aniId == -1) aniId = ID_ANI_RACOON_MARIO_IDLE_RIGHT;
+
+	return aniId;
+}
+
+
 void CMario::Render()
 {
 	CAnimations* animations = CAnimations::GetInstance();
@@ -437,7 +520,7 @@ void CMario::Render()
 	else if (state == MARIO_STATE_HOLD_KOOPAS)
 		aniId = ID_ANI_MARIO_SIT_LEFT;
 	else if (level == MARIO_LEVEL_BIG)
-		aniId = GetAniIdBig();
+		aniId = GetAniIdRacoon();
 	else if (level == MARIO_LEVEL_SMALL)
 		aniId = GetAniIdSmall();
 
