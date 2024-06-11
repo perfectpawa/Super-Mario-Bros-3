@@ -3,9 +3,10 @@
 #include "FallCheckingObject.h"
 #include "AssetIDs.h"
 
-#define KOOPAS_GRAVITY 0.002f
+#define KOOPAS_GRAVITY 0.001f
 #define KOOPAS_WALKING_SPEED 0.05f
 #define KOOPAS_SLIDE_SPEED 0.15f
+#define KOOPAS_JUMP_SPEED 0.28f
 
 
 #define KOOPAS_BBOX_WIDTH 15
@@ -54,6 +55,8 @@ protected:
 	virtual void OnCollisionWith(LPCOLLISIONEVENT e);
 	virtual void OnCollisionWithGoomba(LPCOLLISIONEVENT e);
 	virtual void OnCollisionWithQuestionBlock(LPCOLLISIONEVENT e);
+
+	void FallChecking(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	
 
 public:
@@ -62,4 +65,6 @@ public:
 	CKoopas(float x, float y, int type);
 	virtual void SetState(int state);
 	void SetIsPickedUp(bool isPickedUp) { this->isPickedUp = isPickedUp; }
+	void GetType(int& type) { type = this->type; }
+	void SetType(int type) { this->type = type; }
 };

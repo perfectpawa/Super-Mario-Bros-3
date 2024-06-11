@@ -7,12 +7,16 @@
 CKoopas::CKoopas(float x, float y, int type) :CGameObject(x, y)
 {
 	this->type = type;
+
 	this->ax = 0;
 	this->ay = KOOPAS_GRAVITY;
+	
 	die_start = -1;
 	hide_start = -1;
 	restore_start = -1;
+	
 	fallCheckingObject = new CFallCheckingObject(x - 16, y);
+	
 	SetState(KOOPAS_STATE_WALKING);
 }
 
@@ -87,28 +91,17 @@ void CKoopas::OnCollisionWithQuestionBlock(LPCOLLISIONEVENT e)
 
 void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-
-	float fallCheckingObject_vx, fallCheckingObject_vy;
-	fallCheckingObject->GetSpeed(fallCheckingObject_vx, fallCheckingObject_vy);
-	if (fallCheckingObject_vy != 0 && vy == 0 && state == KOOPAS_STATE_WALKING)
-	{
-		vx = -vx;
-		if (vx > 0) 
-			fallCheckingObject->SetPosition(x + 16, y);	
-		else
-			fallCheckingObject->SetPosition(x - 16, y);
-	
-		if(vx * fallCheckingObject_vx < 0)
-			fallCheckingObject->SetSpeed(-fallCheckingObject_vx, fallCheckingObject_vy);
-
+	if (type == KOOPAS_TYPE_WING) {
+		if(vy == 0)
+			vy = -KOOPAS_JUMP_SPEED;
+	}
+	else {
+		FallChecking(dt, coObjects);
 	}
 
 	if (isPickedUp) {
 		ay = 0;
 	}
-
-	vy += ay * dt;
-	vx += ax * dt;
 
 	if ((state == KOOPAS_STATE_HIDE) && (GetTickCount64() - hide_start > KOOPAS_HIDE_TIMEOUT))
 	{
@@ -118,13 +111,31 @@ void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		SetState(KOOPAS_STATE_WALKING);
 	}
 
-
-	fallCheckingObject->Update(dt, coObjects);
+	vy += ay * dt;
+	vx += ax * dt;
 
 	CGameObject::Update(dt, coObjects);
 	CCollision::GetInstance()->Process(this, dt, coObjects);
 }
 
+void CKoopas::FallChecking(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
+	float fallCheckingObject_vx, fallCheckingObject_vy;
+	fallCheckingObject->GetSpeed(fallCheckingObject_vx, fallCheckingObject_vy);
+	if (fallCheckingObject_vy != 0 && vy == 0 && state == KOOPAS_STATE_WALKING)
+	{
+		vx = -vx;
+		if (vx > 0)
+			fallCheckingObject->SetPosition(x + 16, y);
+		else
+			fallCheckingObject->SetPosition(x - 16, y);
+
+		if (vx * fallCheckingObject_vx < 0)
+			fallCheckingObject->SetSpeed(-fallCheckingObject_vx, fallCheckingObject_vy);
+
+	}
+
+	fallCheckingObject->Update(dt, coObjects);
+}
 
 void CKoopas::Render()
 {
@@ -148,6 +159,12 @@ void CKoopas::Render()
 		aniId += 100;
 	}
 
+	if(type == KOOPAS_TYPE_WING)
+	{
+		aniId = ID_ANI_WING_GREEN_KOOPAS_WALKING;
+		if(vx > 0)
+			aniId = ID_ANI_WING_GREEN_KOOPAS_FLIP_WALKING;
+	}
 
 	CAnimations::GetInstance()->Get(aniId)->Render(x, y);
 	//RenderBoundingBox();

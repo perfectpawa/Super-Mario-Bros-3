@@ -82,7 +82,7 @@ void CParaGoomba::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 				hopCount++;
 			}
 			if (hopCount == 3) {
-				hopCount == 0;
+				hopCount = 0;
 				SetState(GOOMBA_STATE_FLYING);
 			}
 		}

@@ -5,6 +5,8 @@
 #define FIRE_BBOX_WIDTH 9
 #define FIRE_BBOX_HEIGHT 9
 
+#define DESPAWN_TIMEOUT 5000
+
 #define FIRE_SPEED 0.05f
 
 
@@ -15,6 +17,8 @@ class CFireShot : public CGameObject
 protected:
 	float ax;
 	float ay;
+
+	ULONGLONG despawn_start;
 
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);

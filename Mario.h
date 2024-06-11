@@ -165,7 +165,7 @@ class CMario : public CGameObject
 
 	void OnCollisionWithQuestionBlock(LPCOLLISIONEVENT e);
 
-
+	void TakingDamage();
 
 	int GetAniIdBig();
 	int GetAniIdSmall();

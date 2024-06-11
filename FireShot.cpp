@@ -8,6 +8,8 @@ CFireShot::CFireShot(float x, float y, float vx, float vy) :CGameObject(x, y)
 
 	this->vx = FIRE_SPEED * vx;
 	this->vy = FIRE_SPEED * vy;
+
+	this->despawn_start = GetTickCount64();
 }
 
 void CFireShot::GetBoundingBox(float& left, float& top, float& right, float& bottom)
@@ -33,6 +35,12 @@ void CFireShot::OnCollisionWith(LPCOLLISIONEVENT e)
 
 void CFireShot::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
+	if (GetTickCount64() - despawn_start > DESPAWN_TIMEOUT)
+	{
+		this->IsDeleted();
+		return;
+	}
+
 	vy += ay * dt;
 	vx += ax * dt;
 
