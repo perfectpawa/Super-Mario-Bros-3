@@ -147,7 +147,10 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		else enemyObj = new CGoomba(x, y);
 		break;
 	}
-	case OBJECT_TYPE_KOOPAS: enemyObj = new CKoopas(x, y); break;
+	case OBJECT_TYPE_KOOPAS: {
+		int type = atoi(tokens[3].c_str());
+		enemyObj = new CKoopas(x, y, type); break;
+	}
 	case OBJECT_TYPE_BREAKABLE_BRICK: enemyObj = new CBrick(x,y); break;
 	case OBJECT_TYPE_SPAWN_CHECK: enemyObj = new CSpawnCheck(); break;
 	case OBJECT_TYPE_MUSHROOM: enemyObj = new CMushroom(x, y); break;
@@ -435,7 +438,7 @@ void CPlayScene::Update(DWORD dt)
 	if (cx < 0) cx = 0;
 	if (cy > 0) cy = 0;
 
-	CGame::GetInstance()->SetCamPos(cx, 0.0f /*cy*/);
+	CGame::GetInstance()->SetCamPos(cx, cy);
 
 	PurgeDeletedObjects();
 

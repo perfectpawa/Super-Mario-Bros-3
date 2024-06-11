@@ -4,8 +4,9 @@
 #include "QuestionBlock.h"
 
 
-CKoopas::CKoopas(float x, float y) :CGameObject(x, y)
+CKoopas::CKoopas(float x, float y, int type) :CGameObject(x, y)
 {
+	this->type = type;
 	this->ax = 0;
 	this->ay = KOOPAS_GRAVITY;
 	die_start = -1;
@@ -142,6 +143,11 @@ void CKoopas::Render()
 	if (state == KOOPAS_STATE_SLIDE) {
 		aniId = ID_ANI_KOOPAS_SLIDE;
 	}
+
+	if (type == KOOPAS_TYPE_GREEN) {
+		aniId += 100;
+	}
+
 
 	CAnimations::GetInstance()->Get(aniId)->Render(x, y);
 	//RenderBoundingBox();

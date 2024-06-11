@@ -22,6 +22,11 @@
 #define KOOPAS_STATE_SLIDE 400
 #define KOOPAS_STATE_DIE 500
 
+#define KOOPAS_TYPE_ORANGE 1
+#define KOOPAS_TYPE_GREEN 2
+#define KOOPAS_TYPE_WING 3
+
+
 
 
 class CKoopas : public CGameObject
@@ -29,6 +34,8 @@ class CKoopas : public CGameObject
 protected:
 	float ax;
 	float ay;
+
+	int type;
 
 	bool isPickedUp = false;
 
@@ -52,7 +59,7 @@ protected:
 public:
 	CGameObject* fallCheckingObject;
 
-	CKoopas(float x, float y);
+	CKoopas(float x, float y, int type);
 	virtual void SetState(int state);
 	void SetIsPickedUp(bool isPickedUp) { this->isPickedUp = isPickedUp; }
 };
