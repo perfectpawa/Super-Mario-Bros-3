@@ -141,9 +141,6 @@
     <ClCompile Include="Venus.cpp">
       <Filter>Source Files\GameObject\Enemy</Filter>
     </ClCompile>
-    <ClCompile Include="VisualPlatform.cpp">
-      <Filter>Source Files\GameObject\Misc</Filter>
-    </ClCompile>
     <ClCompile Include="ColorBox.cpp">
       <Filter>Source Files\GameObject\Misc</Filter>
     </ClCompile>
@@ -250,9 +247,6 @@
     </ClInclude>
     <ClInclude Include="Venus.h">
       <Filter>Header Files\GameObject\Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="VisualPlatform.h">
-      <Filter>Header Files\GameObject\Misc</Filter>
     </ClInclude>
     <ClInclude Include="ColorBox.h">
       <Filter>Header Files\GameObject\Misc</Filter>

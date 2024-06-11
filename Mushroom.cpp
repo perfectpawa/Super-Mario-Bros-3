@@ -60,7 +60,7 @@ void CMushroom::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 void CMushroom::Render()
 {
 	CAnimations::GetInstance()->Get(ID_ANI_MUSHROOM)->Render(x, y);
-	RenderBoundingBox();
+	//RenderBoundingBox();
 }
 
 void CMushroom::SetState(int state)

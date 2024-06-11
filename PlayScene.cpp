@@ -13,7 +13,6 @@
 #include "QuestionBlock.h"
 
 #include "Platform.h"
-#include "VisualPlatform.h"
 #include "ColorBox.h"
 
 #include "Goomba.h"
@@ -50,12 +49,6 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath):
 #define ASSETS_SECTION_ANIMATIONS 2
 
 #define MAX_SCENE_LINE 1024
-
-#define OBJECT_TYPE_PLAYER	0
-#define OBJECT_TYPE_ENEMY	1
-#define OBJECT_TYPE_TERRAIN	2
-#define OBJECT_TYPE_DETECT	3
-#define OBJECT_TYPE_ITEM	4
 
 void CPlayScene::_ParseSection_SPRITES(string line)
 {
@@ -155,7 +148,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		break;
 	}
 	case OBJECT_TYPE_KOOPAS: enemyObj = new CKoopas(x, y); break;
-	case OBJECT_TYPE_BRICK: enemyObj = new CBrick(x,y); break;
+	case OBJECT_TYPE_BREAKABLE_BRICK: enemyObj = new CBrick(x,y); break;
 	case OBJECT_TYPE_SPAWN_CHECK: enemyObj = new CSpawnCheck(); break;
 	case OBJECT_TYPE_MUSHROOM: enemyObj = new CMushroom(x, y); break;
 	case OBJECT_TYPE_VENUS: enemyObj = new CVenus(x, y); break;
@@ -195,22 +188,6 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 				sprite_begin, sprite_middle, sprite_end
 			);
 		}
-		break;
-	}
-
-	case OBJECT_TYPE_VISUAL_PLATFORM: {
-		float cell_width = (float)atof(tokens[3].c_str());
-		float cell_height = (float)atof(tokens[4].c_str());
-		int length = atoi(tokens[5].c_str());
-		int sprite_begin = atoi(tokens[6].c_str());
-		int sprite_middle = atoi(tokens[7].c_str());
-		int sprite_end = atoi(tokens[8].c_str());
-
-		terrainObj = new CVisualPlatform(
-			x, y,
-			cell_width, cell_height, length,
-			sprite_begin, sprite_middle, sprite_end
-		);
 		break;
 	}
 
@@ -456,6 +433,7 @@ void CPlayScene::Update(DWORD dt)
 	cy -= (float)game->GetBackBufferHeight() / 2;
 
 	if (cx < 0) cx = 0;
+	if (cy > 0) cy = 0;
 
 	CGame::GetInstance()->SetCamPos(cx, 0.0f /*cy*/);
 
@@ -725,11 +703,11 @@ void CPlayScene::AddObject(LPGAMEOBJECT obj, int type)
 {
 	switch (type)
 	{
-	case OBJECT_TYPE_PLAYER: player = obj; break;
-	case OBJECT_TYPE_ENEMY: enemyObjs.push_back(obj); break;
-	case OBJECT_TYPE_ITEM: itemObjs.push_back(obj); break;
-	case OBJECT_TYPE_TERRAIN: terrainObjs.push_back(obj); break;
-	case OBJECT_TYPE_BACKGROUND: backgroundObjs.push_back(obj); break;
-	case OBJECT_TYPE_DETECT: detectObjs.push_back(obj); break;
+	case OBJECT_TYPE_MUSHROOM:
+		itemObjs.push_back(obj);
+		break;
+	case OBJECT_TYPE_COIN:
+		itemObjs.push_back(obj);
+		break;
 	}
 }

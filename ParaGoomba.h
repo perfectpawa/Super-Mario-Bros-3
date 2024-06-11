@@ -3,13 +3,19 @@
 #include "AssetIDs.h"
 
 #define PARA_GOOMBA_BBOX_WIDTH 20
-#define PARA_GOOMBA_BBOX_HEIGHT 16
+#define PARA_GOOMBA_BBOX_HEIGHT 20
 
-#define PARA_GOOMBA_FLY_SPEED 0.5f
-#define PARA_GOOMBA_FLY_TIMEOUT 1.0f
+#define PARA_GOOMBA_GRAVITY 0.001f
+
+#define PARA_GOOMBA_HOP_SPEED 0.15f
+#define PARA_GOOMBA_FLY_SPEED 0.3f
+
+#define PARA_GOOMBA_WALK_TIMEOUT 1000
 
 
-#define GOOMBA_STATE_FLY 10
+#define GOOMBA_STATE_HOPPING 300
+#define GOOMBA_STATE_FLYING 400
+
 
 class CParaGoomba : public CGoomba
 {
@@ -18,9 +24,13 @@ protected:
 	float ay;
 
 	ULONGLONG die_start;
-	ULONGLONG fly_start;
+	ULONGLONG walk_start;
 
 	bool haveWing = true;
+	int hopCount = 0;
+
+	LPGAMEOBJECT player = NULL;
+
 
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);

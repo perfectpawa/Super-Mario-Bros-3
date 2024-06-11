@@ -88,11 +88,11 @@ void CQuestionBlock::GetReward()
 
 void CQuestionBlock::SpawnCoinEffect() {
 	CCoinEffect* coinEffect = new CCoinEffect(x, y);
-	CGame::GetInstance()->GetCurrentScene()->AddObject(coinEffect, 4);
+	CGame::GetInstance()->GetCurrentScene()->AddObject(coinEffect, OBJECT_TYPE_COIN);
 }
 
 void CQuestionBlock::SpawnMusroom()
 {
 	CMushroom* mushroom = new CMushroom(x, y);
-	CGame::GetInstance()->GetCurrentScene()->AddObject(mushroom, 4);
+	CGame::GetInstance()->GetCurrentScene()->AddObject(mushroom, OBJECT_TYPE_MUSHROOM);
 }

@@ -5,7 +5,7 @@
 
 CVenus::CVenus(float x, float y) : CGameObject(x, y)
 {
-	this->player = CGame::GetInstance()->GetCurrentScene()->GetPlayer();;
+	this->player = CGame::GetInstance()->GetCurrentScene()->GetPlayer();
 	this->idleTime = 0;
 	this->aimTime = 0;
 	this->fireTime = 0;
@@ -108,11 +108,11 @@ void CVenus::Render()
 	}
 
 	CAnimations::GetInstance()->Get(aniId)->Render(x, y);
-	RenderBoundingBox();
+	/*RenderBoundingBox();
 
 	checkIn->Render();
 	checkOutLeft->Render();
-	checkOutRight->Render();
+	checkOutRight->Render();*/
 }
 
 void CVenus::SetState(int state)
@@ -159,7 +159,7 @@ void CVenusChecking::GetBoundingBox(float& left, float& top, float& right, float
 
 void CVenusChecking::Render()
 {
-	RenderBoundingBox();
+	//RenderBoundingBox();
 }
 
 void CVenusChecking::OnCollisionWith(LPCOLLISIONEVENT e)
