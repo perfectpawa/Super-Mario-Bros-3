@@ -31,9 +31,16 @@ void CPlatform::RenderBoundingBox()
 void CPlatform::Render()
 {
 
-	if (this->length <= 0) return; 
-	//RenderBoundingBox();
+	if (length <= 0) return; 
 	if (spriteIdBegin == -1) return;
+
+	if(length == 1)
+	{
+		CSprites::GetInstance()->Get(this->spriteIdBegin)->Draw(x, y);
+		return;
+	}
+
+
 	if (this->isVertical) {
 		float yy = y;
 		CSprites* s = CSprites::GetInstance();

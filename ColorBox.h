@@ -16,9 +16,7 @@ public:
 	CColorBox(float x, float y,
 		float cell_width, float cell_height,
 		int width, int height,
-		int sprite_id_top_left, int sprite_id_top_middle, int sprite_id_top_right,
-		int sprite_id_middle_left, int sprite_id_middle_middle, int sprite_id_middle_right,
-		int sprite_id_bottom_left, int sprite_id_bottom_middle, int sprite_id_bottom_right
+		int color_id
 		) :CGameObject(x, y)
 	{
 		this->cellWidth = cell_width;
@@ -26,18 +24,15 @@ public:
 
 		this->width = width;
 		this->height = height;
-
-		this->spriteIdTopLeft = sprite_id_top_left;
-		this->spriteIdTopMiddle = sprite_id_top_middle;
-		this->spriteIdTopRight = sprite_id_top_right;
-
-		this->spriteIdMiddleLeft = sprite_id_middle_left;
-		this->spriteIdMiddleMiddle = sprite_id_middle_middle;
-		this->spriteIdMiddleRight = sprite_id_middle_right;
-
-		this->spriteIdBottomLeft = sprite_id_bottom_left;
-		this->spriteIdBottomMiddle = sprite_id_bottom_middle;
-		this->spriteIdBottomRight = sprite_id_bottom_right;
+		this->spriteIdTopLeft = color_id + 1;
+		this->spriteIdTopMiddle = color_id + 2;
+		this->spriteIdTopRight = color_id + 3;
+		this->spriteIdMiddleLeft = color_id + 4;
+		this->spriteIdMiddleMiddle = color_id + 5;
+		this->spriteIdMiddleRight = color_id + 6;
+		this->spriteIdBottomLeft = color_id + 7;
+		this->spriteIdBottomMiddle = color_id + 8;
+		this->spriteIdBottomRight = color_id + 9;
 	}
 
 	void Render();

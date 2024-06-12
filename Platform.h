@@ -17,8 +17,10 @@ protected:
 
 public: 
 	CPlatform(float x, float y,
-		float cell_width, float cell_height, int length, bool isDirectionColliable, bool isVertical,
-		int sprite_id_begin, int sprite_id_middle, int sprite_id_end) :CGameObject(x, y)
+		float cell_width, float cell_height, int length,
+		int sprite_id_begin, int sprite_id_middle, int sprite_id_end,
+		bool isDirectionColliable, bool isVertical
+	) :CGameObject(x, y)
 	{
 		this->length = length;
 		this->cellWidth = cell_width;

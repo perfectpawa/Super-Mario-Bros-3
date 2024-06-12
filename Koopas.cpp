@@ -40,6 +40,8 @@ void CKoopas::GetBoundingBox(float& left, float& top, float& right, float& botto
 
 void CKoopas::OnNoCollision(DWORD dt)
 {
+	if (isPickedUp) return;
+
 	x += vx * dt;
 	y += vy * dt;
 };
@@ -156,7 +158,7 @@ void CKoopas::Render()
 	}
 
 	if (type == KOOPAS_TYPE_GREEN) {
-		aniId += 100;
+		aniId += 10000;
 	}
 
 	if(type == KOOPAS_TYPE_WING)

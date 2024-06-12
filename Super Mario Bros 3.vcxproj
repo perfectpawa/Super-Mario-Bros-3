@@ -207,8 +207,9 @@
     <Text Include="ground.txt" />
     <Text Include="koopas.txt" />
     <Text Include="main-settings.txt" />
-    <Text Include="mario.txt" />
-    <Text Include="racoon_mario.txt" />
+    <Text Include="mario_big.txt" />
+    <Text Include="mario_racoon.txt" />
+    <Text Include="mario_small.txt" />
     <Text Include="reward.txt" />
     <Text Include="question_block.txt" />
     <Text Include="scene000001.txt" />

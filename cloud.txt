@@ -5,7 +5,7 @@
 50003	426	117	441	132	50
 
 #CLOUDBLOCK
-50010	222	188	237	203	70
+610100	222	188	237	203	70
 
 # ani_id	sprite1_id	time1	sprite2_id	time2	...
 [ANIMATIONS]

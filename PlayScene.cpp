@@ -166,29 +166,42 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 
 	case OBJECT_TYPE_PLATFORM:
 	{
-
 		float cell_width = (float)atof(tokens[3].c_str());
 		float cell_height = (float)atof(tokens[4].c_str());
 		int length = atoi(tokens[5].c_str());
-		bool isDirectionColliable = (atoi(tokens[6].c_str()) != 0);
-		bool isVertical = (atoi(tokens[7].c_str()) != 0);
-		bool isFront = (atoi(tokens[8].c_str()) != 0);
-		int sprite_begin = atoi(tokens[9].c_str());
-		int sprite_middle = atoi(tokens[10].c_str());
-		int sprite_end = atoi(tokens[11].c_str());
+		int sprite_begin = atoi(tokens[6].c_str());
+		int sprite_middle = -1;
+		int sprite_end = -1;
+		bool isDirectionColliable = false;
+		bool isVertical = false;
+		bool isFront = false;
+
+		if (tokens.size() >= 9) 
+		{
+			sprite_middle = atoi(tokens[7].c_str());
+			sprite_end = atoi(tokens[8].c_str());
+		}
+		if (tokens.size() == 12) {
+			isDirectionColliable = (atoi(tokens[9].c_str()) == 1);
+			isVertical = (atoi(tokens[10].c_str()) == 1);
+			isFront = (atoi(tokens[11].c_str()) == 1);
+		}
+
 
 		if (isFront) {
 			frontTerrainObj = new CPlatform(
 				x, y,
-				cell_width, cell_height, length, isDirectionColliable, isVertical,
-				sprite_begin, sprite_middle, sprite_end
+				cell_width, cell_height, length, 
+				sprite_begin, sprite_middle, sprite_end,
+				isDirectionColliable, isVertical
 			);
 		}
 		else {
 			terrainObj = new CPlatform(
 				x, y,
-				cell_width, cell_height, length, isDirectionColliable, isVertical,
-				sprite_begin, sprite_middle, sprite_end
+				cell_width, cell_height, length, 
+				sprite_begin, sprite_middle, sprite_end,
+				isDirectionColliable, isVertical
 			);
 		}
 		break;
@@ -199,26 +212,74 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		float cell_height = (float)atof(tokens[4].c_str());
 		int width = atoi(tokens[5].c_str());
 		int height = atoi(tokens[6].c_str());
-		int sprite_id_top_left = atoi(tokens[7].c_str());
-		int sprite_id_top_middle = atoi(tokens[8].c_str());
-		int sprite_id_top_right = atoi(tokens[9].c_str());
-		int sprite_id_middle_left = atoi(tokens[10].c_str());
-		int sprite_id_middle_middle = atoi(tokens[11].c_str());
-		int sprite_id_middle_right = atoi(tokens[12].c_str());
-		int sprite_id_bottom_left = atoi(tokens[13].c_str());
-		int sprite_id_bottom_middle = atoi(tokens[14].c_str());
-		int sprite_id_bottom_right = atoi(tokens[15].c_str());
+		int color_id = atoi(tokens[7].c_str());
 
 		terrainObj = new CColorBox(
 			x, y,
 			cell_width, cell_height,
 			width, height,
-			sprite_id_top_left, sprite_id_top_middle, sprite_id_top_right,
-			sprite_id_middle_left, sprite_id_middle_middle, sprite_id_middle_right,
-			sprite_id_bottom_left, sprite_id_bottom_middle, sprite_id_bottom_right
+			color_id
 		);
 		break;
 	
+	}
+
+	case OBJECT_TYPE_TUBE: {
+		float cell_width = (float)atof(tokens[3].c_str());
+		float cell_height = (float)atof(tokens[4].c_str());
+		int length = atoi(tokens[5].c_str());
+
+		terrainObj = new CPlatform(
+			x, y,
+			cell_width, cell_height, length,
+			ID_SPRITE_TUBE_MOUTH, ID_SPRITE_TUBE_BODY, ID_SPRITE_TUBE_BODY,
+			0, 1
+		);
+		break;
+	}
+
+	case OBJECT_TYPE_GROUND: {
+		int width = atoi(tokens[3].c_str());
+		int height = atoi(tokens[4].c_str());
+
+		DebugOut(L"--> %d\n", tokens.size());
+
+		CGameObject* groundObj;
+
+		groundObj = new CPlatform(
+			x, y - 6,
+			16, 6, width,
+			ID_SPRITE_OVERGROUND + 1, ID_SPRITE_OVERGROUND + 2, ID_SPRITE_OVERGROUND + 3,
+			0, 0
+		);
+
+		terrainObjs.push_back(groundObj);
+
+		if (height >= 2) {
+			groundObj = new CPlatform(
+				x, y + 4,
+				16, 16, width,
+				ID_SPRITE_UNDERGROUND + 1, ID_SPRITE_UNDERGROUND + 2, ID_SPRITE_UNDERGROUND + 3,
+				0, 0
+			);
+
+			terrainObjs.push_back(groundObj);
+		}
+
+		if(height >= 3) {
+			for(int i = 1; i < height - 1; i++) {
+				groundObj = new CPlatform(
+					x, y + 4 + 16 * i,
+					16, 16, width,
+					ID_SPRITE_DEEPERROUND + 1, ID_SPRITE_DEEPERROUND + 2, ID_SPRITE_DEEPERROUND + 3,
+					0, 0
+				);
+			}
+
+			terrainObjs.push_back(groundObj);
+		}
+		
+		break;
 	}
 
 	case OBJECT_TYPE_PORTAL:
