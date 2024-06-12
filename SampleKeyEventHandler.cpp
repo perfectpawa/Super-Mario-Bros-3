@@ -53,6 +53,9 @@ void CSampleKeyHandler::OnKeyUp(int KeyCode)
 	case DIK_D:
 		mario->SetWantPickUp(false);
 		break;
+	case DIK_A:
+		mario->SetOnSprinting(false);
+		break;
 	}
 }
 
@@ -63,17 +66,23 @@ void CSampleKeyHandler::KeyState(BYTE *states)
 
 	if (game->IsKeyDown(DIK_RIGHT))
 	{
-		if (game->IsKeyDown(DIK_A))
-			mario->SetState(MARIO_STATE_RUNNING_RIGHT);
+		if (game->IsKeyDown(DIK_A)) {
+			mario->SetState(MARIO_STATE_WALKING_FAST);
+			mario->SetOnSprinting(true);
+		}
 		else
-			mario->SetState(MARIO_STATE_WALKING_RIGHT);
+			mario->SetState(MARIO_STATE_WALKING);
+		mario->SetLookingRight(true);
 	}
 	else if (game->IsKeyDown(DIK_LEFT))
 	{
-		if (game->IsKeyDown(DIK_A))
-			mario->SetState(MARIO_STATE_RUNNING_LEFT);
+		if (game->IsKeyDown(DIK_A)) {
+			mario->SetState(MARIO_STATE_WALKING_FAST);
+			mario->SetOnSprinting(true);
+		}
 		else
-			mario->SetState(MARIO_STATE_WALKING_LEFT);
+			mario->SetState(MARIO_STATE_WALKING);
+		mario->SetLookingRight(false);
 	}
 	else
 		mario->SetState(MARIO_STATE_IDLE);

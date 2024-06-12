@@ -85,6 +85,9 @@
     <Filter Include="Header Files\GameObject\CheckingObj">
       <UniqueIdentifier>{1435589a-e982-4089-b118-7ff113b3af7d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\Mario">
+      <UniqueIdentifier>{1b1e9d0d-26b5-455c-965a-c92f69435d7f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameObject.cpp">
@@ -343,11 +346,14 @@
     <Text Include="coin.txt">
       <Filter>Resource Files\Item</Filter>
     </Text>
-    <Text Include="mario.txt">
-      <Filter>Resource Files</Filter>
+    <Text Include="mario_small.txt">
+      <Filter>Resource Files\Mario</Filter>
     </Text>
-    <Text Include="racoon_mario.txt">
-      <Filter>Resource Files</Filter>
+    <Text Include="mario_big.txt">
+      <Filter>Resource Files\Mario</Filter>
+    </Text>
+    <Text Include="mario_racoon.txt">
+      <Filter>Resource Files\Mario</Filter>
     </Text>
   </ItemGroup>
   <ItemGroup>
