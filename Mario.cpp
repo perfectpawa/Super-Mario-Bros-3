@@ -8,6 +8,7 @@
 #include "ParaGoomba.h"
 #include "Koopas.h"
 #include "Mushroom.h"
+#include "Leaf.h"
 #include "Coin.h"
 #include "Portal.h"
 #include "SpawnCheck.h"
@@ -95,6 +96,8 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithSpawnCheck(e);
 	else if (dynamic_cast<CMushroom*>(e->obj)) 
 		OnCollisionWithMushroom(e);
+	else if (dynamic_cast<CLeaf*>(e->obj))
+		OnCollisionWithLeaf(e);
 	else if (dynamic_cast<CQuestionBlock*>(e->obj))
 		OnCollisionWithQuestionBlock(e);
 	else if (dynamic_cast<CVenus*>(e->obj))
@@ -215,6 +218,13 @@ void CMario::OnCollisionWithMushroom(LPCOLLISIONEVENT e)
 	mushroom->Delete();
 }
 
+void CMario::OnCollisionWithLeaf(LPCOLLISIONEVENT e)
+{
+	CLeaf* leaf = dynamic_cast<CLeaf*>(e->obj);
+	level = MARIO_LEVEL_RACOON;
+	leaf->Delete();
+}
+
 void CMario::OnCollisionWithQuestionBlock(LPCOLLISIONEVENT e) {
 	if (e->ny <= 0) return;
 
@@ -242,12 +252,17 @@ void CMario::OnCollisionWithFireShot(LPCOLLISIONEVENT e)
 void CMario::TakingDamage() {
 	if (untouchable == 0)
 	{
-		if (level > MARIO_LEVEL_SMALL)
+		if(level == MARIO_LEVEL_RACOON)
+		{
+			level = MARIO_LEVEL_BIG;
+			StartUntouchable();
+		}
+		else if (level == MARIO_LEVEL_BIG)
 		{
 			level = MARIO_LEVEL_SMALL;
 			StartUntouchable();
 		}
-		else
+		else if (level == MARIO_LEVEL_SMALL)
 		{
 			DebugOut(L">>> Mario DIE >>> \n");
 			SetState(MARIO_STATE_DIE);
@@ -520,9 +535,11 @@ void CMario::Render()
 	else if (state == MARIO_STATE_HOLD_KOOPAS)
 		aniId = ID_ANI_MARIO_SIT_LEFT;
 	else if (level == MARIO_LEVEL_BIG)
-		aniId = GetAniIdRacoon();
+		aniId = GetAniIdBig();
 	else if (level == MARIO_LEVEL_SMALL)
 		aniId = GetAniIdSmall();
+	else if (level == MARIO_LEVEL_RACOON)
+		aniId = GetAniIdRacoon();
 
 	animations->Get(aniId)->Render(x, y);
 
@@ -613,7 +630,7 @@ void CMario::SetState(int state)
 
 void CMario::GetBoundingBox(float &left, float &top, float &right, float &bottom)
 {
-	if (level==MARIO_LEVEL_BIG)
+	if (level==MARIO_LEVEL_BIG || level == MARIO_LEVEL_RACOON)
 	{
 		if (isSitting)
 		{

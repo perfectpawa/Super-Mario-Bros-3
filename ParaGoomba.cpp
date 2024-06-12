@@ -1,6 +1,5 @@
 #include "ParaGoomba.h"
 #include "Mario.h"
-#include "debug.h"
 
 CParaGoomba::CParaGoomba(float x, float y) :CGoomba(x, y)
 {
@@ -126,7 +125,6 @@ void CParaGoomba::Render()
 
 void CParaGoomba::SetState(int state)
 {
-	DebugOut(L"SetState %d\n", state);
 	CGameObject::SetState(state);
 	switch (state)
 	{

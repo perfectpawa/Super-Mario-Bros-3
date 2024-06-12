@@ -28,6 +28,7 @@ protected:
 	void LoadAssets(LPCWSTR assetFile);
 
 	virtual void AddObject(LPGAMEOBJECT obj, int type);
+	virtual void MoveFrontToBack(LPGAMEOBJECT obj);
 	
 public: 
 	CPlayScene(int id, LPCWSTR filePath);

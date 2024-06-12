@@ -5,6 +5,7 @@
 #include "Animations.h"
 #include "AssetIDs.h"
 
+
 #define QBLOCK_WIDTH 16
 #define QBLOCK_BBOX_WIDTH 16
 #define QBLOCK_BBOX_HEIGHT 16
@@ -26,6 +27,7 @@ protected:
 	int reward_type;
 	float boundPosY;
 	float idlePosY;
+
 public:
 	CQuestionBlock(float x, float y, int reward_type);
 	void Render();
@@ -35,5 +37,6 @@ public:
 	void GetReward();
 	void SetState(int state);
 	void SpawnMusroom();
+	void SpawnLeaf();
 	void SpawnCoinEffect();
 };

@@ -48,6 +48,7 @@
 
 #define	MARIO_LEVEL_SMALL	1
 #define	MARIO_LEVEL_BIG		2
+#define	MARIO_LEVEL_RACOON		3
 
 #define MARIO_BIG_BBOX_WIDTH  8
 #define MARIO_BIG_BBOX_HEIGHT 24
@@ -92,6 +93,7 @@ class CMario : public CGameObject
 	void OnCollisionWithSpawnCheck(LPCOLLISIONEVENT e);
 
 	void OnCollisionWithMushroom(LPCOLLISIONEVENT e);
+	void OnCollisionWithLeaf(LPCOLLISIONEVENT e);
 	void OnCollisionWithFireShot(LPCOLLISIONEVENT e);
 
 	void OnCollisionWithQuestionBlock(LPCOLLISIONEVENT e);
@@ -131,6 +133,7 @@ public:
 	void OnNoCollision(DWORD dt);
 	void OnCollisionWith(LPCOLLISIONEVENT e);
 
+	void GetLevel(int& l) { l = level; }
 	void SetLevel(int l);
 	void StartUntouchable() { untouchable = 1; untouchable_start = GetTickCount64(); }
 

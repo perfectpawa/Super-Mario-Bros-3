@@ -1,6 +1,10 @@
 #include "QuestionBlock.h"
 #include "Mushroom.h"
+#include "Leaf.h"
 #include "Coin.h"
+#include "Mario.h"
+#include "debug.h"
+
 
 CQuestionBlock::CQuestionBlock(float x, float y, int reward_type) : CGameObject(x, y)
 {
@@ -68,6 +72,7 @@ void CQuestionBlock::SetState(int state)
 			break;
 		case QBLOCK_STATE_EMPTY:
 			vy = 0;
+			CGame::GetInstance()->GetCurrentScene()->MoveFrontToBack(this);
 			break;
 
 	}
@@ -81,7 +86,24 @@ void CQuestionBlock::GetReward()
 		SpawnCoinEffect();
 		break;
 	case REWARD_POWERUP:
-		SpawnMusroom();
+
+		int level;
+		CGameObject* playerObj = CGame::GetInstance()->GetCurrentScene()->GetPlayer();
+		CMario* player = dynamic_cast<CMario*>(playerObj);
+		
+		player->GetLevel(level);
+
+		DebugOut(L"[INFO] Mario level: %d\n", level);
+
+		if (level == MARIO_LEVEL_SMALL)
+		{
+			SpawnMusroom();
+		}
+		else
+		{
+			SpawnLeaf();
+		}
+
 		break;
 	}
 }
@@ -95,4 +117,9 @@ void CQuestionBlock::SpawnMusroom()
 {
 	CMushroom* mushroom = new CMushroom(x, y);
 	CGame::GetInstance()->GetCurrentScene()->AddObject(mushroom, OBJECT_TYPE_MUSHROOM);
+}
+void CQuestionBlock::SpawnLeaf()
+{
+	CLeaf* leaf = new CLeaf(x, y);
+	CGame::GetInstance()->GetCurrentScene()->AddObject(leaf, OBJECT_TYPE_LEAF);
 }

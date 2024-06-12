@@ -712,5 +712,19 @@ void CPlayScene::AddObject(LPGAMEOBJECT obj, int type)
 	case OBJECT_TYPE_COIN:
 		itemObjs.push_back(obj);
 		break;
+	case OBJECT_TYPE_LEAF:
+		itemObjs.push_back(obj);
+		break;
 	}
+}
+
+void CPlayScene::MoveFrontToBack(LPGAMEOBJECT obj)
+{
+	//remove obj from frontTerrainObjs
+	vector<LPGAMEOBJECT>::iterator it = find(frontTerrainObjs.begin(), frontTerrainObjs.end(), obj);
+	if (it != frontTerrainObjs.end())
+		frontTerrainObjs.erase(it);
+
+	//add obj to terrainObjs
+	terrainObjs.push_back(obj);
 }
