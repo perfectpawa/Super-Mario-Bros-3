@@ -52,10 +52,10 @@ void CSampleKeyHandler::OnKeyUp(int KeyCode)
 		break;
 	case DIK_D:
 		mario->SetWantPickUp(false);
+		mario->SetState(MARIO_STATE_KICK);
 		break;
 	case DIK_A:
-		mario->SetOnSprinting(false);
-		break;
+		mario->SetCanWhip(true);
 	}
 }
 
@@ -64,26 +64,25 @@ void CSampleKeyHandler::KeyState(BYTE *states)
 	LPGAME game = CGame::GetInstance();
 	CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
 
+	int state, level;
+	bool canWhip;
+	mario->GetState(state);
+	mario->GetLevel(level);
+	mario->GetCanWhip(canWhip);
+
 	if (game->IsKeyDown(DIK_RIGHT))
 	{
-		if (game->IsKeyDown(DIK_A)) {
-			mario->SetState(MARIO_STATE_WALKING_FAST);
-			mario->SetOnSprinting(true);
-		}
-		else
-			mario->SetState(MARIO_STATE_WALKING);
-		mario->SetLookingRight(true);
+		mario->SetState(MARIO_STATE_WALKING_RIGHT);
 	}
 	else if (game->IsKeyDown(DIK_LEFT))
 	{
-		if (game->IsKeyDown(DIK_A)) {
-			mario->SetState(MARIO_STATE_WALKING_FAST);
-			mario->SetOnSprinting(true);
-		}
-		else
-			mario->SetState(MARIO_STATE_WALKING);
-		mario->SetLookingRight(false);
+		mario->SetState(MARIO_STATE_WALKING_LEFT);
 	}
 	else
 		mario->SetState(MARIO_STATE_IDLE);
+
+	if (game->IsKeyDown(DIK_A) && level == MARIO_LEVEL_RACOON && canWhip) {
+		mario->SetState(MARIO_STATE_WHIP);
+	}
+
 }

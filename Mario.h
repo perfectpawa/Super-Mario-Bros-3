@@ -12,11 +12,11 @@
 
 #define MARIO_WALKING_SPEED		0.1f
 #define MARIO_WALKING_FAST_SPEED		0.15f
-#define MARIO_RUNNING_SPEED		0.2f
+#define MARIO_RUNNING_SPEED		0.18f
 
 #define MARIO_ACCEL_WALK_X	0.0002f
 #define MARIO_ACCEL_WALK_FAST_X	0.0003f
-#define MARIO_ACCEL_RUN_X	0.0007f
+#define MARIO_ACCEL_RUN_X	0.0005f
 
 #define MARIO_JUMP_SPEED_Y		0.5f
 #define MARIO_JUMP_RUN_SPEED_Y	0.6f
@@ -28,13 +28,16 @@
 #define MARIO_STATE_DIE				99
 #define MARIO_STATE_IDLE			0
 
-#define MARIO_STATE_WALKING			100
-#define MARIO_STATE_WALKING_FAST	101
+#define MARIO_STATE_WALKING_RIGHT			100
+#define MARIO_STATE_WALKING_LEFT			101
+#define MARIO_STATE_WALKING_FAST_RIGHT	110
+#define MARIO_STATE_WALKING_FAST_LEFT	111
 
 #define MARIO_STATE_JUMP			300
 #define MARIO_STATE_RELEASE_JUMP    301
 
-#define MARIO_STATE_RUNNING			400
+#define MARIO_STATE_RUNNING_RIGHT			400
+#define MARIO_STATE_RUNNING_LEFT			401
 
 #define MARIO_STATE_SIT				600
 #define MARIO_STATE_SIT_RELEASE		601
@@ -42,6 +45,7 @@
 #define MARIO_STATE_HOLD_KOOPAS		700
 
 #define MARIO_STATE_KICK			800
+#define MARIO_STATE_WHIP			900
 
 #define GROUND_Y 160.0f
 
@@ -65,15 +69,15 @@
 
 #define MARIO_UNTOUCHABLE_TIME 2500
 
-#define MARIO_KICK_TIME 200
+#define MARIO_KICK_TIME 100
+#define MARIO_WHIP_TIME 500
 
 
 class CMario : public CGameObject
 {
 	BOOLEAN isSitting;
 	BOOLEAN lookingRight;
-	BOOLEAN onSprinting;
-
+	BOOLEAN canWhip;
 
 	float maxVx;
 	float ax;				// acceleration on x 
@@ -82,6 +86,9 @@ class CMario : public CGameObject
 	int level; 
 	int untouchable; 
 	ULONGLONG untouchable_start;
+	ULONGLONG kick_start;
+	ULONGLONG whip_start;
+
 	BOOLEAN isOnPlatform;
 	int coin;
 	
@@ -106,16 +113,14 @@ class CMario : public CGameObject
 
 	void TakingDamage();
 
-	int GetAniIdBig();
 	int GetAniIdSmall();
-	int GetAniIdRacoon();
 
 public:
 	CMario(float x, float y) : CGameObject(x, y)
 	{
 		isSitting = false;
 		lookingRight = true;
-		onSprinting = false;
+		canWhip = true;
 
 		maxVx = 0.0f;
 		ax = 0.0f;
@@ -123,13 +128,18 @@ public:
 
 		level = MARIO_LEVEL_SMALL;
 		untouchable = 0;
+
 		untouchable_start = -1;
+		kick_start = -1;
+		whip_start = -1;
+
 		isOnPlatform = false;
 		coin = 0;
 	}
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	void Render();
 	void SetState(int state);
+	void GetState(int& s) { s = this->state; }
 
 	int IsCollidable()
 	{ 
@@ -149,5 +159,7 @@ public:
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	void SetWantPickUp(bool b) { wantPickUp = b; }
 	void SetLookingRight(bool b) { lookingRight = b; }
-	void SetOnSprinting(bool b) { onSprinting = b; }
+	
+	void SetCanWhip(bool b) { canWhip = b; }
+	void GetCanWhip(bool &b) { b = canWhip; }
 };

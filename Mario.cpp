@@ -23,9 +23,10 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	vy += ay * dt;
 	vx += ax * dt;
 
-	if (abs(vx) > abs(maxVx)) {
+	if (abs(vx) >= abs(maxVx)) {
 		vx = maxVx;
 	}
+
 
 	// reset untouchable timer if untouchable time has passed
 	if ( GetTickCount64() - untouchable_start > MARIO_UNTOUCHABLE_TIME) 
@@ -284,8 +285,6 @@ int CMario::GetAniIdSmall()
 			aniId = ID_ANI_MARIO_SMALL_JUMP_WALK_RIGHT;
 		}else 
 			aniId = ID_ANI_MARIO_SMALL_JUMP_WALK_LEFT;
-
-		if (onSprinting) aniId = aniId + 100; //ID_ANI_MARIO_SMALL_JUMP_RUN
 	}
 	else
 		if (isSitting)
@@ -305,11 +304,7 @@ int CMario::GetAniIdSmall()
 			{
 				if (ax < 0)
 					aniId = ID_ANI_MARIO_SMALL_BRACE_RIGHT;
-				else if (state == MARIO_STATE_RUNNING)
-					aniId = ID_ANI_MARIO_SMALL_RUN_RIGHT;
-				else if (state == MARIO_STATE_WALKING_FAST)
-					aniId = ID_ANI_MARIO_SMALL_WALK_FAST_RIGHT;
-				else if (state == MARIO_STATE_WALKING)
+				else
 					aniId = ID_ANI_MARIO_SMALL_WALK_RIGHT;
 
 			}
@@ -317,11 +312,7 @@ int CMario::GetAniIdSmall()
 			{
 				if (ax > 0)
 					aniId = ID_ANI_MARIO_SMALL_BRACE_LEFT;
-				else if (state == MARIO_STATE_RUNNING)
-					aniId = ID_ANI_MARIO_SMALL_RUN_LEFT;
-				else if (state == MARIO_STATE_WALKING_FAST)
-					aniId = ID_ANI_MARIO_SMALL_WALK_FAST_LEFT;
-				else if (state == MARIO_STATE_WALKING)
+				else
 					aniId = ID_ANI_MARIO_SMALL_WALK_LEFT;
 			}
 
@@ -345,11 +336,15 @@ int CMario::GetAniIdSmall()
 					aniId = ID_ANI_MARIO_SMALL_PICK_UP_WALK_RIGHT;
 				else
 					aniId = ID_ANI_MARIO_SMALL_PICK_UP_WALK_LEFT;
-				
-				if (onSprinting) aniId = aniId + 100; //ID_ANI_MARIO_SMALL_PICK_UP_WALK_FAST
 			}
 		}
+	}
 
+	if (state == MARIO_STATE_KICK) {
+		if (lookingRight)
+			aniId = ID_ANI_MARIO_SMALL_KICK_RIGHT;
+		else	
+			aniId = ID_ANI_MARIO_SMALL_KICK_LEFT;
 	}
 
 	if (aniId == -1) aniId = ID_ANI_MARIO_SMALL_IDLE_RIGHT;
@@ -366,6 +361,13 @@ void CMario::Render()
 
 	if (level == MARIO_LEVEL_BIG) aniId += 10000;
 	if (level == MARIO_LEVEL_RACOON) aniId += 20000;
+
+	if (state == MARIO_STATE_WHIP) {
+		if (lookingRight)
+			aniId = ID_ANI_RACOON_MARIO_WHIP_RIGHT;
+		else
+			aniId = ID_ANI_RACOON_MARIO_WHIP_LEFT;
+	}
 	
 	animations->Get(aniId)->Render(x, y);
 
@@ -379,35 +381,57 @@ void CMario::SetState(int state)
 	// DIE is the end state, cannot be changed! 
 	if (this->state == MARIO_STATE_DIE) return; 
 
+	if (GetTickCount64() - kick_start < MARIO_KICK_TIME) return;
+	else kick_start = -1;
+
+	if (GetTickCount64() - whip_start < MARIO_WHIP_TIME) return;
+	else whip_start = -1;
+
+
 	switch (state)
 	{
-	case MARIO_STATE_RUNNING:
+	case MARIO_STATE_RUNNING_RIGHT:
 		if (isSitting) break;
 		maxVx = MARIO_RUNNING_SPEED;
 		ax = MARIO_ACCEL_RUN_X;
-		if (!lookingRight) {
-			maxVx = -maxVx;
-			ax = -ax;
-		}
+		lookingRight = true;
 		break;
-	case MARIO_STATE_WALKING_FAST:
+
+	case MARIO_STATE_RUNNING_LEFT:
+		if (isSitting) break;
+		maxVx = -MARIO_RUNNING_SPEED;
+		ax = -MARIO_ACCEL_RUN_X;
+		lookingRight = false;
+		break;
+
+	case MARIO_STATE_WALKING_FAST_RIGHT:
 		if (isSitting) break;
 		maxVx = MARIO_WALKING_FAST_SPEED;
 		ax = MARIO_ACCEL_WALK_FAST_X;
-		if (!lookingRight) {
-			maxVx = -maxVx;
-			ax = -ax;
-		}
+		lookingRight = true;
 		break;
-	case MARIO_STATE_WALKING:
+
+	case MARIO_STATE_WALKING_FAST_LEFT:
+		if (isSitting) break;
+		maxVx = -MARIO_WALKING_FAST_SPEED;
+		ax = -MARIO_ACCEL_WALK_FAST_X;
+		lookingRight = false;
+		break;
+
+	case MARIO_STATE_WALKING_RIGHT:
 		if (isSitting) break;
 		maxVx = MARIO_WALKING_SPEED;
 		ax = MARIO_ACCEL_WALK_X;
-		if (!lookingRight) {
-			maxVx = -maxVx;
-			ax = -ax;
-		}
+		lookingRight = true;
 		break;
+
+	case MARIO_STATE_WALKING_LEFT:
+		if (isSitting) break;
+		maxVx = -MARIO_WALKING_SPEED;
+		ax = -MARIO_ACCEL_WALK_X;
+		lookingRight = false;
+		break;
+
 	case MARIO_STATE_JUMP:
 		if (isSitting) break;
 		if (isOnPlatform)
@@ -451,6 +475,13 @@ void CMario::SetState(int state)
 		vy = -MARIO_JUMP_DEFLECT_SPEED;
 		vx = 0;
 		ax = 0;
+		break;
+	case MARIO_STATE_KICK:
+		kick_start = GetTickCount64();
+		break;
+	case MARIO_STATE_WHIP:
+		whip_start = GetTickCount64();
+		canWhip = false;
 		break;
 	}
 
