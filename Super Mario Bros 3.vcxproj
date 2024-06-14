@@ -210,13 +210,10 @@
     <Text Include="mario_big.txt" />
     <Text Include="mario_racoon.txt" />
     <Text Include="mario_small.txt" />
+    <Text Include="playground.txt" />
     <Text Include="reward.txt" />
     <Text Include="question_block.txt" />
-    <Text Include="scene000001.txt" />
-    <Text Include="scene0005.txt" />
     <Text Include="scene001.txt" />
-    <Text Include="scene01.txt" />
-    <Text Include="scene02.txt" />
     <Text Include="tube.txt" />
     <Text Include="venus.txt" />
   </ItemGroup>

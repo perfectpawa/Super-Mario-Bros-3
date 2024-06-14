@@ -127,7 +127,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 
 	switch (object_type)
 	{
-	case OBJECT_TYPE_MARIO:
+	case OBJECT_TYPE_MARIO: {
 		if (player!=NULL) 
 		{
 			DebugOut(L"[ERROR] MARIO object was created before!\n");
@@ -141,6 +141,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 
 		DebugOut(L"[INFO] Player object has been created!\n");
 		break;
+	}
 	case OBJECT_TYPE_GOOMBA: {
 		int type = atoi(tokens[3].c_str());
 		if (type == 1) enemyObj = new CParaGoomba(x, y);
@@ -155,15 +156,12 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_SPAWN_CHECK: enemyObj = new CSpawnCheck(); break;
 	case OBJECT_TYPE_MUSHROOM: enemyObj = new CMushroom(x, y); break;
 	case OBJECT_TYPE_VENUS: enemyObj = new CVenus(x, y); break;
-
 	case OBJECT_TYPE_QUESTION_BLOCK: {
 		int type = atoi(tokens[3].c_str());
 		frontTerrainObj = new CQuestionBlock(x, y, type);
 		break;
 	}
 	case OBJECT_TYPE_COIN: itemObj = new CCoin(x, y); break;
-
-
 	case OBJECT_TYPE_PLATFORM:
 	{
 		float cell_width = (float)atof(tokens[3].c_str());
@@ -206,7 +204,6 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		}
 		break;
 	}
-
 	case OBJECT_TYPE_COLOR_BOX: {
 		float cell_width = (float)atof(tokens[3].c_str());
 		float cell_height = (float)atof(tokens[4].c_str());
@@ -223,7 +220,6 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		break;
 	
 	}
-
 	case OBJECT_TYPE_TUBE: {
 		float cell_width = (float)atof(tokens[3].c_str());
 		float cell_height = (float)atof(tokens[4].c_str());
@@ -237,12 +233,9 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		);
 		break;
 	}
-
 	case OBJECT_TYPE_GROUND: {
 		int width = atoi(tokens[3].c_str());
 		int height = atoi(tokens[4].c_str());
-
-		DebugOut(L"--> %d\n", tokens.size());
 
 		CGameObject* groundObj;
 
@@ -281,7 +274,6 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		
 		break;
 	}
-
 	case OBJECT_TYPE_PORTAL:
 	{
 		float r = (float)atof(tokens[3].c_str());
@@ -291,7 +283,6 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		break;
 
 	}
-
 	case OBJECT_TYPE_BACKGROUND: {
 		float cell_width = (float)atof(tokens[3].c_str());
 		float cell_height = (float)atof(tokens[4].c_str());
@@ -311,7 +302,6 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		);
 		break;
 	}
-
 	case OBJECT_TYPE_TILE_BACKGROUND: {
 		int length = atoi(tokens[3].c_str());
 		float width = (float)atof(tokens[4].c_str());

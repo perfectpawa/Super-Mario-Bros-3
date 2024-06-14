@@ -1,0 +1,19 @@
+# list of object assets to load in this scene
+[ASSETS]
+background.txt
+mario_big.txt
+mario_small.txt
+mario_racoon.txt
+cloud.txt
+#
+[OBJECTS]
+# TILE_BACKGROUND
+# id	start_x	start_y	length	width	sprite_id
+8100	0	120	21	16	990000
+
+# MARIO
+0	16	16
+
+#CLOUD BLOCK
+700	16	192	16	16	26	610100	610100	610100
+700	496	192	16	16	4	610100	610100	610100

@@ -298,19 +298,7 @@
     <Text Include="koopas.txt">
       <Filter>Resource Files\Enemy</Filter>
     </Text>
-    <Text Include="scene000001.txt">
-      <Filter>Resource Files\Scenes</Filter>
-    </Text>
     <Text Include="scene001.txt">
-      <Filter>Resource Files\Scenes</Filter>
-    </Text>
-    <Text Include="scene01.txt">
-      <Filter>Resource Files\Scenes</Filter>
-    </Text>
-    <Text Include="scene02.txt">
-      <Filter>Resource Files\Scenes</Filter>
-    </Text>
-    <Text Include="scene0005.txt">
       <Filter>Resource Files\Scenes</Filter>
     </Text>
     <Text Include="brick.txt">
@@ -354,6 +342,9 @@
     </Text>
     <Text Include="mario_racoon.txt">
       <Filter>Resource Files\Mario</Filter>
+    </Text>
+    <Text Include="playground.txt">
+      <Filter>Resource Files\Scenes</Filter>
     </Text>
   </ItemGroup>
   <ItemGroup>
