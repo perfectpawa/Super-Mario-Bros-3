@@ -428,10 +428,10 @@ void CMario::Render()
 		else
 			aniId = ID_ANI_RACOON_MARIO_WHIP_LEFT;
 	}
-	
+
 	animations->Get(aniId)->Render(x, y);
 
-	RenderBoundingBox();
+	//RenderBoundingBox();
 	
 	DebugOutTitle(L"Coins: %d", coin);
 }
