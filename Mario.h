@@ -14,6 +14,10 @@
 #define MARIO_WALKING_FAST_SPEED		0.16f
 #define MARIO_RUNNING_SPEED		0.2f
 
+#define MARIO_WALK_DECAY 0.0002f
+#define MARIO_WALK_FAST_DECAY 0.0003f
+#define MARIO_RUN_DECAY 0.0005f
+
 #define MARIO_ACCEL_WALK_X	0.02f
 #define MARIO_ACCEL_WALK_FAST_X	0.01f
 #define MARIO_ACCEL_RUN_X	0.04f
@@ -87,8 +91,10 @@ class CMario : public CGameObject
 	BOOLEAN isMovingLeft;
 
 	float maxVx;
+	float decayVx;
 	float ax;				// acceleration on x 
 	float ay;				// acceleration on y 
+	
 
 	int level; 
 	int untouchable; 
@@ -120,7 +126,7 @@ class CMario : public CGameObject
 	void OnCollisionWithQuestionBlock(LPCOLLISIONEVENT e);
 	void TakingDamage();
 
-	void MovingBehavior();
+	void MovingBehavior(DWORD dt);
 	void PickUpBehavior();
 	void RacoonBehavior();
 	void TimeChecking();
@@ -141,6 +147,7 @@ public:
 		isMovingLeft = false;
 
 		maxVx = 0.0f;
+		decayVx = MARIO_WALK_DECAY;
 		ax = 0.0f;
 		ay = MARIO_GRAVITY; 
 

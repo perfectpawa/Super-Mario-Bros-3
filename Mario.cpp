@@ -20,12 +20,9 @@
 
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
-	if (vx * ax < 0) vx += ax / 20 * dt;
-	else vx += ax * dt;
-
 	vy += ay * dt;
 
-	MovingBehavior();
+	MovingBehavior(dt);
 
 	if (koopasPickedUp != NULL) PickUpBehavior();
 
@@ -40,36 +37,46 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 
 }
 
-void CMario::MovingBehavior() {
-	if (abs(vx) >= abs(maxVx)) {
-		vx = maxVx;
-
-		if (isSprinting && GetTickCount64() - sprint_start > MARIO_SPRINT_TIME) {
-			isRunning = true;
-		}
+void CMario::MovingBehavior(DWORD dt) {
+	if (isMovingRight == isMovingLeft) {
+		SetState(MARIO_STATE_IDLE);
+		if (lookingRight)
+			vx = max(vx - decayVx * dt, 0.0f);
+		else
+			vx = min(vx - decayVx * dt, 0.0f);
 	}
+	else if (isMovingRight) {
+		SetLookingRight(true);
 
-	if (isSprinting && !(isMovingLeft || isMovingRight)) {
-		sprint_start = GetTickCount64();
-	}
-
-	if (isMovingRight) {
-		if (isRunning)
+		if(isRunning)
 			SetState(MARIO_STATE_RUNNING_RIGHT);
 		else if (isSprinting)
 			SetState(MARIO_STATE_WALKING_FAST_RIGHT);
 		else
 			SetState(MARIO_STATE_WALKING_RIGHT);
+
+		if(vx < 0)
+			vx += decayVx * dt;
+		else
+			vx += ax * dt;
+		vx = min(vx, maxVx);
 	}
 	else if (isMovingLeft) {
+		SetLookingRight(false);
+
 		if (isRunning)
 			SetState(MARIO_STATE_RUNNING_LEFT);
 		else if (isSprinting)
 			SetState(MARIO_STATE_WALKING_FAST_LEFT);
 		else
 			SetState(MARIO_STATE_WALKING_LEFT);
+
+		if (vx > 0)
+			vx += decayVx * dt;
+		else
+			vx += ax * dt;
+		vx = max(vx, maxVx);
 	}
-	else SetState(MARIO_STATE_IDLE);
 }
 
 void CMario::PickUpBehavior() {
@@ -110,6 +117,14 @@ void CMario::TimeChecking() {
 	{
 		untouchable_start = 0;
 		untouchable = 0;
+	}
+
+
+
+	if(isSprinting && vx == maxVx && GetTickCount64() - sprint_start > MARIO_SPRINT_TIME)
+	{
+		isRunning = true;
+		sprint_start = -1;
 	}
 }
 
@@ -347,7 +362,6 @@ int CMario::GetAniIdSmall()
 			{
 				if (ax < 0) {
 					aniId = ID_ANI_MARIO_SMALL_BRACE_RIGHT;
-					DebugOut(L"Brace\n");
 				}
 				else if (isRunning)
 					aniId = ID_ANI_MARIO_SMALL_RUN_RIGHT;
@@ -361,7 +375,6 @@ int CMario::GetAniIdSmall()
 			{
 				if (ax > 0) {
 					aniId = ID_ANI_MARIO_SMALL_BRACE_LEFT;
-					DebugOut(L"Brace\n");
 				}
 				else if (isRunning)
 					aniId = ID_ANI_MARIO_SMALL_RUN_LEFT;
@@ -440,36 +453,42 @@ void CMario::SetState(int state)
 	case MARIO_STATE_RUNNING_RIGHT: {
 		if (isSitting) break;
 		maxVx = MARIO_RUNNING_SPEED;
+		decayVx = MARIO_RUN_DECAY;
 		ax = MARIO_ACCEL_RUN_X;
 		break;
 	}
 	case MARIO_STATE_RUNNING_LEFT: {
 		if (isSitting) break;
 		maxVx = -MARIO_RUNNING_SPEED;
+		decayVx = -MARIO_RUN_DECAY;
 		ax = -MARIO_ACCEL_RUN_X;
 		break;
 	}
 	case MARIO_STATE_WALKING_FAST_RIGHT: {
 		if (isSitting) break;
 		maxVx = MARIO_WALKING_FAST_SPEED;
+		decayVx = MARIO_WALK_FAST_DECAY;
 		ax = MARIO_ACCEL_WALK_FAST_X;
 		break;
 	}
 	case MARIO_STATE_WALKING_FAST_LEFT: {
 		if (isSitting) break;
 		maxVx = -MARIO_WALKING_FAST_SPEED;
+		decayVx = -MARIO_WALK_FAST_DECAY;
 		ax = -MARIO_ACCEL_WALK_FAST_X;
 		break;
 	}
 	case MARIO_STATE_WALKING_RIGHT: {
 		if (isSitting) break;
 		maxVx = MARIO_WALKING_SPEED;
+		decayVx = MARIO_WALK_DECAY;
 		ax = MARIO_ACCEL_WALK_X;
 		break;
 	}
 	case MARIO_STATE_WALKING_LEFT: {
 		if (isSitting) break;
 		maxVx = -MARIO_WALKING_SPEED;
+		decayVx = -MARIO_WALK_DECAY;
 		ax = -MARIO_ACCEL_WALK_X;
 		break;
 	}
@@ -509,8 +528,6 @@ void CMario::SetState(int state)
 		break;
 	}
 	case MARIO_STATE_IDLE: {
-		maxVx = 0;
-		ax = 0;
 		break;
 	}
 	case MARIO_STATE_DIE: {
