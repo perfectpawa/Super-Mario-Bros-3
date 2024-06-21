@@ -32,6 +32,8 @@
 
 #define OBJECT_TYPE_SPAWN_CHECK	9999
 
+#define OBJECT_TYPE_UI	10000
+
 #pragma endregion
 
 #pragma region ENEMIES
@@ -138,6 +140,14 @@
 #define ID_SPRITE_SMALL_GRASS_BACKGROUND 920000
 
 #pragma endregion
+
+#pragma region UI
+#define ID_SPRITE_UI_HUD_HOLDER 1000000
+#define ID_SPRITE_UI_MAIN_HUD 1000100
+#define ID_SPRITE_UI_POWER_HUD 1000200
+
+#pragma endregion
+
 
 #pragma region MARIO 
 #define ID_ANI_MARIO_DIE 199990

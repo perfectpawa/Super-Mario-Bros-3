@@ -53,11 +53,13 @@ void CSampleKeyHandler::OnKeyDown(int KeyCode)
 	case DIK_RIGHT: {
 		mario->SetMovingRight(true);
 		mario->SetLookingRight(true);
+		mario->ResetSprint();
 		break;
 	}
 	case DIK_LEFT: {
 		mario->SetMovingLeft(true);
 		mario->SetLookingRight(false);
+		mario->ResetSprint();
 		break;
 	}
 	}

@@ -20,9 +20,27 @@
 
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
-	vy += ay * dt;
-	vx += ax * dt;
+	if (vx * ax < 0) vx += ax / 20 * dt;
+	else vx += ax * dt;
 
+	vy += ay * dt;
+
+	MovingBehavior();
+
+	if (koopasPickedUp != NULL) PickUpBehavior();
+
+	if(level == MARIO_LEVEL_RACOON) RacoonBehavior();
+
+
+	TimeChecking();
+
+	isOnPlatform = false;
+
+	CCollision::GetInstance()->Process(this, dt, coObjects);
+
+}
+
+void CMario::MovingBehavior() {
 	if (abs(vx) >= abs(maxVx)) {
 		vx = maxVx;
 
@@ -31,39 +49,31 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		}
 	}
 
-
-	if (level == MARIO_LEVEL_RACOON && wantWhip) SetState(MARIO_STATE_WHIP);
-	wantWhip = false;
+	if (isSprinting && !(isMovingLeft || isMovingRight)) {
+		sprint_start = GetTickCount64();
+	}
 
 	if (isMovingRight) {
-		if(isRunning)
+		if (isRunning)
 			SetState(MARIO_STATE_RUNNING_RIGHT);
-		else if(isSprinting)
+		else if (isSprinting)
 			SetState(MARIO_STATE_WALKING_FAST_RIGHT);
 		else
 			SetState(MARIO_STATE_WALKING_RIGHT);
 	}
 	else if (isMovingLeft) {
-		if(isRunning)
+		if (isRunning)
 			SetState(MARIO_STATE_RUNNING_LEFT);
-		else if(isSprinting)
+		else if (isSprinting)
 			SetState(MARIO_STATE_WALKING_FAST_LEFT);
 		else
 			SetState(MARIO_STATE_WALKING_LEFT);
 	}
 	else SetState(MARIO_STATE_IDLE);
+}
 
-
-	// reset untouchable timer if untouchable time has passed
-	if ( GetTickCount64() - untouchable_start > MARIO_UNTOUCHABLE_TIME) 
-	{
-		untouchable_start = 0;
-		untouchable = 0;
-	}
-
-	isOnPlatform = false;
-
-	if (koopasPickedUp != NULL && !wantPickUp) {
+void CMario::PickUpBehavior() {
+	if (!wantPickUp) {
 		koopasPickedUp->SetState(KOOPAS_STATE_SLIDE);
 		float koopas_x, koopas_y;
 		koopasPickedUp->GetPosition(koopas_x, koopas_y);
@@ -88,11 +98,22 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 			koopasPickedUp->SetPosition(x + offset, y);
 		}
 	}
-
-	CCollision::GetInstance()->Process(this, dt, coObjects);
-
 }
 
+void CMario::RacoonBehavior() {
+	if (wantWhip) SetState(MARIO_STATE_WHIP);
+	wantWhip = false;
+}
+
+void CMario::TimeChecking() {
+	if (GetTickCount64() - untouchable_start > MARIO_UNTOUCHABLE_TIME)
+	{
+		untouchable_start = 0;
+		untouchable = 0;
+	}
+}
+
+#pragma region COLLISION
 void CMario::OnNoCollision(DWORD dt)
 {
 	x += vx * dt;
@@ -299,9 +320,9 @@ void CMario::TakingDamage() {
 	}
 }
 
-//
-// Get animation ID for small Mario
-//
+#pragma endregion
+
+
 int CMario::GetAniIdSmall()
 {
 	int aniId = -1;
@@ -324,8 +345,10 @@ int CMario::GetAniIdSmall()
 			}
 			else if (vx > 0)
 			{
-				if (ax < 0)
+				if (ax < 0) {
 					aniId = ID_ANI_MARIO_SMALL_BRACE_RIGHT;
+					DebugOut(L"Brace\n");
+				}
 				else if (isRunning)
 					aniId = ID_ANI_MARIO_SMALL_RUN_RIGHT;
 				else if (isSprinting)
@@ -336,8 +359,10 @@ int CMario::GetAniIdSmall()
 			}
 			else // vx < 0
 			{
-				if (ax > 0)
+				if (ax > 0) {
 					aniId = ID_ANI_MARIO_SMALL_BRACE_LEFT;
+					DebugOut(L"Brace\n");
+				}
 				else if (isRunning)
 					aniId = ID_ANI_MARIO_SMALL_RUN_LEFT;
 				else if (isSprinting)
@@ -452,7 +477,7 @@ void CMario::SetState(int state)
 		if (isSitting) break;
 		if (isOnPlatform)
 		{
-			if (abs(this->vx) == MARIO_RUNNING_SPEED)
+			if (isRunning)
 				vy = -MARIO_JUMP_RUN_SPEED_Y;
 			else
 				vy = -MARIO_JUMP_SPEED_Y;
@@ -460,7 +485,8 @@ void CMario::SetState(int state)
 		break;
 	}
 	case MARIO_STATE_RELEASE_JUMP: {
-		if (vy < 0) vy += MARIO_JUMP_SPEED_Y / 2;
+		if(vy < -MARIO_QUICK_JUMP_SPEED_Y)
+			vy = -MARIO_QUICK_JUMP_SPEED_Y;
 		break;
 	}
 	case MARIO_STATE_SIT: {
@@ -483,8 +509,8 @@ void CMario::SetState(int state)
 		break;
 	}
 	case MARIO_STATE_IDLE: {
-		ax = 0.0f;
-		vx = 0.0f;
+		maxVx = 0;
+		ax = 0;
 		break;
 	}
 	case MARIO_STATE_DIE: {
@@ -524,6 +550,11 @@ void CMario::GetBoundingBox(float &left, float &top, float &right, float &bottom
 			right = left + MARIO_BIG_BBOX_WIDTH;
 			bottom = top + MARIO_BIG_BBOX_HEIGHT;
 		}
+		if (level == MARIO_LEVEL_RACOON)
+		{
+			left = x - MARIO_RACOON_BBOX_WIDTH / 2;
+			right = left + MARIO_RACOON_BBOX_WIDTH;
+		}
 	}
 	else
 	{
@@ -532,6 +563,7 @@ void CMario::GetBoundingBox(float &left, float &top, float &right, float &bottom
 		right = left + MARIO_SMALL_BBOX_WIDTH;
 		bottom = top + MARIO_SMALL_BBOX_HEIGHT;
 	}
+
 }
 
 void CMario::SetLevel(int l)

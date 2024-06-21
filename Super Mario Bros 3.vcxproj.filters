@@ -88,6 +88,15 @@
     <Filter Include="Resource Files\Mario">
       <UniqueIdentifier>{1b1e9d0d-26b5-455c-965a-c92f69435d7f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\UI">
+      <UniqueIdentifier>{48367333-04ec-480b-9ff6-bf875aadd5a9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\UI">
+      <UniqueIdentifier>{51d91a22-e252-454c-866c-e24461dcffbe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\UI">
+      <UniqueIdentifier>{8506e8dd-ecaf-4c75-99d5-92dcb360f935}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameObject.cpp">
@@ -185,6 +194,15 @@
     </ClCompile>
     <ClCompile Include="Leaf.cpp">
       <Filter>Source Files\GameObject\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="HUD.cpp">
+      <Filter>Source Files\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UIObject.h">
+      <Filter>Header Files\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UIObject.cpp">
+      <Filter>Source Files\UI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -287,6 +305,12 @@
     <ClInclude Include="Leaf.h">
       <Filter>Header Files\GameObject\Item</Filter>
     </ClInclude>
+    <ClInclude Include="UI.txt">
+      <Filter>Resource Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="HUD.h">
+      <Filter>Header Files\UI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="main-settings.txt">
@@ -320,9 +344,6 @@
       <Filter>Resource Files\Misc</Filter>
     </Text>
     <Text Include="venus.txt">
-      <Filter>Resource Files\Enemy</Filter>
-    </Text>
-    <Text Include="fire_shot.txt">
       <Filter>Resource Files\Enemy</Filter>
     </Text>
     <Text Include="background.txt">

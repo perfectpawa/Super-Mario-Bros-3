@@ -10,21 +10,28 @@
 
 #include "AssetIDs.h"
 
-#define MARIO_WALKING_SPEED		0.1f
-#define MARIO_WALKING_FAST_SPEED		0.15f
+#define MARIO_WALKING_SPEED		0.08f	// 5 block 1s
+#define MARIO_WALKING_FAST_SPEED		0.16f
 #define MARIO_RUNNING_SPEED		0.2f
 
-#define MARIO_ACCEL_WALK_X	0.0002f
-#define MARIO_ACCEL_WALK_FAST_X	0.0003f
-#define MARIO_ACCEL_RUN_X	0.001f
+#define MARIO_ACCEL_WALK_X	0.02f
+#define MARIO_ACCEL_WALK_FAST_X	0.01f
+#define MARIO_ACCEL_RUN_X	0.04f
 
-#define MARIO_JUMP_SPEED_Y		0.5f
-#define MARIO_JUMP_RUN_SPEED_Y	0.6f
+#define MARIO_QUICK_JUMP_SPEED_Y	0.25f
+#define MARIO_JUMP_SPEED_Y			0.55f
+#define MARIO_JUMP_RUN_SPEED_Y		0.65f
+
+#define MARIO_UNTOUCHABLE_TIME 2500
+#define MARIO_KICK_TIME 100
+#define MARIO_WHIP_TIME 200
+#define MARIO_SPRINT_TIME 700
 
 #define MARIO_GRAVITY			0.002f
-
 #define MARIO_JUMP_DEFLECT_SPEED  0.4f
+#define GROUND_Y 160.0f
 
+#pragma region STATE
 #define MARIO_STATE_DIE				99
 #define MARIO_STATE_IDLE			0
 
@@ -47,9 +54,7 @@
 #define MARIO_STATE_KICK			800
 #define MARIO_STATE_WHIP			900
 
-#define GROUND_Y 160.0f
-
-
+#pragma endregion
 
 
 #define	MARIO_LEVEL_SMALL	1
@@ -66,12 +71,8 @@
 #define MARIO_SMALL_BBOX_WIDTH  8
 #define MARIO_SMALL_BBOX_HEIGHT 12
 
+#define MARIO_RACOON_BBOX_WIDTH  18
 
-#define MARIO_UNTOUCHABLE_TIME 2500
-
-#define MARIO_KICK_TIME 100
-#define MARIO_WHIP_TIME 500
-#define MARIO_SPRINT_TIME 500
 
 
 class CMario : public CGameObject
@@ -84,7 +85,6 @@ class CMario : public CGameObject
 	BOOLEAN isRunning;
 	BOOLEAN isMovingRight;
 	BOOLEAN isMovingLeft;
-
 
 	float maxVx;
 	float ax;				// acceleration on x 
@@ -118,8 +118,13 @@ class CMario : public CGameObject
 	void OnCollisionWithFireShot(LPCOLLISIONEVENT e);
 
 	void OnCollisionWithQuestionBlock(LPCOLLISIONEVENT e);
-
 	void TakingDamage();
+
+	void MovingBehavior();
+	void PickUpBehavior();
+	void RacoonBehavior();
+	void TimeChecking();
+
 
 	int GetAniIdSmall();
 
@@ -177,9 +182,11 @@ public:
 	void SetCanWhip(bool b) { wantWhip = b; }
 
 	void StartSprinting() { isSprinting = true; sprint_start = GetTickCount64(); }
+	void ResetSprint() { sprint_start = GetTickCount64(); isRunning = false; }
 	void StopSprinting() { isSprinting = false; sprint_start = -1; isRunning = false; }
-	
+
 	void SetRunning(bool b) { isRunning = b; }
 	void SetMovingRight(bool b) { isMovingRight = b; }
 	void SetMovingLeft(bool b) { isMovingLeft = b; }
+
 };
