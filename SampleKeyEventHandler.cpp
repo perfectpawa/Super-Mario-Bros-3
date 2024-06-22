@@ -38,7 +38,8 @@ void CSampleKeyHandler::OnKeyDown(int KeyCode)
 		break;
 	}
 	case DIK_S: {
-		mario->SetState(MARIO_STATE_JUMP);
+		mario->SetWantJump(true);
+		mario->SetWantBoost(true);
 		break;
 	}
 	case DIK_D: {
@@ -46,7 +47,7 @@ void CSampleKeyHandler::OnKeyDown(int KeyCode)
 		break;
 	}
 	case DIK_A: {
-		mario->SetCanWhip(true);
+		mario->SetWantWhip(true);
 		mario->StartSprinting();
 		break;
 	}
@@ -71,7 +72,7 @@ void CSampleKeyHandler::OnKeyUp(int KeyCode)
 	switch (KeyCode)
 	{
 	case DIK_S: {
-		mario->SetState(MARIO_STATE_RELEASE_JUMP);
+		mario->SetWantReleaseJump(true);
 		break;
 	}
 	case DIK_DOWN: {

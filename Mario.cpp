@@ -20,18 +20,20 @@
 
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
-	vy += ay * dt;
+	vy = min(vy + ay * dt, maxVy);
 
 	MovingBehavior(dt);
+	JumpingBehavior();
 
 	if (koopasPickedUp != NULL) PickUpBehavior();
 
 	if(level == MARIO_LEVEL_RACOON) RacoonBehavior();
+	wantBoost = false;
+	wantWhip = false;
+
 
 
 	TimeChecking();
-
-	isOnPlatform = false;
 
 	CCollision::GetInstance()->Process(this, dt, coObjects);
 
@@ -109,7 +111,18 @@ void CMario::PickUpBehavior() {
 
 void CMario::RacoonBehavior() {
 	if (wantWhip) SetState(MARIO_STATE_WHIP);
-	wantWhip = false;
+	if (wantBoost && vy > 0) {
+		SetState(MARIO_STATE_FLOATING);
+	}
+}
+
+void CMario::JumpingBehavior() {
+	if (isOnPlatform && wantJump) SetState(MARIO_STATE_JUMP);
+	if (wantReleaseJump) SetState(MARIO_STATE_RELEASE_JUMP);
+
+	isOnPlatform = false;
+	wantJump = false;
+	wantReleaseJump = false;
 }
 
 void CMario::TimeChecking() {
@@ -419,15 +432,29 @@ void CMario::Render()
 
 	aniId = GetAniIdSmall();
 
+	if (
+		(level == MARIO_LEVEL_BIG || level == MARIO_LEVEL_RACOON) 
+		&& (!isOnPlatform && vy > 0)
+		&& (aniId == ID_ANI_MARIO_SMALL_JUMP_WALK_LEFT || aniId == ID_ANI_MARIO_SMALL_JUMP_WALK_RIGHT)
+		)
+	{
+		aniId += 1000;
+	}
+
 	if (level == MARIO_LEVEL_BIG) aniId += 10000;
 	if (level == MARIO_LEVEL_RACOON) aniId += 20000;
 
 	if (state == MARIO_STATE_WHIP) {
-		if (lookingRight)
-			aniId = ID_ANI_RACOON_MARIO_WHIP_RIGHT;
-		else
-			aniId = ID_ANI_RACOON_MARIO_WHIP_LEFT;
+		aniId = ID_ANI_RACOON_MARIO_WHIP_RIGHT;
+		if (!lookingRight) aniId += 10;
 	}
+
+	if (state == MARIO_STATE_FLOATING) {
+		aniId = ID_ANI_RACOON_MARIO_FLOATING_RIGHT;
+		if (!lookingRight) aniId += 10;
+	}
+
+	//aniId = ID_ANI_RACOON_MARIO_FLY_RIGHT;
 
 	animations->Get(aniId)->Render(x, y);
 
@@ -446,6 +473,13 @@ void CMario::SetState(int state)
 
 	if (GetTickCount64() - whip_start < MARIO_WHIP_TIME) return;
 	else whip_start = -1;
+
+	if (GetTickCount64() - boost_start < MARIO_BOOST_TIME) return;
+	else {
+		maxVy = MARIO_MAX_FALL_SPEED;
+		boost_start = -1;
+	} 
+	
 
 
 	switch (state)
@@ -542,6 +576,11 @@ void CMario::SetState(int state)
 	}
 	case MARIO_STATE_WHIP: {
 		whip_start = GetTickCount64();
+		break;
+	}
+	case MARIO_STATE_FLOATING: {
+		maxVy = MARIO_MAX_FALL_SPEED / 5;
+		boost_start = GetTickCount64();
 		break;
 	}
 	}

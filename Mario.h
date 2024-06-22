@@ -11,25 +11,27 @@
 #include "AssetIDs.h"
 
 #define MARIO_WALKING_SPEED		0.08f	// 5 block 1s
-#define MARIO_WALKING_FAST_SPEED		0.16f
-#define MARIO_RUNNING_SPEED		0.16f
+#define MARIO_WALKING_FAST_SPEED		0.23f
+#define MARIO_RUNNING_SPEED		0.23f
+#define MARIO_MAX_FALL_SPEED		0.5f
 
 #define MARIO_WALK_DECAY 0.0003f
-#define MARIO_WALK_FAST_DECAY 0.0003f
+#define MARIO_WALK_FAST_DECAY 0.001f
 #define MARIO_RUN_DECAY 0.0005f
 
-#define MARIO_ACCEL_WALK_X	0.02f
-#define MARIO_ACCEL_WALK_FAST_X	0.01f
+#define MARIO_ACCEL_WALK_X	0.01f
+#define MARIO_ACCEL_WALK_FAST_X	0.015f
 #define MARIO_ACCEL_RUN_X	0.04f
 
 #define MARIO_QUICK_JUMP_SPEED_Y	0.25f
-#define MARIO_JUMP_SPEED_Y			0.55f
+#define MARIO_JUMP_SPEED_Y			0.5f
 #define MARIO_JUMP_RUN_SPEED_Y		0.65f
 
 #define MARIO_UNTOUCHABLE_TIME 2500
 #define MARIO_KICK_TIME 100
 #define MARIO_WHIP_TIME 200
 #define MARIO_SPRINT_TIME 700
+#define MARIO_BOOST_TIME 300
 
 #define MARIO_GRAVITY			0.002f
 #define MARIO_JUMP_DEFLECT_SPEED  0.4f
@@ -57,6 +59,7 @@
 
 #define MARIO_STATE_KICK			800
 #define MARIO_STATE_WHIP			900
+#define MARIO_STATE_FLOATING			901
 
 #pragma endregion
 
@@ -85,12 +88,17 @@ class CMario : public CGameObject
 	BOOLEAN lookingRight;
 
 	BOOLEAN wantWhip;
+	BOOLEAN wantJump;
+	BOOLEAN wantReleaseJump;
+	BOOLEAN wantBoost;
+
 	BOOLEAN isSprinting;
 	BOOLEAN isRunning;
 	BOOLEAN isMovingRight;
 	BOOLEAN isMovingLeft;
 
 	float maxVx;
+	float maxVy;
 	float decayVx;
 	float ax;				// acceleration on x 
 	float ay;				// acceleration on y 
@@ -102,6 +110,7 @@ class CMario : public CGameObject
 	ULONGLONG kick_start;
 	ULONGLONG whip_start;
 	ULONGLONG sprint_start;
+	ULONGLONG boost_start;
 
 	BOOLEAN isOnPlatform;
 	int coin;
@@ -129,6 +138,8 @@ class CMario : public CGameObject
 	void MovingBehavior(DWORD dt);
 	void PickUpBehavior();
 	void RacoonBehavior();
+	void JumpingBehavior();
+
 	void TimeChecking();
 
 
@@ -141,12 +152,17 @@ public:
 		lookingRight = true;
 
 		wantWhip = false;
+		wantJump = false;
+		wantReleaseJump = false;
+		wantBoost = false;
+
 		isSprinting = false;
 		isRunning = false;
 		isMovingRight = false;
 		isMovingLeft = false;
 
 		maxVx = 0.0f;
+		maxVy = MARIO_MAX_FALL_SPEED;
 		decayVx = MARIO_WALK_DECAY;
 		ax = 0.0f;
 		ay = MARIO_GRAVITY; 
@@ -158,6 +174,7 @@ public:
 		kick_start = -1;
 		whip_start = -1;
 		sprint_start = -1;
+		boost_start = -1;
 
 		isOnPlatform = false;
 		coin = 0;
@@ -183,10 +200,14 @@ public:
 	void StartUntouchable() { untouchable = 1; untouchable_start = GetTickCount64(); }
 
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
-	void SetWantPickUp(bool b) { wantPickUp = b; }
 	
+	void SetWantPickUp(bool b) { wantPickUp = b; }
+	void SetWantWhip(bool b) { wantWhip = b; }
+	void SetWantJump(bool b) { wantJump = b; }
+	void SetWantReleaseJump(bool b) { wantReleaseJump = b; }
+	void SetWantBoost(bool b) { wantBoost = b; }
+
 	void SetLookingRight(bool b) { lookingRight = b; }
-	void SetCanWhip(bool b) { wantWhip = b; }
 
 	void StartSprinting() { isSprinting = true; sprint_start = GetTickCount64(); }
 	void ResetSprint() { sprint_start = GetTickCount64(); isRunning = false; }
