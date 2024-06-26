@@ -39,7 +39,7 @@ void CSampleKeyHandler::OnKeyDown(int KeyCode)
 	}
 	case DIK_S: {
 		mario->SetWantJump(true);
-		mario->SetWantBoost(true);
+		mario->SetWantFloat(true);
 		break;
 	}
 	case DIK_D: {

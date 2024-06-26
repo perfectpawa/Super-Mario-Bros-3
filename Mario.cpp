@@ -18,7 +18,7 @@
 
 #include "Collision.h"
 
-void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
+void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	vy = min(vy + ay * dt, maxVy);
 
@@ -27,8 +27,8 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 
 	if (koopasPickedUp != NULL) PickUpBehavior();
 
-	if(level == MARIO_LEVEL_RACOON) RacoonBehavior();
-	wantBoost = false;
+	if (level == MARIO_LEVEL_RACOON) RacoonBehavior();
+	wantFloat = false;
 	wantWhip = false;
 
 
@@ -50,14 +50,14 @@ void CMario::MovingBehavior(DWORD dt) {
 	else if (isMovingRight) {
 		SetLookingRight(true);
 
-		if(isRunning)
+		if (isRunning)
 			SetState(MARIO_STATE_RUNNING_RIGHT);
 		else if (isSprinting)
 			SetState(MARIO_STATE_WALKING_FAST_RIGHT);
 		else
 			SetState(MARIO_STATE_WALKING_RIGHT);
 
-		if(vx < 0)
+		if (vx < 0)
 			vx += decayVx * dt;
 		else
 			vx += ax * dt;
@@ -111,9 +111,8 @@ void CMario::PickUpBehavior() {
 
 void CMario::RacoonBehavior() {
 	if (wantWhip) SetState(MARIO_STATE_WHIP);
-	if (wantBoost && vy > 0) {
-		SetState(MARIO_STATE_FLOATING);
-	}
+		
+	if(wantFloat) SetState(MARIO_STATE_FLOATING);
 }
 
 void CMario::JumpingBehavior() {
@@ -131,8 +130,6 @@ void CMario::TimeChecking() {
 		untouchable_start = 0;
 		untouchable = 0;
 	}
-
-
 
 	if(isSprinting && vx == maxVx && GetTickCount64() - sprint_start > MARIO_SPRINT_TIME)
 	{
@@ -189,7 +186,7 @@ void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 
 
 	// jump on top >> kill Goomba and deflect a bit 
-	if (e->ny < 0)
+	if (e->ny < 0 || state == MARIO_STATE_WHIP)
 	{
 		if (goomba->GetState() == GOOMBA_STATE_DIE) return;
 		//check is para goomba
@@ -204,10 +201,10 @@ void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 		else if (goomba->GetState() != GOOMBA_STATE_DIE)
 			goomba->SetState(GOOMBA_STATE_DIE);
 
-		vy = -MARIO_JUMP_DEFLECT_SPEED;
+		if (e->ny < 0) vy = -MARIO_JUMP_DEFLECT_SPEED;
 	}
 	else // hit by Goomba
-	{
+	{ 
 		if(goomba->GetState() != GOOMBA_STATE_DIE)
 			TakingDamage();
 	}
@@ -240,7 +237,7 @@ void CMario::OnCollisionWithKoopas(LPCOLLISIONEVENT e)
 
 	}
 	else {
-		if (e->ny < 0) {
+		if (e->ny < 0 || state == MARIO_STATE_WHIP) {
 			if (type == KOOPAS_TYPE_WING) {
 				koopas->SetType(KOOPAS_TYPE_GREEN);
 			}
@@ -252,7 +249,7 @@ void CMario::OnCollisionWithKoopas(LPCOLLISIONEVENT e)
 			{
 				koopas->SetState(KOOPAS_STATE_HIDE);
 			}
-			vy = -MARIO_JUMP_DEFLECT_SPEED;
+			if (e->ny < 0) vy = -MARIO_JUMP_DEFLECT_SPEED;
 		}
 		else {
 			if (koopas->GetState() == KOOPAS_STATE_WALKING || koopas->GetState() == KOOPAS_STATE_SLIDE)
@@ -364,6 +361,7 @@ int CMario::GetAniIdSmall()
 		{
 			aniId = ID_ANI_MARIO_SIT_RIGHT;
 			if (!lookingRight) aniId += 10;
+			aniId -= 10000;
 		}
 		else
 			if (vx == 0)
@@ -433,13 +431,14 @@ void CMario::Render()
 	aniId = GetAniIdSmall();
 
 	if (
-		(level == MARIO_LEVEL_BIG || level == MARIO_LEVEL_RACOON) 
-		&& (!isOnPlatform && vy > 0)
+		(level == MARIO_LEVEL_BIG || level == MARIO_LEVEL_RACOON)
 		&& (aniId == ID_ANI_MARIO_SMALL_JUMP_WALK_LEFT || aniId == ID_ANI_MARIO_SMALL_JUMP_WALK_RIGHT)
 		)
 	{
-		aniId += 1000;
+		if (!isOnPlatform && vy > 0) aniId += 1000;
+		else if (isRunning) aniId += 100;
 	}
+
 
 	if (level == MARIO_LEVEL_BIG) aniId += 10000;
 	if (level == MARIO_LEVEL_RACOON) aniId += 20000;
@@ -450,11 +449,19 @@ void CMario::Render()
 	}
 
 	if (state == MARIO_STATE_FLOATING) {
-		aniId = ID_ANI_RACOON_MARIO_FLOATING_RIGHT;
+		aniId = ID_ANI_RACOON_MARIO_FLOAT_RIGHT;
 		if (!lookingRight) aniId += 10;
 	}
 
-	//aniId = ID_ANI_RACOON_MARIO_FLY_RIGHT;
+	if (state == MARIO_STATE_FLYING) {
+		aniId = ID_ANI_RACOON_MARIO_FLY_RIGHT;
+		if (!lookingRight) aniId += 10;
+	
+	}
+
+	if (state == MARIO_STATE_DIE) {
+		aniId = ID_ANI_MARIO_DIE;
+	}
 
 	animations->Get(aniId)->Render(x, y);
 
@@ -474,11 +481,12 @@ void CMario::SetState(int state)
 	if (GetTickCount64() - whip_start < MARIO_WHIP_TIME) return;
 	else whip_start = -1;
 
-	if (GetTickCount64() - boost_start < MARIO_BOOST_TIME) return;
+	if (GetTickCount64() - float_start < MARIO_FLOAT_TIME) return;
 	else {
 		maxVy = MARIO_MAX_FALL_SPEED;
-		boost_start = -1;
+		float_start = -1;
 	} 
+
 	
 
 
@@ -580,9 +588,15 @@ void CMario::SetState(int state)
 	}
 	case MARIO_STATE_FLOATING: {
 		maxVy = MARIO_MAX_FALL_SPEED / 5;
-		boost_start = GetTickCount64();
+		float_start = GetTickCount64();
 		break;
 	}
+	case MARIO_STATE_FLYING: {
+		vy -= MARIO_FLY_SPEED_Y;
+		maxVy = MARIO_MAX_FALL_SPEED / 5;
+		break;
+	}
+	
 	}
 
 	CGameObject::SetState(state);
@@ -610,6 +624,10 @@ void CMario::GetBoundingBox(float &left, float &top, float &right, float &bottom
 		{
 			left = x - MARIO_RACOON_BBOX_WIDTH / 2;
 			right = left + MARIO_RACOON_BBOX_WIDTH;
+			if (state == MARIO_STATE_WHIP) {
+				left = x - MARIO_RACOON_BBOX_WIDTH / 2.5;
+				right = left + MARIO_RACOON_BBOX_WIDTH * 1.5;
+			}
 		}
 	}
 	else

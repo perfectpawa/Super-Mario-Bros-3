@@ -26,12 +26,13 @@
 #define MARIO_QUICK_JUMP_SPEED_Y	0.25f
 #define MARIO_JUMP_SPEED_Y			0.5f
 #define MARIO_JUMP_RUN_SPEED_Y		0.65f
+#define MARIO_FLY_SPEED_Y		1.0f
 
 #define MARIO_UNTOUCHABLE_TIME 2500
 #define MARIO_KICK_TIME 100
 #define MARIO_WHIP_TIME 200
 #define MARIO_SPRINT_TIME 700
-#define MARIO_BOOST_TIME 300
+#define MARIO_FLOAT_TIME 300
 
 #define MARIO_GRAVITY			0.002f
 #define MARIO_JUMP_DEFLECT_SPEED  0.4f
@@ -60,6 +61,7 @@
 #define MARIO_STATE_KICK			800
 #define MARIO_STATE_WHIP			900
 #define MARIO_STATE_FLOATING			901
+#define MARIO_STATE_FLYING			902
 
 #pragma endregion
 
@@ -90,7 +92,7 @@ class CMario : public CGameObject
 	BOOLEAN wantWhip;
 	BOOLEAN wantJump;
 	BOOLEAN wantReleaseJump;
-	BOOLEAN wantBoost;
+	BOOLEAN wantFloat;
 
 	BOOLEAN isSprinting;
 	BOOLEAN isRunning;
@@ -110,7 +112,7 @@ class CMario : public CGameObject
 	ULONGLONG kick_start;
 	ULONGLONG whip_start;
 	ULONGLONG sprint_start;
-	ULONGLONG boost_start;
+	ULONGLONG float_start;
 
 	BOOLEAN isOnPlatform;
 	int coin;
@@ -154,7 +156,7 @@ public:
 		wantWhip = false;
 		wantJump = false;
 		wantReleaseJump = false;
-		wantBoost = false;
+		wantFloat = false;
 
 		isSprinting = false;
 		isRunning = false;
@@ -174,7 +176,7 @@ public:
 		kick_start = -1;
 		whip_start = -1;
 		sprint_start = -1;
-		boost_start = -1;
+		float_start = -1;
 
 		isOnPlatform = false;
 		coin = 0;
@@ -205,11 +207,18 @@ public:
 	void SetWantWhip(bool b) { wantWhip = b; }
 	void SetWantJump(bool b) { wantJump = b; }
 	void SetWantReleaseJump(bool b) { wantReleaseJump = b; }
-	void SetWantBoost(bool b) { wantBoost = b; }
+	void SetWantFloat(bool b) {
+		if (isOnPlatform) return;
+		wantFloat = b; 
+	}
 
 	void SetLookingRight(bool b) { lookingRight = b; }
 
-	void StartSprinting() { isSprinting = true; sprint_start = GetTickCount64(); }
+	void StartSprinting() {
+		if (!isOnPlatform) return;
+		isSprinting = true; 
+		sprint_start = GetTickCount64(); 
+	}
 	void ResetSprint() { sprint_start = GetTickCount64(); isRunning = false; }
 	void StopSprinting() { isSprinting = false; sprint_start = -1; isRunning = false; }
 
