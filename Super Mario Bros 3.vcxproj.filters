@@ -97,6 +97,15 @@
     <Filter Include="Header Files\UI">
       <UniqueIdentifier>{8506e8dd-ecaf-4c75-99d5-92dcb360f935}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\OverworldGameObject">
+      <UniqueIdentifier>{a4de72e8-e6c6-4857-a4d6-32e784b380df}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\OverworldGameObject">
+      <UniqueIdentifier>{34bee9f7-4b64-42a1-b7f6-376b8e610b58}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Overworld">
+      <UniqueIdentifier>{b0b26482-1c47-4bef-a5c6-05f54cfb60c1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameObject.cpp">
@@ -203,6 +212,18 @@
     </ClCompile>
     <ClCompile Include="UIObject.cpp">
       <Filter>Source Files\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="OW_GameObject.h">
+      <Filter>Header Files\OverworldGameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="OW_GameObject.cpp">
+      <Filter>Source Files\OverworldGameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="OW_Mario.cpp">
+      <Filter>Source Files\OverworldGameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="OW_Path.cpp">
+      <Filter>Source Files\OverworldGameObject</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -311,6 +332,18 @@
     <ClInclude Include="HUD.h">
       <Filter>Header Files\UI</Filter>
     </ClInclude>
+    <ClInclude Include="OW_Mario.h">
+      <Filter>Header Files\OverworldGameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="OW_Portal.h">
+      <Filter>Header Files\OverworldGameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="OW_Path.h">
+      <Filter>Header Files\OverworldGameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="OW_Terrain.h">
+      <Filter>Header Files\OverworldGameObject</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="main-settings.txt">
@@ -366,6 +399,15 @@
     </Text>
     <Text Include="playground.txt">
       <Filter>Resource Files\Scenes</Filter>
+    </Text>
+    <Text Include="overworld.txt">
+      <Filter>Resource Files\Scenes</Filter>
+    </Text>
+    <Text Include="ow_mario.txt">
+      <Filter>Resource Files\Overworld</Filter>
+    </Text>
+    <Text Include="ow_path.txt">
+      <Filter>Resource Files\Overworld</Filter>
     </Text>
   </ItemGroup>
   <ItemGroup>

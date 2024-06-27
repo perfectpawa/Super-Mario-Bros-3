@@ -48,7 +48,7 @@ void CSampleKeyHandler::OnKeyDown(int KeyCode)
 	}
 	case DIK_A: {
 		mario->SetWantWhip(true);
-		mario->StartSprinting();
+		//mario->StartSprinting();
 		break;
 	}
 	case DIK_RIGHT: {
@@ -104,27 +104,9 @@ void CSampleKeyHandler::KeyState(BYTE *states)
 	LPGAME game = CGame::GetInstance();
 	CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
 
-	/*int state, level;
-	bool canWhip;
-	mario->GetState(state);
-	mario->GetLevel(level);
-	mario->GetCanWhip(canWhip);
-
-	if (game->IsKeyDown(DIK_RIGHT))
+	if (game->IsKeyDown(DIK_A))
 	{
-		if (game->IsKeyDown(DIK_A)) mario->SetState(MARIO_STATE_RUNNING_RIGHT);
-		else mario->SetState(MARIO_STATE_WALKING_RIGHT);
+		mario->StartSprinting();
 	}
-	else if (game->IsKeyDown(DIK_LEFT))
-	{
-		if (game->IsKeyDown(DIK_A)) mario->SetState(MARIO_STATE_RUNNING_LEFT);
-		else mario->SetState(MARIO_STATE_WALKING_LEFT);
-	}
-	else
-		mario->SetState(MARIO_STATE_IDLE);
-
-	if (game->IsKeyDown(DIK_A) && level == MARIO_LEVEL_RACOON && canWhip) {
-		mario->SetState(MARIO_STATE_WHIP);
-	}*/
 
 }

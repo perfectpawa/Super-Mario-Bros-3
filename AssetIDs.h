@@ -36,6 +36,14 @@
 
 #pragma endregion
 
+#pragma region OVERWORLD OBJECT TYPE
+#define OW_OBJ_TYPE_MARIO	88880001
+#define OW_OBJ_TYPE_PATH	88880002
+#define OW_OBJ_TYPE_TERRAIN	88880003
+#define OW_OBJ_TYPE_PORTAL	88880004
+#pragma endregion
+
+
 #pragma region ENEMIES
 #pragma region GOOMBA 
 #define ID_ANI_GOOMBA_WALKING 200000
@@ -295,5 +303,14 @@
 #pragma endregion 
 
 
+#pragma region OVERWORLD
+#define ID_ANI_OW_MARIO_SMALL	88881000
+
+#define ID_ANI_OW_PATH_HORIZONTAL			88882000
+#define ID_ANI_OW_PATH_VERTICAL			88882001
+#define ID_ANI_OW_PATH_COIN_HORIZONTAL			88882100
+#define ID_ANI_OW_PATH_COIN_VERTICAL			88882101
+#define ID_ANI_OW_PATH_COIN_TURN			88882200
+#pragma endregion
 
 

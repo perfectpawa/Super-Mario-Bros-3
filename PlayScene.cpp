@@ -28,6 +28,9 @@
 #include "SpawnCheck.h"
 #include "Background.h"
 
+#include "OW_Mario.h"
+#include "OW_Path.h"
+
 #include "SampleKeyEventHandler.h"
 
 using namespace std;
@@ -36,6 +39,7 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath):
 	CScene(id, filePath)
 {
 	player = NULL;
+	OW_player = NULL;
 	key_handler = new CSampleKeyHandler(this);
 }
 
@@ -350,6 +354,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	}
 }
 
+
 void CPlayScene::LoadAssets(LPCWSTR assetFile)
 {
 	DebugOut(L"[INFO] Start loading assets from : %s \n", assetFile);
@@ -401,6 +406,11 @@ void CPlayScene::Load()
 		string line(str);
 
 		if (line[0] == '#') continue;	// skip comment lines	
+		if (line == "[OVERWORLD]") {
+			isOnOverworldMap = true;
+			CGame::GetInstance()->SetCamPos(-8, -8);
+			continue;
+		};
 		if (line == "[ASSETS]") { section = SCENE_SECTION_ASSETS; continue; };
 		if (line == "[OBJECTS]") { section = SCENE_SECTION_OBJECTS; continue; };
 		if (line[0] == '[') { section = SCENE_SECTION_UNKNOWN; continue; }	
@@ -408,10 +418,19 @@ void CPlayScene::Load()
 		//
 		// data section
 		//
-		switch (section)
-		{ 
-			case SCENE_SECTION_ASSETS: _ParseSection_ASSETS(line); break;
-			case SCENE_SECTION_OBJECTS: _ParseSection_OBJECTS(line); break;
+		if(isOnOverworldMap){
+			switch (section)
+			{
+				case SCENE_SECTION_ASSETS: _ParseSection_ASSETS(line); break;
+				case SCENE_SECTION_OBJECTS: _ParseSection_OW_OBJECTS(line); break;
+			}
+		}
+		else {
+			switch (section)
+			{ 
+				case SCENE_SECTION_ASSETS: _ParseSection_ASSETS(line); break;
+				case SCENE_SECTION_OBJECTS: _ParseSection_OBJECTS(line); break;
+			}
 		}
 	}
 
@@ -422,6 +441,12 @@ void CPlayScene::Load()
 
 void CPlayScene::Update(DWORD dt)
 {
+	if (isOnOverworldMap) {
+		Update_OW(dt);
+		return;
+	
+	}
+
 	vector<LPGAMEOBJECT> coObjects;
 	//push back all objects in enemyObjs and terrainObjs to coObjects
 	for (int i = 0; i < enemyObjs.size(); i++)
@@ -535,6 +560,11 @@ void CPlayScene::Update(DWORD dt)
 
 void CPlayScene::Render()
 {
+	if (isOnOverworldMap) {
+		Render_OW();
+		return;
+	}
+
 	//render tileBackgroundObjs
 	for (int i = 0; i < tileBackgroundObjs.size(); i++)
 		tileBackgroundObjs[i]->Render();
@@ -780,4 +810,62 @@ void CPlayScene::MoveFrontToBack(LPGAMEOBJECT obj)
 
 	//add obj to terrainObjs
 	terrainObjs.push_back(obj);
+}
+
+
+// --- Overworld load ---
+
+void CPlayScene::_ParseSection_OW_OBJECTS(string line) {
+	vector<string> tokens = split(line);
+
+	// skip invalid lines - an object set must have at least id, x, y
+	if (tokens.size() < 2) return;
+
+	int object_type = atoi(tokens[0].c_str());
+	float x = (float)atof(tokens[1].c_str());
+	float y = (float)atof(tokens[2].c_str());
+
+
+	switch (object_type) {
+		case OW_OBJ_TYPE_MARIO: {
+			if (OW_player != NULL)
+			{
+				DebugOut(L"[ERROR] MARIO object was created before!\n");
+				return;
+			}
+			OW_player = new COWMario(x, y, true);
+
+			DebugOut(L"[INFO] Player object has been created!\n");
+			break;
+		}
+		case OW_OBJ_TYPE_PATH: {
+			bool isGoIn = (atoi(tokens[3].c_str()) == 1);
+			bool isVertical = (atoi(tokens[4].c_str()) == 1);
+			bool haveCoin = (atoi(tokens[5].c_str()) == 1);
+			bool haveTurn = (atoi(tokens[6].c_str()) == 1);
+			COWPath* path = new COWPath(x, y, isGoIn, isVertical, haveCoin, haveTurn);
+			OW_pathObjs.push_back(path);
+			break;
+		}
+		case OW_OBJ_TYPE_TERRAIN: {
+			break;
+		}
+		case OW_OBJ_TYPE_PORTAL: {
+			break;
+		}
+	}
+	
+}
+
+
+void CPlayScene::Update_OW(DWORD dt) {
+
+}
+
+void CPlayScene::Render_OW() {
+	OW_player->Render();
+
+	for (int i = 0; i < OW_pathObjs.size(); i++) {
+		OW_pathObjs[i]->Render();
+	}
 }

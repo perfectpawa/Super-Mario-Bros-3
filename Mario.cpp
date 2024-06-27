@@ -150,7 +150,7 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 	if (e->ny != 0 && e->obj->IsBlocking())
 	{
 		vy = 0;
-		if (e->ny < 0) isOnPlatform = true;
+		if (e->ny < 0) Landed();
 	}
 	else 
 	if (e->nx != 0 && e->obj->IsBlocking())
@@ -345,6 +345,14 @@ void CMario::TakingDamage() {
 	}
 }
 
+void CMario::Landed()
+{
+	if (state == MARIO_STATE_FLOATING || state == MARIO_STATE_JUMP)
+	{
+		StopSprinting();
+	}
+	isOnPlatform = true;
+}
 #pragma endregion
 
 
@@ -624,10 +632,6 @@ void CMario::GetBoundingBox(float &left, float &top, float &right, float &bottom
 		{
 			left = x - MARIO_RACOON_BBOX_WIDTH / 2;
 			right = left + MARIO_RACOON_BBOX_WIDTH;
-			if (state == MARIO_STATE_WHIP) {
-				left = x - MARIO_RACOON_BBOX_WIDTH / 2.5;
-				right = left + MARIO_RACOON_BBOX_WIDTH * 1.5;
-			}
 		}
 	}
 	else

@@ -1,5 +1,5 @@
 [SETTINGS]
-start	10
+start	1
 width	256 
 height	240
 
@@ -7,6 +7,7 @@ height	240
 # type: 0: intro, 1: play scene 
 [SCENES]
 0	intro.txt
+1	overworld.txt
 10	scene001.txt
 99	playground.txt
 
@@ -27,3 +28,5 @@ height	240
 70	textures\tiles.png
 80	textures\ui.png
 81	textures\ui-holder.png
+8881	textures\overworld-icons.png
+8882	textures\overworld-tile.png

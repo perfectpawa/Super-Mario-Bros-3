@@ -148,6 +148,10 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Mario.cpp" />
     <ClCompile Include="Mushroom.cpp" />
+    <ClCompile Include="OW_GameObject.cpp" />
+    <ClCompile Include="OW_GameObject.h" />
+    <ClCompile Include="OW_Mario.cpp" />
+    <ClCompile Include="OW_Path.cpp" />
     <ClCompile Include="ParaGoomba.cpp" />
     <ClCompile Include="Platform.cpp" />
     <ClCompile Include="PlayScene.cpp" />
@@ -180,6 +184,10 @@
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Goomba.h" />
     <ClInclude Include="HUD.h" />
+    <ClInclude Include="OW_Mario.h" />
+    <ClInclude Include="OW_Path.h" />
+    <ClInclude Include="OW_Portal.h" />
+    <ClInclude Include="OW_Terrain.h" />
     <ClInclude Include="UI.txt" />
     <ClInclude Include="KeyEventHandler.h" />
     <ClInclude Include="Koopas.h" />
@@ -214,6 +222,9 @@
     <Text Include="mario_big.txt" />
     <Text Include="mario_racoon.txt" />
     <Text Include="mario_small.txt" />
+    <Text Include="overworld.txt" />
+    <Text Include="ow_mario.txt" />
+    <Text Include="ow_path.txt" />
     <Text Include="playground.txt" />
     <Text Include="reward.txt" />
     <Text Include="question_block.txt" />

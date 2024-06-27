@@ -3,7 +3,9 @@
 #include "Textures.h"
 #include "Scene.h"
 #include "GameObject.h"
+#include "OW_GameObject.h"
 
+typedef COWGameObject* LPOWGAMEOBJECT;
 
 class CPlayScene: public CScene
 {
@@ -19,11 +21,20 @@ protected:
 	vector<LPGAMEOBJECT> backgroundObjs;
 	vector<LPGAMEOBJECT> detectObjs;
 
+
+	bool isOnOverworldMap = false;
+	LPOWGAMEOBJECT OW_player;
+
+	vector<LPOWGAMEOBJECT> OW_pathObjs;
+
+
+
 	void _ParseSection_SPRITES(string line);
 	void _ParseSection_ANIMATIONS(string line);
 
 	void _ParseSection_ASSETS(string line);
 	void _ParseSection_OBJECTS(string line);
+	void _ParseSection_OW_OBJECTS(string line);
 
 	void LoadAssets(LPCWSTR assetFile);
 
@@ -37,6 +48,10 @@ public:
 	virtual void Update(DWORD dt);
 	virtual void Render();
 	virtual void Unload();
+
+	virtual void Update_OW(DWORD dt);
+	virtual void Render_OW();
+
 
 	LPGAMEOBJECT GetPlayer() { return player; }
 

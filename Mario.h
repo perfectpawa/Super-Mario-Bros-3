@@ -144,6 +144,8 @@ class CMario : public CGameObject
 
 	void TimeChecking();
 
+	void Landed();
+
 
 	int GetAniIdSmall();
 

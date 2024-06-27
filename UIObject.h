@@ -30,5 +30,3 @@ public:
 	virtual void Render();
 	~CUIObject();
 };
-
-typedef CUIObject* LPUIOBJECT;
