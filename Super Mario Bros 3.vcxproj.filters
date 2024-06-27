@@ -126,9 +126,6 @@
     <ClCompile Include="Textures.cpp">
       <Filter>Source Files\Visual</Filter>
     </ClCompile>
-    <ClCompile Include="SampleKeyEventHandler.cpp">
-      <Filter>Source Files\KeyEventHandler</Filter>
-    </ClCompile>
     <ClCompile Include="debug.cpp">
       <Filter>Source Files\Tool</Filter>
     </ClCompile>
@@ -195,9 +192,6 @@
     <ClCompile Include="Collision.cpp">
       <Filter>Source Files\Core</Filter>
     </ClCompile>
-    <ClCompile Include="FallCheckingObject.h">
-      <Filter>Header Files\GameObject\CheckingObj</Filter>
-    </ClCompile>
     <ClCompile Include="ParaGoomba.cpp">
       <Filter>Source Files\GameObject\Enemy</Filter>
     </ClCompile>
@@ -207,14 +201,8 @@
     <ClCompile Include="HUD.cpp">
       <Filter>Source Files\UI</Filter>
     </ClCompile>
-    <ClCompile Include="UIObject.h">
-      <Filter>Header Files\UI</Filter>
-    </ClCompile>
     <ClCompile Include="UIObject.cpp">
       <Filter>Source Files\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="OW_GameObject.h">
-      <Filter>Header Files\OverworldGameObject</Filter>
     </ClCompile>
     <ClCompile Include="OW_GameObject.cpp">
       <Filter>Source Files\OverworldGameObject</Filter>
@@ -224,6 +212,21 @@
     </ClCompile>
     <ClCompile Include="OW_Path.cpp">
       <Filter>Source Files\OverworldGameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="OW_Terrain.cpp">
+      <Filter>Source Files\OverworldGameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="OW_MapHolder.cpp">
+      <Filter>Source Files\OverworldGameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="OW_Portal.cpp">
+      <Filter>Source Files\OverworldGameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="OW_Point.cpp">
+      <Filter>Source Files\OverworldGameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="SampleKeyEventHandler.cpp">
+      <Filter>Source Files\KeyEventHandler</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -262,9 +265,6 @@
     </ClInclude>
     <ClInclude Include="debug.h">
       <Filter>Header Files\Tool</Filter>
-    </ClInclude>
-    <ClInclude Include="SampleKeyEventHandler.h">
-      <Filter>Header Files\KeyEventHandler</Filter>
     </ClInclude>
     <ClInclude Include="KeyEventHandler.h">
       <Filter>Header Files\KeyEventHandler</Filter>
@@ -305,9 +305,6 @@
     <ClInclude Include="Game.h">
       <Filter>Header Files\Core</Filter>
     </ClInclude>
-    <ClInclude Include="PlayScene.h">
-      <Filter>Header Files\Scene</Filter>
-    </ClInclude>
     <ClInclude Include="Scene.h">
       <Filter>Header Files\Scene</Filter>
     </ClInclude>
@@ -343,6 +340,30 @@
     </ClInclude>
     <ClInclude Include="OW_Terrain.h">
       <Filter>Header Files\OverworldGameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="ow_map_holder.txt">
+      <Filter>Resource Files\Overworld</Filter>
+    </ClInclude>
+    <ClInclude Include="OW_MapHolder.h">
+      <Filter>Header Files\OverworldGameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="OW_Point.h">
+      <Filter>Header Files\OverworldGameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="UIObject.h">
+      <Filter>Header Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="FallCheckingObject.h">
+      <Filter>Header Files\GameObject\CheckingObj</Filter>
+    </ClInclude>
+    <ClInclude Include="OW_GameObject.h">
+      <Filter>Header Files\OverworldGameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="SampleKeyEventHandler.h">
+      <Filter>Header Files\KeyEventHandler</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayScene.h">
+      <Filter>Header Files\Scene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -407,6 +428,15 @@
       <Filter>Resource Files\Overworld</Filter>
     </Text>
     <Text Include="ow_path.txt">
+      <Filter>Resource Files\Overworld</Filter>
+    </Text>
+    <Text Include="ow_terrain.txt">
+      <Filter>Resource Files\Overworld</Filter>
+    </Text>
+    <Text Include="ow_point.txt">
+      <Filter>Resource Files\Overworld</Filter>
+    </Text>
+    <Text Include="ow_portal.txt">
       <Filter>Resource Files\Overworld</Filter>
     </Text>
   </ItemGroup>

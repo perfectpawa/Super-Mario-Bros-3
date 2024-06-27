@@ -30,3 +30,4 @@ height	240
 81	textures\ui-holder.png
 8881	textures\overworld-icons.png
 8882	textures\overworld-tile.png
+8891	textures\ow_bacground_yellow.png

@@ -137,7 +137,6 @@
     <ClCompile Include="ColorBox.cpp" />
     <ClCompile Include="debug.cpp" />
     <ClCompile Include="FallCheckingObject.cpp" />
-    <ClCompile Include="FallCheckingObject.h" />
     <ClCompile Include="FireShot.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameObject.cpp" />
@@ -148,10 +147,13 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Mario.cpp" />
     <ClCompile Include="Mushroom.cpp" />
+    <ClCompile Include="OW_MapHolder.cpp" />
     <ClCompile Include="OW_GameObject.cpp" />
-    <ClCompile Include="OW_GameObject.h" />
     <ClCompile Include="OW_Mario.cpp" />
     <ClCompile Include="OW_Path.cpp" />
+    <ClCompile Include="OW_Point.cpp" />
+    <ClCompile Include="OW_Portal.cpp" />
+    <ClCompile Include="OW_Terrain.cpp" />
     <ClCompile Include="ParaGoomba.cpp" />
     <ClCompile Include="Platform.cpp" />
     <ClCompile Include="PlayScene.cpp" />
@@ -164,7 +166,6 @@
     <ClCompile Include="Sprites.cpp" />
     <ClCompile Include="Textures.cpp" />
     <ClCompile Include="UIObject.cpp" />
-    <ClCompile Include="UIObject.h" />
     <ClCompile Include="Utils.cpp" />
     <ClCompile Include="Venus.cpp" />
   </ItemGroup>
@@ -179,15 +180,22 @@
     <ClInclude Include="Collision.h" />
     <ClInclude Include="ColorBox.h" />
     <ClInclude Include="debug.h" />
+    <ClInclude Include="FallCheckingObject.h" />
     <ClInclude Include="FireShot.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Goomba.h" />
     <ClInclude Include="HUD.h" />
+    <ClInclude Include="OW_GameObject.h" />
+    <ClInclude Include="ow_map_holder.txt" />
+    <ClInclude Include="OW_MapHolder.h" />
     <ClInclude Include="OW_Mario.h" />
     <ClInclude Include="OW_Path.h" />
+    <ClInclude Include="OW_Point.h" />
     <ClInclude Include="OW_Portal.h" />
     <ClInclude Include="OW_Terrain.h" />
+    <ClInclude Include="PlayScene.h" />
+    <ClInclude Include="SampleKeyEventHandler.h" />
     <ClInclude Include="UI.txt" />
     <ClInclude Include="KeyEventHandler.h" />
     <ClInclude Include="Koopas.h" />
@@ -195,12 +203,11 @@
     <ClInclude Include="Mario.h" />
     <ClInclude Include="Mushroom.h" />
     <ClInclude Include="ParaGoomba.h" />
-    <ClInclude Include="PlayScene.h" />
+    <ClInclude Include="UIObject.h" />
     <ClInclude Include="Venus.h" />
     <ClInclude Include="Platform.h" />
     <ClInclude Include="Portal.h" />
     <ClInclude Include="QuestionBlock.h" />
-    <ClInclude Include="SampleKeyEventHandler.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SpawnCheck.h" />
     <ClInclude Include="Sprite.h" />
@@ -225,6 +232,9 @@
     <Text Include="overworld.txt" />
     <Text Include="ow_mario.txt" />
     <Text Include="ow_path.txt" />
+    <Text Include="ow_point.txt" />
+    <Text Include="ow_portal.txt" />
+    <Text Include="ow_terrain.txt" />
     <Text Include="playground.txt" />
     <Text Include="reward.txt" />
     <Text Include="question_block.txt" />

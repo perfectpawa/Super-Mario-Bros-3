@@ -4,14 +4,17 @@
 #include "Scene.h"
 #include "GameObject.h"
 #include "OW_GameObject.h"
+#include "OW_MapHolder.h"
+
+
 
 typedef COWGameObject* LPOWGAMEOBJECT;
 
-class CPlayScene: public CScene
+class CPlayScene : public CScene
 {
-protected: 
+protected:
 	// A play scene has to have player, right? 
-	LPGAMEOBJECT player;					
+	LPGAMEOBJECT player;
 
 	vector<LPGAMEOBJECT> enemyObjs;
 	vector<LPGAMEOBJECT> itemObjs;
@@ -24,8 +27,11 @@ protected:
 
 	bool isOnOverworldMap = false;
 	LPOWGAMEOBJECT OW_player;
-
+	COWMapHolder* OW_mapHolder;
 	vector<LPOWGAMEOBJECT> OW_pathObjs;
+	vector<LPOWGAMEOBJECT> OW_terrainObjs;
+	vector<LPOWGAMEOBJECT> OW_portalObjs;
+	vector<LPOWGAMEOBJECT> OW_pointObjs;
 
 
 
@@ -40,8 +46,8 @@ protected:
 
 	virtual void AddObject(LPGAMEOBJECT obj, int type);
 	virtual void MoveFrontToBack(LPGAMEOBJECT obj);
-	
-public: 
+
+public:
 	CPlayScene(int id, LPCWSTR filePath);
 
 	virtual void Load();
