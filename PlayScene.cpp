@@ -895,6 +895,25 @@ void CPlayScene::_ParseSection_OW_OBJECTS(string line) {
 
 void CPlayScene::Update_OW(DWORD dt) {
 	vector<COWGameObject*> coObjects;
+
+	//check item in OW_pathObjs
+	for (int i = 0; i < OW_pathObjs.size(); i++) {
+		if (!OW_pathObjs[i]->CanGoIn()) continue;
+		coObjects.push_back(OW_pathObjs[i]);
+	}
+
+	//check item in OW_pointObjs
+	for (int i = 0; i < OW_pointObjs.size(); i++) {
+		if (!OW_pointObjs[i]->CanGoIn()) continue;
+		coObjects.push_back(OW_pointObjs[i]);
+	}
+
+	//check item in OW_portalObjs
+	for (int i = 0; i < OW_portalObjs.size(); i++) {
+		if (!OW_portalObjs[i]->CanGoIn()) continue;
+		coObjects.push_back(OW_portalObjs[i]);
+	}
+
 	OW_player->Update(dt, &coObjects);
 }
 

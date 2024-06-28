@@ -31,6 +31,11 @@ void COverworldKeyHandler::OnKeyDown(int KeyCode)
 		OW_player->MoveVertical(1);
 		break;
 	}
+	case DIK_A: {
+		OW_player->GetInLevel();
+		break;
+	
+	}
 	default:
 		break;
 	}

@@ -9,4 +9,5 @@ protected:
 public:
 	COWPortal(float x, float y, bool canGoIn, int portalId);
 	void Render();
+	int GetSceneId() { return sceneId; }
 };

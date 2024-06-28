@@ -18,13 +18,19 @@ protected:
 	bool isMoving;
 
 	bool wantMove;
+
+	int portalId;
+
 public:
 	COWMario(float x, float y, bool canGoIn);
 	void Update(DWORD dt, vector<COWGameObject*>* coObjects);
 	void Render();
 	void Moving(DWORD dt);
 	void GetMovDestination(vector<COWGameObject*>* coObjects);
+	void CheckEndPointValid(vector<COWGameObject*>* coObjects);
 
 	void MoveHorizontal(int direction) { moveHorizontal = direction; moveVertical = 0; wantMove = true; }
 	void MoveVertical(int direction) { moveVertical = direction; moveHorizontal = 0; wantMove = true; }
+
+	void GetInLevel();
 };

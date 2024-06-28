@@ -1,6 +1,7 @@
 #include "OW_Mario.h"
 #include "debug.h"
 #include "Animations.h"
+#include "OW_Portal.h"
 
 COWMario::COWMario(float x, float y, bool canGoIn) : COWGameObject(x, y, canGoIn)
 {
@@ -14,6 +15,8 @@ COWMario::COWMario(float x, float y, bool canGoIn) : COWGameObject(x, y, canGoIn
 
 	moveHorizontal = 0;
 	moveVertical = 0;
+
+	portalId = -1;
 
 	DebugOut(L"[INFO] OW_Mario created!\n");
 }
@@ -40,7 +43,6 @@ void COWMario::Render()
 
 void COWMario::Moving(DWORD dt)
 {
-	DebugOut(L"[INFO] OW_Mario moving!\n");
 	if(moveHorizontal == 1)
 	{
 		x += MOVE_SPEED * dt;
@@ -81,7 +83,6 @@ void COWMario::Moving(DWORD dt)
 
 void COWMario::GetMovDestination(vector<COWGameObject*>* coObjects)
 {
-	DebugOut(L"[INFO] OW_Mario getting destination!\n");
 	if (moveHorizontal == 1)
 	{
 		end_x = x + 16;
@@ -100,4 +101,40 @@ void COWMario::GetMovDestination(vector<COWGameObject*>* coObjects)
 	}
 	isMoving = true;
 	wantMove = false;
+
+	CheckEndPointValid(coObjects);
+}
+
+void COWMario::CheckEndPointValid(vector<COWGameObject*>* coObjects)
+{
+	for (size_t i = 0; i < coObjects->size(); i++)
+	{
+		float pos_x, pos_y;
+		coObjects->at(i)->GetPosition(pos_x, pos_y);
+
+		if (end_x == pos_x && end_y == pos_y) {
+			COWPortal* portal = dynamic_cast<COWPortal*>(coObjects->at(i));
+
+			if (portal != NULL)
+			{
+				portalId = portal->GetSceneId();
+			}else{
+				portalId = -1;
+			}
+			return;
+		}
+	}
+
+	end_x = x;
+	end_y = y;
+	isMoving = false;
+}
+
+void COWMario::GetInLevel()
+{
+	if (isMoving) return;
+	if (portalId == -1) return;
+
+	CGame::GetInstance()->InitiateSwitchScene(portalId);
+
 }
