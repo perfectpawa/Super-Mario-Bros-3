@@ -31,8 +31,6 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	wantFloat = false;
 	wantWhip = false;
 
-
-
 	TimeChecking();
 
 	CCollision::GetInstance()->Process(this, dt, coObjects);
@@ -78,6 +76,34 @@ void CMario::MovingBehavior(DWORD dt) {
 		else
 			vx += ax * dt;
 		vx = max(vx, maxVx);
+	}
+
+	if (abs(vx) <= MARIO_WALKING_SPEED) {
+		powerSprintState = 0;
+	}
+
+	if(abs(vx) >= MARIO_SPRINT_SPEED_STATE_1){
+		powerSprintState = 1;
+	}
+
+	if(abs(vx) >= MARIO_SPRINT_SPEED_STATE_2){
+		powerSprintState = 2;
+	}
+
+	if(abs(vx) >= MARIO_SPRINT_SPEED_STATE_3){
+		powerSprintState = 3;
+	}
+
+	if (abs(vx) >= MARIO_SPRINT_SPEED_STATE_4) {
+		powerSprintState = 4;
+	}
+
+	if(abs(vx) >= MARIO_WALKING_FAST_SPEED ) {
+		powerSprintState = 5;
+	}
+
+	if(abs(vx) >= MARIO_RUNNING_SPEED) {
+		powerSprintState = 6;
 	}
 }
 
@@ -497,8 +523,6 @@ void CMario::SetState(int state)
 	} 
 
 	
-
-
 	switch (state)
 	{
 	case MARIO_STATE_RUNNING_RIGHT: {

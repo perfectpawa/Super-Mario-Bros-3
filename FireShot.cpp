@@ -37,7 +37,7 @@ void CFireShot::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	if (GetTickCount64() - despawn_start > DESPAWN_TIMEOUT)
 	{
-		this->IsDeleted();
+		this->Delete();
 		return;
 	}
 

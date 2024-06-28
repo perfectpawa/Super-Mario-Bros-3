@@ -18,6 +18,8 @@ cloud.txt
 UI.txt
 #
 [UI]
+[SETTINGS]
+time	300
 [OBJECTS]
 # MARIO
 0	16	-180

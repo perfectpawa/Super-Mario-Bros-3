@@ -52,7 +52,7 @@ void CHUD::RenderMainHUD()
 void CHUD::RenderCardHUD()
 {
 	CSprites::GetInstance()->Get(firstCard)->Draw(x + 16 * 6, y);
-	CSprites::GetInstance()->Get(secondCard)->Draw(x + 16 * 7.5, y);
+	CSprites::GetInstance()->Get(secondCard)->Draw(x + 16 * 7.5f, y);
 	CSprites::GetInstance()->Get(thirdCard)->Draw(x + 16 * 9, y);
 }
 
@@ -111,4 +111,18 @@ void CHUD::SetPosition(float x, float y)
 	bar_5->SetPosition(x + 12, y - 4);
 	bar_6->SetPosition(x + 20, y - 4);
 	active->SetPosition(x + 32, y - 4);
+}
+
+void CHUD::SetTime(int time)
+{
+	if (time < 0) time = 0;
+	this->time = time;
+	timeUI->SetNumber(time);
+}
+
+void CHUD::SetCoin(int coin)
+{
+	if (coin < 0) coin = 0;
+	this->coin = coin;
+	coinUI->SetNumber(coin);
 }

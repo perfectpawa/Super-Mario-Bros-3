@@ -32,12 +32,16 @@ protected:
 
 	CHUD* mainHUD;
 
+	//scene setting
+	float timeLimit = 0;
+
 
 	void _ParseSection_SPRITES(string line);
 	void _ParseSection_ANIMATIONS(string line);
 
 	void _ParseSection_ASSETS(string line);
 	void _ParseSection_OBJECTS(string line);
+	void _ParseSection_SETTINGS(string line);
 	void _ParseSection_OW_OBJECTS(string line);
 
 	void LoadAssets(LPCWSTR assetFile);
@@ -57,8 +61,12 @@ public:
 	virtual void Render_OW();
 
 	virtual void LoadUI();
-	virtual void UpdateUI(DWORD dt);
+	virtual void UpdateUI(DWORD dt, float cx, float cy);
 	virtual void UpdateUIPosFixedCam();
+	virtual void UpdateUIPosFixedCam(float cx, float cy);
+	virtual void UpdateUITimeLimit(DWORD dt);
+	virtual void UpdateUIPower();
+	virtual void UpdateUICoin();
 
 	LPGAMEOBJECT GetPlayer() { return player; }
 	LPOWGAMEOBJECT GetOWPlayer() { return OW_player; }

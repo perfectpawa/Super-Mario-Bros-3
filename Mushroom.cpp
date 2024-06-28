@@ -5,7 +5,7 @@
 CMushroom::CMushroom(float x, float y) :CGameObject(x, y)
 {
 	this->ax = 0;
-	this->start_y = y - 6;
+	this->start_y = y - 12;
 	SetState(MUSHROOM_STATE_IDLE);
 }
 
@@ -69,7 +69,7 @@ void CMushroom::SetState(int state)
 	switch (state)
 	{
 	case MUSHROOM_STATE_IDLE:
-		this->ay = -MUSHROOM_GRAVITY/5;
+		this->ay = -MUSHROOM_GRAVITY/8;
 		break;
 	case MUSHROOM_STATE_WALKING:
 		this->ay = MUSHROOM_GRAVITY;

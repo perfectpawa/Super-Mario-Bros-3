@@ -11,17 +11,22 @@
 #include "AssetIDs.h"
 
 #define MARIO_WALKING_SPEED		0.08f	// 5 block 1s
-#define MARIO_WALKING_FAST_SPEED		0.23f
-#define MARIO_RUNNING_SPEED		0.23f
+#define MARIO_WALKING_FAST_SPEED		0.18f
+#define MARIO_RUNNING_SPEED		0.2f
 #define MARIO_MAX_FALL_SPEED		0.5f
 
-#define MARIO_WALK_DECAY 0.0003f
-#define MARIO_WALK_FAST_DECAY 0.001f
-#define MARIO_RUN_DECAY 0.0005f
+#define MARIO_SPRINT_SPEED_STATE_1		0.10f
+#define MARIO_SPRINT_SPEED_STATE_2		0.12f
+#define MARIO_SPRINT_SPEED_STATE_3		0.14f
+#define MARIO_SPRINT_SPEED_STATE_4		0.16f
 
-#define MARIO_ACCEL_WALK_X	0.01f
-#define MARIO_ACCEL_WALK_FAST_X	0.015f
-#define MARIO_ACCEL_RUN_X	0.04f
+#define MARIO_WALK_DECAY 0.003f
+#define MARIO_WALK_FAST_DECAY 0.005f
+#define MARIO_RUN_DECAY 0.01f
+
+#define MARIO_ACCEL_WALK_X	0.001f
+#define MARIO_ACCEL_WALK_FAST_X	0.0001f
+#define MARIO_ACCEL_RUN_X	0.004f
 
 #define MARIO_QUICK_JUMP_SPEED_Y	0.25f
 #define MARIO_JUMP_SPEED_Y			0.5f
@@ -105,6 +110,7 @@ class CMario : public CGameObject
 	float ax;				// acceleration on x 
 	float ay;				// acceleration on y 
 	
+	int powerSprintState;
 
 	int level; 
 	int untouchable; 
@@ -182,6 +188,7 @@ public:
 
 		isOnPlatform = false;
 		coin = 0;
+		powerSprintState = 0;
 	}
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	void Render();
@@ -204,6 +211,10 @@ public:
 	void StartUntouchable() { untouchable = 1; untouchable_start = GetTickCount64(); }
 
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
+
+	void GetPowerSprintState(int& s) { s = powerSprintState; }
+
+	void GetCoin(int& c) { c = coin; }
 	
 	void SetWantPickUp(bool b) { wantPickUp = b; }
 	void SetWantWhip(bool b) { wantWhip = b; }

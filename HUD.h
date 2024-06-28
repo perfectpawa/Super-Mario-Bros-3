@@ -54,10 +54,10 @@ public:
 	void RenderPowerInfoHUD();
 
 	void SetLevel(int level) { this->level = level; }
-	void SetCoin(int coin) { this->coin = coin; }
+	void SetCoin(int coin);
 	void SetPoint(int point) { this->point = point; }
 	void SetLife(int life) { this->life = life; }
-	void SetTime(int time) { this->time = time; }
+	void SetTime(int time);
 	void SetPower(int power) { 
 		if (power < 0) power = 0;
 		if (power > 6) power = 6;

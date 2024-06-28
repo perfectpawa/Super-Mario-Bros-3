@@ -7,6 +7,10 @@
 #include "Textures.h"
 #include "Sprites.h"
 
+#include "LevelKeyHandler.h"
+#include "OverworldKeyHandler.h"
+
+#pragma region include GameObject
 #include "Portal.h"
 #include "Coin.h"
 #include "Brick.h"
@@ -34,11 +38,20 @@
 #include "OW_Portal.h"
 #include "OW_Point.h"
 
-
-#include "LevelKeyHandler.h"
-#include "OverworldKeyHandler.h"
+#pragma endregion
 
 using namespace std;
+
+#define SCENE_SECTION_UNKNOWN -1
+#define SCENE_SECTION_ASSETS	1
+#define SCENE_SECTION_OBJECTS	2
+#define SCENE_SECTION_SETTINGS	3
+
+#define ASSETS_SECTION_UNKNOWN -1
+#define ASSETS_SECTION_SPRITES 1
+#define ASSETS_SECTION_ANIMATIONS 2
+
+#define MAX_SCENE_LINE 1024
 
 CPlayScene::CPlayScene(int id, LPCWSTR filePath):
 	CScene(id, filePath)
@@ -50,17 +63,7 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath):
 	key_handler = new CLevelKeyHandler(this);
 }
 
-
-#define SCENE_SECTION_UNKNOWN -1
-#define SCENE_SECTION_ASSETS	1
-#define SCENE_SECTION_OBJECTS	2
-
-#define ASSETS_SECTION_UNKNOWN -1
-#define ASSETS_SECTION_SPRITES 1
-#define ASSETS_SECTION_ANIMATIONS 2
-
-#define MAX_SCENE_LINE 1024
-
+#pragma region Parse Section
 void CPlayScene::_ParseSection_SPRITES(string line)
 {
 	vector<string> tokens = split(line);
@@ -116,9 +119,6 @@ void CPlayScene::_ParseSection_ANIMATIONS(string line)
 	CAnimations::GetInstance()->Add(ani_id, ani);
 }
 
-/*
-	Parse a line in section [OBJECTS] 
-*/
 void CPlayScene::_ParseSection_OBJECTS(string line)
 {
 	vector<string> tokens = split(line);
@@ -377,6 +377,139 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	}
 }
 
+void CPlayScene::_ParseSection_SETTINGS(string line) {
+	vector<string> tokens = split(line);
+	DebugOut(L"--> %s\n", ToWSTR(line).c_str());
+	if (tokens[0] == "time") {
+		timeLimit = (float)atof(tokens[1].c_str());
+	}
+}
+
+void CPlayScene::_ParseSection_OW_OBJECTS(string line) {
+	vector<string> tokens = split(line);
+
+	// skip invalid lines - an object set must have at least id, x, y
+	if (tokens.size() < 2) return;
+
+	int object_type = atoi(tokens[0].c_str());
+	float x = (float)atof(tokens[1].c_str());
+	float y = (float)atof(tokens[2].c_str());
+
+
+	switch (object_type) {
+	case OW_OBJ_TYPE_MARIO: {
+		if (OW_player != NULL)
+		{
+			DebugOut(L"[ERROR] MARIO object was created before!\n");
+			return;
+		}
+		OW_player = new COWMario(x, y, true);
+
+		DebugOut(L"[INFO] Player object has been created!\n");
+		break;
+	}
+	case OW_OBJ_TYPE_MAP_HOLDER: {
+		int width = atoi(tokens[3].c_str());
+		int height = atoi(tokens[4].c_str());
+		int type = atoi(tokens[5].c_str());
+		OW_mapHolder = new COWMapHolder(x, y, width, height, type);
+		break;
+	}
+	case OW_OBJ_TYPE_PATH: {
+		bool isGoIn = (atoi(tokens[3].c_str()) == 1);
+		bool isVertical = (atoi(tokens[4].c_str()) == 1);
+		bool haveCoin = (atoi(tokens[5].c_str()) == 1);
+		bool haveTurn = (atoi(tokens[6].c_str()) == 1);
+		COWPath* path = new COWPath(x, y, isGoIn, isVertical, haveCoin, haveTurn);
+		OW_pathObjs.push_back(path);
+		break;
+	}
+	case OW_OBJ_TYPE_TERRAIN: {
+		bool isGoIn = (atoi(tokens[3].c_str()) == 1);
+		int type = atoi(tokens[4].c_str());
+
+		int sub_type = 0;
+		if (tokens.size() > 5) {
+			sub_type = atoi(tokens[5].c_str());
+		}
+
+		COWTerrain* terrain = new COWTerrain(x, y, isGoIn, type, sub_type);
+		OW_terrainObjs.push_back(terrain);
+		break;
+	}
+	case OW_OBJ_TYPE_PORTAL: {
+		bool isGoIn = (atoi(tokens[3].c_str()) == 1);
+		int portalId = atoi(tokens[4].c_str());
+		COWPortal* portal = new COWPortal(x, y, isGoIn, portalId);
+		OW_portalObjs.push_back(portal);
+		break;
+	}
+	case OW_OBJ_TYPE_POINT: {
+		bool isGoIn = (atoi(tokens[3].c_str()) == 1);
+		int type = atoi(tokens[4].c_str());
+		COWPoint* point = new COWPoint(x, y, isGoIn, type);
+		OW_pointObjs.push_back(point);
+		break;
+	}
+	}
+
+}
+
+#pragma endregion
+
+#pragma region Load
+void CPlayScene::Load()
+{
+	DebugOut(L"[INFO] Start loading scene from : %s \n", sceneFilePath);
+
+	ifstream f;
+	f.open(sceneFilePath);
+
+	// current resource section flag
+	int section = SCENE_SECTION_UNKNOWN;					
+
+	char str[MAX_SCENE_LINE];
+	while (f.getline(str, MAX_SCENE_LINE))
+	{
+		string line(str);
+
+		if (line[0] == '#') continue;	// skip comment lines	
+		if (line == "[OVERWORLD]") {
+			isOnOverworldMap = true;
+			CGame::GetInstance()->SetCamPos(- 16, - 16);
+			key_handler = new COverworldKeyHandler(this);
+			continue;
+		};
+		if (line == "[ASSETS]") { section = SCENE_SECTION_ASSETS; continue; };
+		if (line == "[OBJECTS]") { section = SCENE_SECTION_OBJECTS; continue; };
+		if (line == "[UI]") { LoadUI(); continue; }
+		if (line == "[SETTINGS]") { section = SCENE_SECTION_SETTINGS; continue; };
+		if (line[0] == '[') { section = SCENE_SECTION_UNKNOWN; continue; }	
+
+		//
+		// data section
+		//
+		if(isOnOverworldMap){
+			switch (section)
+			{
+				case SCENE_SECTION_ASSETS: _ParseSection_ASSETS(line); break;
+				case SCENE_SECTION_OBJECTS: _ParseSection_OW_OBJECTS(line); break;
+			}
+		}
+		else {
+			switch (section)
+			{ 
+				case SCENE_SECTION_ASSETS: _ParseSection_ASSETS(line); break;
+				case SCENE_SECTION_OBJECTS: _ParseSection_OBJECTS(line); break;
+				case SCENE_SECTION_SETTINGS: _ParseSection_SETTINGS(line); break;
+			}
+		}
+	}
+
+	f.close();
+
+	DebugOut(L"[INFO] Done loading scene  %s\n", sceneFilePath);
+}
 
 void CPlayScene::LoadAssets(LPCWSTR assetFile)
 {
@@ -413,57 +546,6 @@ void CPlayScene::LoadAssets(LPCWSTR assetFile)
 	DebugOut(L"[INFO] Done loading assets from %s\n", assetFile);
 }
 
-void CPlayScene::Load()
-{
-	DebugOut(L"[INFO] Start loading scene from : %s \n", sceneFilePath);
-
-	ifstream f;
-	f.open(sceneFilePath);
-
-	// current resource section flag
-	int section = SCENE_SECTION_UNKNOWN;					
-
-	char str[MAX_SCENE_LINE];
-	while (f.getline(str, MAX_SCENE_LINE))
-	{
-		string line(str);
-
-		if (line[0] == '#') continue;	// skip comment lines	
-		if (line == "[OVERWORLD]") {
-			isOnOverworldMap = true;
-			CGame::GetInstance()->SetCamPos(- 16, - 16);
-			key_handler = new COverworldKeyHandler(this);
-			continue;
-		};
-		if (line == "[ASSETS]") { section = SCENE_SECTION_ASSETS; continue; };
-		if (line == "[OBJECTS]") { section = SCENE_SECTION_OBJECTS; continue; };
-		if (line == "[UI]") { LoadUI(); continue; }
-		if (line[0] == '[') { section = SCENE_SECTION_UNKNOWN; continue; }	
-
-		//
-		// data section
-		//
-		if(isOnOverworldMap){
-			switch (section)
-			{
-				case SCENE_SECTION_ASSETS: _ParseSection_ASSETS(line); break;
-				case SCENE_SECTION_OBJECTS: _ParseSection_OW_OBJECTS(line); break;
-			}
-		}
-		else {
-			switch (section)
-			{ 
-				case SCENE_SECTION_ASSETS: _ParseSection_ASSETS(line); break;
-				case SCENE_SECTION_OBJECTS: _ParseSection_OBJECTS(line); break;
-			}
-		}
-	}
-
-	f.close();
-
-	DebugOut(L"[INFO] Done loading scene  %s\n", sceneFilePath);
-}
-
 void CPlayScene::LoadUI()
 {
 	mainHUD = new CHUD(0,0);
@@ -471,6 +553,46 @@ void CPlayScene::LoadUI()
 	UpdateUIPosFixedCam();
 }
 
+void CPlayScene::Unload()
+{
+	//unload enemyObjs
+	for (int i = 0; i < enemyObjs.size(); i++)
+		delete enemyObjs[i];
+	enemyObjs.clear();
+
+	//unload itemObjs
+	for (int i = 0; i < itemObjs.size(); i++)
+		delete itemObjs[i];
+	itemObjs.clear();
+
+	//unload terrainObjs
+	for (int i = 0; i < terrainObjs.size(); i++)
+		delete terrainObjs[i];
+	terrainObjs.clear();
+
+	//unload frontTerrainObjs
+	for (int i = 0; i < frontTerrainObjs.size(); i++)
+		delete frontTerrainObjs[i];
+	frontTerrainObjs.clear();
+
+	//unload backgroundObjs
+	for (int i = 0; i < backgroundObjs.size(); i++)
+		delete backgroundObjs[i];
+	backgroundObjs.clear();
+
+	//unload dectectObjs
+	for (int i = 0; i < detectObjs.size(); i++)
+		delete detectObjs[i];
+	detectObjs.clear();
+
+	player = NULL;
+
+	DebugOut(L"[INFO] Scene %d unloaded! \n", id);
+}
+
+#pragma endregion
+
+#pragma region Update
 void CPlayScene::Update(DWORD dt)
 {
 	if (isOnOverworldMap) {
@@ -492,28 +614,11 @@ void CPlayScene::Update(DWORD dt)
 	for (int i = 0; i < detectObjs.size(); i++)
 		coObjects.push_back(detectObjs[i]);
 
-	//update terrainObjs
-	//for (int i = 0; i < terrainObjs.size(); i++)
-	//	terrainObjs[i]->Update(dt, &coObjects);
-
-	//update frontTerrainObjs
-	//for (int i = 0; i < frontTerrainObjs.size(); i++)
-	//	frontTerrainObjs[i]->Update(dt, &coObjects);
-
-	//update backgroundObjs
-	//for (int i = 0; i < backgroundObjs.size(); i++)
-	//	backgroundObjs[i]->Update(dt, &coObjects);
-
-
 	// skip the rest if scene was already unloaded (Mario::Update might trigger PlayScene::Unload)
 	if (player == NULL) return;
 
 	// Update player
 	player->Update(dt, &coObjects);
-
-	//add player to coObjects
-	//coObjects.push_back(player);
-
 
 	//update detect objects, coObjects of dectect only include player
 	vector<LPGAMEOBJECT> detectCoObjects;
@@ -550,7 +655,8 @@ void CPlayScene::Update(DWORD dt)
 
 	CGame::GetInstance()->SetCamPos(cx, cy);
 
-	UpdateUI(dt);
+	UpdateUI(dt, cx, cy);
+
 
 	PurgeDeletedObjects();
 
@@ -592,6 +698,33 @@ void CPlayScene::Update(DWORD dt)
 	});
 }
 
+void CPlayScene::Update_OW(DWORD dt) {
+	vector<COWGameObject*> coObjects;
+
+	//check item in OW_pathObjs
+	for (int i = 0; i < OW_pathObjs.size(); i++) {
+		if (!OW_pathObjs[i]->CanGoIn()) continue;
+		coObjects.push_back(OW_pathObjs[i]);
+	}
+
+	//check item in OW_pointObjs
+	for (int i = 0; i < OW_pointObjs.size(); i++) {
+		if (!OW_pointObjs[i]->CanGoIn()) continue;
+		coObjects.push_back(OW_pointObjs[i]);
+	}
+
+	//check item in OW_portalObjs
+	for (int i = 0; i < OW_portalObjs.size(); i++) {
+		if (!OW_portalObjs[i]->CanGoIn()) continue;
+		coObjects.push_back(OW_portalObjs[i]);
+	}
+
+	OW_player->Update(dt, &coObjects);
+}
+
+#pragma endregion
+
+#pragma region Render
 void CPlayScene::Render()
 {
 	if (isOnOverworldMap) {
@@ -634,9 +767,35 @@ void CPlayScene::Render()
 	mainHUD->Render();
 }
 
-/*
-*	Clear all objects from this scene
-*/
+void CPlayScene::Render_OW() {
+
+	OW_mapHolder->Render();
+
+	for (int i = 0; i < OW_pathObjs.size(); i++) {
+		OW_pathObjs[i]->Render();
+	}
+
+	for (int i = 0; i < OW_terrainObjs.size(); i++) {
+		OW_terrainObjs[i]->Render();
+	}
+
+	for (int i = 0; i < OW_portalObjs.size(); i++) {
+		OW_portalObjs[i]->Render();
+	}
+
+	for (int i = 0; i < OW_pointObjs.size(); i++) {
+		OW_pointObjs[i]->Render();
+	}
+
+	OW_player->Render();
+
+	mainHUD->Render();
+
+}
+
+#pragma endregion
+
+#pragma region Clean Up
 void CPlayScene::Clear()
 {
 	vector<LPGAMEOBJECT>::iterator it;
@@ -682,52 +841,14 @@ void CPlayScene::Clear()
 		delete (*it);
 	}
 	detectObjs.clear();
+
+	//clear tileBackgroundObjs
+	for (it = tileBackgroundObjs.begin(); it != tileBackgroundObjs.end(); it++)
+	{
+		delete (*it);
+	}
+	tileBackgroundObjs.clear();
 }
-
-/*
-	Unload scene
-
-	TODO: Beside objects, we need to clean up sprites, animations and textures as well 
-
-*/
-void CPlayScene::Unload()
-{
-	//unload enemyObjs
-	for (int i = 0; i < enemyObjs.size(); i++)
-		delete enemyObjs[i];
-	enemyObjs.clear();
-
-	//unload itemObjs
-	for (int i = 0; i < itemObjs.size(); i++)
-		delete itemObjs[i];
-	itemObjs.clear();
-
-	//unload terrainObjs
-	for (int i = 0; i < terrainObjs.size(); i++)
-		delete terrainObjs[i];
-	terrainObjs.clear();
-
-	//unload frontTerrainObjs
-	for (int i = 0; i < frontTerrainObjs.size(); i++)
-		delete frontTerrainObjs[i];
-	frontTerrainObjs.clear();
-
-	//unload backgroundObjs
-	for (int i = 0; i < backgroundObjs.size(); i++)
-		delete backgroundObjs[i];
-	backgroundObjs.clear();
-
-	//unload dectectObjs
-	for (int i = 0; i < detectObjs.size(); i++)
-		delete detectObjs[i];
-	detectObjs.clear();
-
-	player = NULL;
-
-	DebugOut(L"[INFO] Scene %d unloaded! \n", id);
-}
-
-bool CPlayScene::IsGameObjectDeleted(const LPGAMEOBJECT& o) { return o == NULL; }
 
 void CPlayScene::PurgeDeletedObjects()
 {
@@ -820,9 +941,13 @@ void CPlayScene::PurgeDeletedObjects()
 	// then simply trim the vector, this is much more efficient than deleting individual items
 }
 
+#pragma endregion
+
+#pragma region Utils
+bool CPlayScene::IsGameObjectDeleted(const LPGAMEOBJECT& o) { return o == NULL; }
+
 void CPlayScene::AddObject(LPGAMEOBJECT obj, int type)
 {
-	DebugOut(L"[INFO] Add object to scene: %d\n", type);
 	switch (type)
 	{
 	case OBJECT_TYPE_MUSHROOM:
@@ -835,7 +960,7 @@ void CPlayScene::AddObject(LPGAMEOBJECT obj, int type)
 		itemObjs.push_back(obj);
 		break;
 	case OBJECT_TYPE_VENUS_FIRE_BALL:
-		enemyObjs.push_back(obj);
+		detectObjs.push_back(obj);
 		break;
 	}
 }
@@ -851,137 +976,16 @@ void CPlayScene::MoveFrontToBack(LPGAMEOBJECT obj)
 	terrainObjs.push_back(obj);
 }
 
-
-// --- Overworld load ---
-
-void CPlayScene::_ParseSection_OW_OBJECTS(string line) {
-	vector<string> tokens = split(line);
-
-	// skip invalid lines - an object set must have at least id, x, y
-	if (tokens.size() < 2) return;
-
-	int object_type = atoi(tokens[0].c_str());
-	float x = (float)atof(tokens[1].c_str());
-	float y = (float)atof(tokens[2].c_str());
-
-
-	switch (object_type) {
-		case OW_OBJ_TYPE_MARIO: {
-			if (OW_player != NULL)
-			{
-				DebugOut(L"[ERROR] MARIO object was created before!\n");
-				return;
-			}
-			OW_player = new COWMario(x, y, true);
-
-			DebugOut(L"[INFO] Player object has been created!\n");
-			break;
-		}
-		case OW_OBJ_TYPE_MAP_HOLDER: {
-			int width = atoi(tokens[3].c_str());
-			int height = atoi(tokens[4].c_str());
-			int type = atoi(tokens[5].c_str());
-			OW_mapHolder = new COWMapHolder(x, y, width, height, type);
-			break;
-		}
-		case OW_OBJ_TYPE_PATH: {
-			bool isGoIn = (atoi(tokens[3].c_str()) == 1);
-			bool isVertical = (atoi(tokens[4].c_str()) == 1);
-			bool haveCoin = (atoi(tokens[5].c_str()) == 1);
-			bool haveTurn = (atoi(tokens[6].c_str()) == 1);
-			COWPath* path = new COWPath(x, y, isGoIn, isVertical, haveCoin, haveTurn);
-			OW_pathObjs.push_back(path);
-			break;
-		}
-		case OW_OBJ_TYPE_TERRAIN: {
-			bool isGoIn = (atoi(tokens[3].c_str()) == 1);
-			int type = atoi(tokens[4].c_str());
-
-			int sub_type = 0;
-			if (tokens.size() > 5) {
-				sub_type = atoi(tokens[5].c_str());
-			}
-
-			COWTerrain* terrain = new COWTerrain(x, y, isGoIn, type, sub_type);
-			OW_terrainObjs.push_back(terrain);
-			break;
-		}
-		case OW_OBJ_TYPE_PORTAL: {
-			bool isGoIn = (atoi(tokens[3].c_str()) == 1);
-			int portalId = atoi(tokens[4].c_str());
-			COWPortal* portal = new COWPortal(x, y, isGoIn, portalId);
-			OW_portalObjs.push_back(portal);
-			break;
-		}
-		case OW_OBJ_TYPE_POINT: {
-			bool isGoIn = (atoi(tokens[3].c_str()) == 1);
-			int type = atoi(tokens[4].c_str());
-			COWPoint* point = new COWPoint(x, y, isGoIn, type);
-			OW_pointObjs.push_back(point);
-			break;
-		}
-	}
-	
-}
-
-
-void CPlayScene::Update_OW(DWORD dt) {
-	vector<COWGameObject*> coObjects;
-
-	//check item in OW_pathObjs
-	for (int i = 0; i < OW_pathObjs.size(); i++) {
-		if (!OW_pathObjs[i]->CanGoIn()) continue;
-		coObjects.push_back(OW_pathObjs[i]);
-	}
-
-	//check item in OW_pointObjs
-	for (int i = 0; i < OW_pointObjs.size(); i++) {
-		if (!OW_pointObjs[i]->CanGoIn()) continue;
-		coObjects.push_back(OW_pointObjs[i]);
-	}
-
-	//check item in OW_portalObjs
-	for (int i = 0; i < OW_portalObjs.size(); i++) {
-		if (!OW_portalObjs[i]->CanGoIn()) continue;
-		coObjects.push_back(OW_portalObjs[i]);
-	}
-
-	OW_player->Update(dt, &coObjects);
-}
-
-void CPlayScene::Render_OW() {
-
-	OW_mapHolder->Render();
-
-	for (int i = 0; i < OW_pathObjs.size(); i++) {
-		OW_pathObjs[i]->Render();
-	}
-
-	for (int i = 0; i < OW_terrainObjs.size(); i++) {
-		OW_terrainObjs[i]->Render();
-	}
-
-	for (int i = 0; i < OW_portalObjs.size(); i++) {
-		OW_portalObjs[i]->Render();
-	}
-
-	for (int i = 0; i < OW_pointObjs.size(); i++) {
-		OW_pointObjs[i]->Render();
-	}
-
-	OW_player->Render();
-
-	mainHUD->Render();
-
-}
-
-void CPlayScene::UpdateUI(DWORD dt) {
-	UpdateUIPosFixedCam();
+void CPlayScene::UpdateUI(DWORD dt, float cx, float cy) {
+	UpdateUIPosFixedCam(cx,cy);
+	UpdateUITimeLimit(dt);
+	UpdateUIPower();
+	UpdateUICoin();
 }
 
 void CPlayScene::UpdateUIPosFixedCam() {
 	float hud_x, hud_y, cam_x, cam_y;
-	//set position of mainHUD to center of bottom of camera
+
 	CGame* game = CGame::GetInstance();
 	game->GetCamPos(cam_x, cam_y);
 	hud_x = (float)cam_x + game->GetBackBufferWidth() / 2.0f - 16 * 2.5f;
@@ -989,3 +993,43 @@ void CPlayScene::UpdateUIPosFixedCam() {
 
 	mainHUD->SetPosition(hud_x, hud_y);
 }
+
+void CPlayScene::UpdateUIPosFixedCam(float cx, float cy) {
+	float hud_x, hud_y;
+
+	hud_x = cx + 16 * 5;
+	hud_y = cy + 16 * 11.75f;
+
+	mainHUD->SetPosition(hud_x, hud_y);
+}
+
+void CPlayScene::UpdateUITimeLimit(DWORD dt) {
+	if (timeLimit <= 0) {
+		timeLimit = 0;
+		player->SetState(MARIO_STATE_DIE);
+	}
+	else {
+		timeLimit -= dt / 1000.0f;
+	}
+	mainHUD->SetTime((int)timeLimit);
+}
+
+void CPlayScene::UpdateUIPower() {
+	int power = 0;
+	CMario* mario = dynamic_cast<CMario*>(player);
+	if (mario != NULL) {
+		mario->GetPowerSprintState(power);
+	}
+	mainHUD->SetPower(power);
+}
+
+void CPlayScene::UpdateUICoin() {
+	int coin = 0;
+	CMario* mario = dynamic_cast<CMario*>(player);
+	if (mario != NULL) {
+		mario->GetCoin(coin);
+	}
+	mainHUD->SetCoin(coin);
+}
+#pragma endregion
+
