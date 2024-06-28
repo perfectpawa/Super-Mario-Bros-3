@@ -78,7 +78,7 @@ void CVenus::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	{
 		SetState(VENUS_STATE_FIRE);
 		CFireShot* fire = new CFireShot(x, y - 8, mx, my);
-		CGame::GetInstance()->GetCurrentScene()->AddObject(fire, 3);
+		CGame::GetInstance()->GetCurrentScene()->AddObject(fire, OBJECT_TYPE_VENUS_FIRE_BALL);
 	}
 	else if (state == VENUS_STATE_FIRE && GetTickCount64() - fireTime > VENUS_FIRE_TIME)
 	{

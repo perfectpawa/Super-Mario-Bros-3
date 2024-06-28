@@ -15,10 +15,12 @@ tube.txt
 venus.txt
 coin.txt
 cloud.txt
+UI.txt
 #
+[UI]
 [OBJECTS]
 # MARIO
-0	1328	-180
+0	16	-180
 
 # TILE_BACKGROUND
 # id	start_x	start_y	length	width	sprite_id
@@ -109,7 +111,7 @@ cloud.txt
 
 
 #TUBE
-720	360	143	32	16	3
+720	360	143	32	16	3	1
 
 720	1816	159	32	16	2
 

@@ -46,6 +46,7 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath):
 	player = NULL;
 	OW_player = NULL;
 	OW_mapHolder = NULL;
+	mainHUD = NULL;
 	key_handler = new CLevelKeyHandler(this);
 }
 
@@ -234,13 +235,29 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		float cell_width = (float)atof(tokens[3].c_str());
 		float cell_height = (float)atof(tokens[4].c_str());
 		int length = atoi(tokens[5].c_str());
+		
+		int isFront = false;
+		if (tokens.size() == 7) {
+			isFront = (atoi(tokens[6].c_str()) == 1);
+		}
+		
+		if (isFront) {
+			frontTerrainObj = new CPlatform(
+				x, y,
+				cell_width, cell_height, length,
+				ID_SPRITE_TUBE_MOUTH, ID_SPRITE_TUBE_BODY, ID_SPRITE_TUBE_BODY,
+				0, 1
+			);
+		}
+		else {
+			terrainObj = new CPlatform(
+				x, y,
+				cell_width, cell_height, length,
+				ID_SPRITE_TUBE_MOUTH, ID_SPRITE_TUBE_BODY, ID_SPRITE_TUBE_BODY,
+				0, 1
+			);
+		}
 
-		terrainObj = new CPlatform(
-			x, y,
-			cell_width, cell_height, length,
-			ID_SPRITE_TUBE_MOUTH, ID_SPRITE_TUBE_BODY, ID_SPRITE_TUBE_BODY,
-			0, 1
-		);
 		break;
 	}
 	case OBJECT_TYPE_GROUND: {
@@ -414,12 +431,13 @@ void CPlayScene::Load()
 		if (line[0] == '#') continue;	// skip comment lines	
 		if (line == "[OVERWORLD]") {
 			isOnOverworldMap = true;
-			CGame::GetInstance()->SetCamPos(-24, -48);
+			CGame::GetInstance()->SetCamPos(- 16, - 16);
 			key_handler = new COverworldKeyHandler(this);
 			continue;
 		};
 		if (line == "[ASSETS]") { section = SCENE_SECTION_ASSETS; continue; };
 		if (line == "[OBJECTS]") { section = SCENE_SECTION_OBJECTS; continue; };
+		if (line == "[UI]") { LoadUI(); continue; }
 		if (line[0] == '[') { section = SCENE_SECTION_UNKNOWN; continue; }	
 
 		//
@@ -444,6 +462,13 @@ void CPlayScene::Load()
 	f.close();
 
 	DebugOut(L"[INFO] Done loading scene  %s\n", sceneFilePath);
+}
+
+void CPlayScene::LoadUI()
+{
+	mainHUD = new CHUD(0,0);
+
+	UpdateUIPosFixedCam();
 }
 
 void CPlayScene::Update(DWORD dt)
@@ -525,6 +550,8 @@ void CPlayScene::Update(DWORD dt)
 
 	CGame::GetInstance()->SetCamPos(cx, cy);
 
+	UpdateUI(dt);
+
 	PurgeDeletedObjects();
 
 	//for all item in tilebackground, if x of item is < cx, update to x = last item x + width
@@ -581,7 +608,6 @@ void CPlayScene::Render()
 		backgroundObjs[i]->Render();
 
 	//render terrainObjs
-
 	for (int i = 0; i < terrainObjs.size(); i++) {
 		terrainObjs[i]->Render();
 	}
@@ -604,6 +630,8 @@ void CPlayScene::Render()
 
 	//render player
 	player->Render();
+
+	mainHUD->Render();
 }
 
 /*
@@ -794,6 +822,7 @@ void CPlayScene::PurgeDeletedObjects()
 
 void CPlayScene::AddObject(LPGAMEOBJECT obj, int type)
 {
+	DebugOut(L"[INFO] Add object to scene: %d\n", type);
 	switch (type)
 	{
 	case OBJECT_TYPE_MUSHROOM:
@@ -804,6 +833,9 @@ void CPlayScene::AddObject(LPGAMEOBJECT obj, int type)
 		break;
 	case OBJECT_TYPE_LEAF:
 		itemObjs.push_back(obj);
+		break;
+	case OBJECT_TYPE_VENUS_FIRE_BALL:
+		enemyObjs.push_back(obj);
 		break;
 	}
 }
@@ -939,4 +971,21 @@ void CPlayScene::Render_OW() {
 
 	OW_player->Render();
 
+	mainHUD->Render();
+
+}
+
+void CPlayScene::UpdateUI(DWORD dt) {
+	UpdateUIPosFixedCam();
+}
+
+void CPlayScene::UpdateUIPosFixedCam() {
+	float hud_x, hud_y, cam_x, cam_y;
+	//set position of mainHUD to center of bottom of camera
+	CGame* game = CGame::GetInstance();
+	game->GetCamPos(cam_x, cam_y);
+	hud_x = cam_x + game->GetBackBufferWidth() / 2 - 16 * 2.5;
+	hud_y = cam_y + game->GetBackBufferHeight() - 16 * 1.75;
+
+	mainHUD->SetPosition(hud_x, hud_y);
 }

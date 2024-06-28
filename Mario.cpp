@@ -307,6 +307,7 @@ void CMario::OnCollisionWithQuestionBlock(LPCOLLISIONEVENT e) {
 		questionBlock->SetState(QBLOCK_STATE_BOUND_UP);
 		if (questionBlock->GetRewardType() == REWARD_COIN)
 			coin++;
+		questionBlock->GetReward();
 	}
 }
 

@@ -1,9 +1,13 @@
 # id	left	top	right	bottom	texture_id
 [SPRITES]
-#HUD HOLDER
-1000000	0	0	255	31
+#UI HOLDER
+1000000	0	0	255	63	81
 
-#HUD EMPTY
+#MAIN HUD
+1000100	3	3	154	30	80
+
+#POWER HUD SLOT EMPTY
+1000200	163	3	186	30	80
 
 # ani_id	sprite1_id	time1	sprite2_id	time2	...
 [ANIMATIONS]

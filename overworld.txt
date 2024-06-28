@@ -6,6 +6,9 @@ ow_terrain.txt
 ow_map_holder.txt
 ow_portal.txt
 ow_point.txt
+UI.txt
+[UI]
+
 [OBJECTS]
 #MARIO
 88880001	16	32

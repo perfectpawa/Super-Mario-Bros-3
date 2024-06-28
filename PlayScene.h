@@ -5,7 +5,7 @@
 #include "GameObject.h"
 #include "OW_MapHolder.h"
 #include "OW_GameObject.h"
-
+#include "HUD.h"
 
 class CPlayScene : public CScene
 {
@@ -30,6 +30,7 @@ protected:
 	vector<LPOWGAMEOBJECT> OW_portalObjs;
 	vector<LPOWGAMEOBJECT> OW_pointObjs;
 
+	CHUD* mainHUD;
 
 
 	void _ParseSection_SPRITES(string line);
@@ -55,6 +56,9 @@ public:
 	virtual void Update_OW(DWORD dt);
 	virtual void Render_OW();
 
+	virtual void LoadUI();
+	virtual void UpdateUI(DWORD dt);
+	virtual void UpdateUIPosFixedCam();
 
 	LPGAMEOBJECT GetPlayer() { return player; }
 	LPOWGAMEOBJECT GetOWPlayer() { return OW_player; }

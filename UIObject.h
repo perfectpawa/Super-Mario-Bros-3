@@ -4,10 +4,6 @@
 #include <d3dx10.h>
 #include <vector>
 
-#include "Animation.h"
-#include "Animations.h"
-#include "Sprites.h"
-
 using namespace std;
 
 class CUIObject
@@ -15,7 +11,6 @@ class CUIObject
 protected:
 	float x;
 	float y;
-	int spriteID;
 
 
 public:
@@ -24,9 +19,9 @@ public:
 
 
 	CUIObject();
-	CUIObject(float x, float y, int spriteID) :CUIObject() { this->x = x; this->y = y; this->spriteID = spriteID; }
+	CUIObject(float x, float y) :CUIObject() { this->x = x; this->y = y;}
 
 
-	virtual void Render();
+	virtual void Render() = 0;
 	~CUIObject();
 };

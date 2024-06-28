@@ -1,7 +1,7 @@
 [SETTINGS]
 start	1
 width	256 
-height	240
+height	256
 
 #id	type	file
 # type: 0: intro, 1: play scene 
@@ -27,7 +27,7 @@ height	240
 60	textures\sky-background.png
 70	textures\tiles.png
 80	textures\ui.png
-81	textures\ui-holder.png
+81	textures\ui_holder.png
 8881	textures\overworld-icons.png
 8882	textures\overworld-tile.png
 8891	textures\ow_bacground_yellow.png
