@@ -231,6 +231,15 @@
     <ClCompile Include="OverworldKeyHandler.cpp">
       <Filter>Source Files\KeyEventHandler</Filter>
     </ClCompile>
+    <ClCompile Include="NumberUI.cpp">
+      <Filter>Source Files\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="IconUI.cpp">
+      <Filter>Source Files\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="CharacterIconUI.cpp">
+      <Filter>Source Files\UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AssetIDs.h">
@@ -370,6 +379,15 @@
     </ClInclude>
     <ClInclude Include="OverworldKeyHandler.h">
       <Filter>Header Files\KeyEventHandler</Filter>
+    </ClInclude>
+    <ClInclude Include="NumberUI.h">
+      <Filter>Header Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="IconUI.h">
+      <Filter>Header Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="CharacterIconUI.h">
+      <Filter>Header Files\UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

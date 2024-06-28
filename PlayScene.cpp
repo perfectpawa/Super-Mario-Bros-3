@@ -984,8 +984,8 @@ void CPlayScene::UpdateUIPosFixedCam() {
 	//set position of mainHUD to center of bottom of camera
 	CGame* game = CGame::GetInstance();
 	game->GetCamPos(cam_x, cam_y);
-	hud_x = cam_x + game->GetBackBufferWidth() / 2 - 16 * 2.5;
-	hud_y = cam_y + game->GetBackBufferHeight() - 16 * 1.75;
+	hud_x = (float)cam_x + game->GetBackBufferWidth() / 2.0f - 16 * 2.5f;
+	hud_y = (float)cam_y + game->GetBackBufferHeight() - 16 * 1.75f;
 
 	mainHUD->SetPosition(hud_x, hud_y);
 }

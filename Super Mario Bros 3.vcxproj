@@ -132,6 +132,7 @@
     <ClCompile Include="Animations.cpp" />
     <ClCompile Include="Background.cpp" />
     <ClCompile Include="Brick.cpp" />
+    <ClCompile Include="CharacterIconUI.cpp" />
     <ClCompile Include="Coin.cpp" />
     <ClCompile Include="Collision.cpp" />
     <ClCompile Include="ColorBox.cpp" />
@@ -142,11 +143,13 @@
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="Goomba.cpp" />
     <ClCompile Include="HUD.cpp" />
+    <ClCompile Include="IconUI.cpp" />
     <ClCompile Include="Koopas.cpp" />
     <ClCompile Include="Leaf.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Mario.cpp" />
     <ClCompile Include="Mushroom.cpp" />
+    <ClCompile Include="NumberUI.cpp" />
     <ClCompile Include="OverworldKeyHandler.cpp" />
     <ClCompile Include="OW_MapHolder.cpp" />
     <ClCompile Include="OW_GameObject.cpp" />
@@ -177,6 +180,7 @@
     <ClInclude Include="AssetIDs.h" />
     <ClInclude Include="Background.h" />
     <ClInclude Include="Brick.h" />
+    <ClInclude Include="CharacterIconUI.h" />
     <ClInclude Include="Coin.h" />
     <ClInclude Include="Collision.h" />
     <ClInclude Include="ColorBox.h" />
@@ -187,7 +191,9 @@
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Goomba.h" />
     <ClInclude Include="HUD.h" />
+    <ClInclude Include="IconUI.h" />
     <ClInclude Include="LevelKeyHandler.h" />
+    <ClInclude Include="NumberUI.h" />
     <ClInclude Include="OverworldKeyHandler.h" />
     <ClInclude Include="OW_GameObject.h" />
     <ClInclude Include="ow_map_holder.txt" />
