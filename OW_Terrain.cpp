@@ -1,5 +1,5 @@
 #include "OW_Terrain.h"
-#include "debug.h"
+#include "Animations.h"
 
 COWTerrain::COWTerrain(float x, float y, bool canGoIn, int type, int sub_type) : COWGameObject(x, y, canGoIn)
 {

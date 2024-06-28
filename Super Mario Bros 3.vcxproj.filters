@@ -225,7 +225,10 @@
     <ClCompile Include="OW_Point.cpp">
       <Filter>Source Files\OverworldGameObject</Filter>
     </ClCompile>
-    <ClCompile Include="SampleKeyEventHandler.cpp">
+    <ClCompile Include="LevelKeyHandler.cpp">
+      <Filter>Source Files\KeyEventHandler</Filter>
+    </ClCompile>
+    <ClCompile Include="OverworldKeyHandler.cpp">
       <Filter>Source Files\KeyEventHandler</Filter>
     </ClCompile>
   </ItemGroup>
@@ -359,11 +362,14 @@
     <ClInclude Include="OW_GameObject.h">
       <Filter>Header Files\OverworldGameObject</Filter>
     </ClInclude>
-    <ClInclude Include="SampleKeyEventHandler.h">
-      <Filter>Header Files\KeyEventHandler</Filter>
-    </ClInclude>
     <ClInclude Include="PlayScene.h">
       <Filter>Header Files\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="LevelKeyHandler.h">
+      <Filter>Header Files\KeyEventHandler</Filter>
+    </ClInclude>
+    <ClInclude Include="OverworldKeyHandler.h">
+      <Filter>Header Files\KeyEventHandler</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

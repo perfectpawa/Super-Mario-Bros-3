@@ -3,12 +3,9 @@
 #include "Textures.h"
 #include "Scene.h"
 #include "GameObject.h"
-#include "OW_GameObject.h"
 #include "OW_MapHolder.h"
+#include "OW_GameObject.h"
 
-
-
-typedef COWGameObject* LPOWGAMEOBJECT;
 
 class CPlayScene : public CScene
 {
@@ -60,6 +57,7 @@ public:
 
 
 	LPGAMEOBJECT GetPlayer() { return player; }
+	LPOWGAMEOBJECT GetOWPlayer() { return OW_player; }
 
 	void Clear();
 	void PurgeDeletedObjects();

@@ -521,8 +521,8 @@ void CGame::SwitchScene()
 
 	current_scene = next_scene;
 	LPSCENE s = scenes[next_scene];
-	this->SetKeyHandler(s->GetKeyEventHandler());
 	s->Load();
+	this->SetKeyHandler(s->GetKeyEventHandler());
 }
 
 void CGame::ReloadScene()

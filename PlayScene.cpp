@@ -35,7 +35,8 @@
 #include "OW_Point.h"
 
 
-#include "SampleKeyEventHandler.h"
+#include "LevelKeyHandler.h"
+#include "OverworldKeyHandler.h"
 
 using namespace std;
 
@@ -45,7 +46,7 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath):
 	player = NULL;
 	OW_player = NULL;
 	OW_mapHolder = NULL;
-	key_handler = new CSampleKeyHandler(this);
+	key_handler = new CLevelKeyHandler(this);
 }
 
 
@@ -414,6 +415,7 @@ void CPlayScene::Load()
 		if (line == "[OVERWORLD]") {
 			isOnOverworldMap = true;
 			CGame::GetInstance()->SetCamPos(-24, -48);
+			key_handler = new COverworldKeyHandler(this);
 			continue;
 		};
 		if (line == "[ASSETS]") { section = SCENE_SECTION_ASSETS; continue; };
@@ -892,7 +894,8 @@ void CPlayScene::_ParseSection_OW_OBJECTS(string line) {
 
 
 void CPlayScene::Update_OW(DWORD dt) {
-
+	vector<COWGameObject*> coObjects;
+	OW_player->Update(dt, &coObjects);
 }
 
 void CPlayScene::Render_OW() {

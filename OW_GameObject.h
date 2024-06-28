@@ -2,8 +2,6 @@
 
 #include <vector>
 
-#include "Animation.h"
-#include "Animations.h"
 #include "Sprites.h"
 #include "Collision.h"
 
@@ -40,4 +38,3 @@ public:
 
 	~COWGameObject();
 };
-

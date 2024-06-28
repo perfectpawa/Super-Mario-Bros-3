@@ -9,6 +9,9 @@ using namespace std;
 class CGameObject;
 typedef CGameObject* LPGAMEOBJECT;
 
+class COWGameObject;
+typedef COWGameObject* LPOWGAMEOBJECT;
+
 struct CCollisionEvent;
 typedef CCollisionEvent* LPCOLLISIONEVENT;
 

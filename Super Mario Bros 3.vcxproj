@@ -147,6 +147,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Mario.cpp" />
     <ClCompile Include="Mushroom.cpp" />
+    <ClCompile Include="OverworldKeyHandler.cpp" />
     <ClCompile Include="OW_MapHolder.cpp" />
     <ClCompile Include="OW_GameObject.cpp" />
     <ClCompile Include="OW_Mario.cpp" />
@@ -159,7 +160,7 @@
     <ClCompile Include="PlayScene.cpp" />
     <ClCompile Include="Portal.cpp" />
     <ClCompile Include="QuestionBlock.cpp" />
-    <ClCompile Include="SampleKeyEventHandler.cpp" />
+    <ClCompile Include="LevelKeyHandler.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SpawnCheck.cpp" />
     <ClCompile Include="Sprite.cpp" />
@@ -186,6 +187,8 @@
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Goomba.h" />
     <ClInclude Include="HUD.h" />
+    <ClInclude Include="LevelKeyHandler.h" />
+    <ClInclude Include="OverworldKeyHandler.h" />
     <ClInclude Include="OW_GameObject.h" />
     <ClInclude Include="ow_map_holder.txt" />
     <ClInclude Include="OW_MapHolder.h" />
@@ -195,7 +198,6 @@
     <ClInclude Include="OW_Portal.h" />
     <ClInclude Include="OW_Terrain.h" />
     <ClInclude Include="PlayScene.h" />
-    <ClInclude Include="SampleKeyEventHandler.h" />
     <ClInclude Include="UI.txt" />
     <ClInclude Include="KeyEventHandler.h" />
     <ClInclude Include="Koopas.h" />
