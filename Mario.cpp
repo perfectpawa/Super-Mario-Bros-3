@@ -78,6 +78,7 @@ void CMario::MovingBehavior(DWORD dt) {
 		vx = max(vx, maxVx);
 	}
 
+
 	if (abs(vx) <= MARIO_WALKING_SPEED) {
 		powerSprintState = 0;
 	}
@@ -510,19 +511,6 @@ void CMario::SetState(int state)
 	// DIE is the end state, cannot be changed! 
 	if (this->state == MARIO_STATE_DIE) return; 
 
-	if (GetTickCount64() - kick_start < MARIO_KICK_TIME) return;
-	else kick_start = -1;
-
-	if (GetTickCount64() - whip_start < MARIO_WHIP_TIME) return;
-	else whip_start = -1;
-
-	if (GetTickCount64() - float_start < MARIO_FLOAT_TIME) return;
-	else {
-		maxVy = MARIO_MAX_FALL_SPEED;
-		float_start = -1;
-	} 
-
-	
 	switch (state)
 	{
 	case MARIO_STATE_RUNNING_RIGHT: {
@@ -603,6 +591,7 @@ void CMario::SetState(int state)
 		break;
 	}
 	case MARIO_STATE_IDLE: {
+		maxVx = 0;
 		break;
 	}
 	case MARIO_STATE_DIE: {
@@ -612,15 +601,18 @@ void CMario::SetState(int state)
 		break;
 	}
 	case MARIO_STATE_KICK: {
+		if (kick_start != -1) break;
 		kick_start = GetTickCount64();
 		break;
 	}
 	case MARIO_STATE_WHIP: {
+		if (whip_start != -1) break;
 		whip_start = GetTickCount64();
 		break;
 	}
 	case MARIO_STATE_FLOATING: {
 		maxVy = MARIO_MAX_FALL_SPEED / 5;
+		if (float_start != -1) break;
 		float_start = GetTickCount64();
 		break;
 	}
@@ -629,7 +621,24 @@ void CMario::SetState(int state)
 		maxVy = MARIO_MAX_FALL_SPEED / 5;
 		break;
 	}
-	
+	}
+
+	if (GetTickCount64() - kick_start < MARIO_KICK_TIME) {
+		state = MARIO_STATE_KICK;	
+	}
+	else kick_start = -1;
+
+	if (GetTickCount64() - whip_start < MARIO_WHIP_TIME) {
+		state = MARIO_STATE_WHIP;
+	}
+	else whip_start = -1;
+
+	if (GetTickCount64() - float_start < MARIO_FLOAT_TIME) {
+		state = MARIO_STATE_FLOATING;	
+	}
+	else {
+		maxVy = MARIO_MAX_FALL_SPEED;
+		float_start = -1;
 	}
 
 	CGameObject::SetState(state);
@@ -653,7 +662,7 @@ void CMario::GetBoundingBox(float &left, float &top, float &right, float &bottom
 			right = left + MARIO_BIG_BBOX_WIDTH;
 			bottom = top + MARIO_BIG_BBOX_HEIGHT;
 		}
-		if (level == MARIO_LEVEL_RACOON)
+		if (state == MARIO_STATE_WHIP)
 		{
 			left = x - MARIO_RACOON_BBOX_WIDTH / 2;
 			right = left + MARIO_RACOON_BBOX_WIDTH;
