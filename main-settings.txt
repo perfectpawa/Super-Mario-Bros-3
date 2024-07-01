@@ -1,5 +1,5 @@
 [SETTINGS]
-start	1
+start	11
 width	256 
 height	256
 
@@ -9,15 +9,13 @@ height	256
 0	intro.txt
 1	overworld.txt
 10	scene001.txt
+11	scene001-bonus.txt
 99	playground.txt
 
 # id	file 
 [TEXTURES]
 -100	textures\bbox.png
-0	textures\mario.png
 1	textures\mario_new.png
-10	textures\enemies.png
-11	textures\enemies_flip.png
 12	textures\enemies_2.png
 13	textures\enemies_2_flip.png
 50	textures\misc.png

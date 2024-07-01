@@ -19,12 +19,6 @@
     <Filter Include="Resource Files\Misc">
       <UniqueIdentifier>{58aeaf43-52d7-475d-9c75-3affea1321c8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\GameObject">
-      <UniqueIdentifier>{317bebe5-61d6-430f-a9f6-fcdfda7113e7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\GameObject">
-      <UniqueIdentifier>{bfd84d7e-fcb3-4396-9a22-f03409d16e07}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Visual">
       <UniqueIdentifier>{96ad4786-16f9-4e91-b8f6-6d8af6d7ecd4}</UniqueIdentifier>
     </Filter>
@@ -43,24 +37,6 @@
     <Filter Include="Source Files\KeyEventHandler">
       <UniqueIdentifier>{ca0a52c9-3836-4714-a869-211ea3c6caba}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\GameObject\Misc">
-      <UniqueIdentifier>{e444b42a-97ef-4588-b7b4-741499e020de}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\GameObject\Enemy">
-      <UniqueIdentifier>{06f56e6e-bd1a-4916-b412-40a00f249033}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\GameObject\Misc">
-      <UniqueIdentifier>{c55634a1-1e2d-4fb1-beeb-339d82a65301}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\GameObject\Enemy">
-      <UniqueIdentifier>{f4bccfd9-e867-4557-8df6-1211ccde36ea}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\GameObject\Item">
-      <UniqueIdentifier>{6368cf5c-8e56-4183-90fb-740271282e19}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\GameObject\Item">
-      <UniqueIdentifier>{01c5f93a-0fd3-48fc-8cf5-3810e9654ded}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Resource Files\Enemy">
       <UniqueIdentifier>{b2222408-0825-4174-9e7b-72ed746e8dec}</UniqueIdentifier>
     </Filter>
@@ -73,17 +49,11 @@
     <Filter Include="Source Files\Scene">
       <UniqueIdentifier>{816112a3-4a1a-46e1-b4c5-8c3875ad4aa0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\GameObject\CheckingObj">
-      <UniqueIdentifier>{1e315a12-c758-41e5-b920-ded054de2e9d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Core">
       <UniqueIdentifier>{ed90412d-e09b-455a-83ff-5490dd299e38}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\Scene">
       <UniqueIdentifier>{90f7d934-235d-43e3-b4e1-56a60398a182}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\GameObject\CheckingObj">
-      <UniqueIdentifier>{1435589a-e982-4089-b118-7ff113b3af7d}</UniqueIdentifier>
     </Filter>
     <Filter Include="Resource Files\Mario">
       <UniqueIdentifier>{1b1e9d0d-26b5-455c-965a-c92f69435d7f}</UniqueIdentifier>
@@ -97,19 +67,61 @@
     <Filter Include="Header Files\UI">
       <UniqueIdentifier>{8506e8dd-ecaf-4c75-99d5-92dcb360f935}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\OverworldGameObject">
-      <UniqueIdentifier>{a4de72e8-e6c6-4857-a4d6-32e784b380df}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\OverworldGameObject">
-      <UniqueIdentifier>{34bee9f7-4b64-42a1-b7f6-376b8e610b58}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Resource Files\Overworld">
       <UniqueIdentifier>{b0b26482-1c47-4bef-a5c6-05f54cfb60c1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Object">
+      <UniqueIdentifier>{0fbbb2d3-552f-454b-ad94-9909da5ce9ba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Object\BackgroundObject">
+      <UniqueIdentifier>{e8d5adc8-6183-4d54-be23-943fe53c46ad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Object\GameObject">
+      <UniqueIdentifier>{317bebe5-61d6-430f-a9f6-fcdfda7113e7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Object\GameObject\Misc">
+      <UniqueIdentifier>{c55634a1-1e2d-4fb1-beeb-339d82a65301}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Object\GameObject\Enemy">
+      <UniqueIdentifier>{f4bccfd9-e867-4557-8df6-1211ccde36ea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Object\GameObject\Item">
+      <UniqueIdentifier>{6368cf5c-8e56-4183-90fb-740271282e19}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Object\GameObject\CheckingObj">
+      <UniqueIdentifier>{1435589a-e982-4089-b118-7ff113b3af7d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Object\OverworldGameObject">
+      <UniqueIdentifier>{a4de72e8-e6c6-4857-a4d6-32e784b380df}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Object">
+      <UniqueIdentifier>{5a271e27-3750-4aac-8d47-6110bf35473d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Object\OverworldGameObject">
+      <UniqueIdentifier>{34bee9f7-4b64-42a1-b7f6-376b8e610b58}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Object\GameObject">
+      <UniqueIdentifier>{bfd84d7e-fcb3-4396-9a22-f03409d16e07}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Object\GameObject\Misc">
+      <UniqueIdentifier>{e444b42a-97ef-4588-b7b4-741499e020de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Object\GameObject\Enemy">
+      <UniqueIdentifier>{06f56e6e-bd1a-4916-b412-40a00f249033}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Object\GameObject\Item">
+      <UniqueIdentifier>{01c5f93a-0fd3-48fc-8cf5-3810e9654ded}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Object\GameObject\CheckingObj">
+      <UniqueIdentifier>{1e315a12-c758-41e5-b920-ded054de2e9d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Object\BackgroundObject">
+      <UniqueIdentifier>{7b8cfaab-0e81-47b9-b3b9-3512d5d10bc7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameObject.cpp">
-      <Filter>Source Files\GameObject</Filter>
+      <Filter>Source Files\Object\GameObject</Filter>
     </ClCompile>
     <ClCompile Include="Animation.cpp">
       <Filter>Source Files\Visual</Filter>
@@ -132,41 +144,38 @@
     <ClCompile Include="Utils.cpp">
       <Filter>Source Files\Tool</Filter>
     </ClCompile>
-    <ClCompile Include="Background.cpp">
-      <Filter>Source Files\GameObject\Misc</Filter>
-    </ClCompile>
     <ClCompile Include="Brick.cpp">
-      <Filter>Source Files\GameObject\Misc</Filter>
+      <Filter>Source Files\Object\GameObject\Misc</Filter>
     </ClCompile>
     <ClCompile Include="Goomba.cpp">
-      <Filter>Source Files\GameObject\Enemy</Filter>
+      <Filter>Source Files\Object\GameObject\Enemy</Filter>
     </ClCompile>
     <ClCompile Include="Koopas.cpp">
-      <Filter>Source Files\GameObject\Enemy</Filter>
+      <Filter>Source Files\Object\GameObject\Enemy</Filter>
     </ClCompile>
     <ClCompile Include="Mario.cpp">
-      <Filter>Source Files\GameObject</Filter>
+      <Filter>Source Files\Object\GameObject</Filter>
     </ClCompile>
     <ClCompile Include="Platform.cpp">
-      <Filter>Source Files\GameObject\Misc</Filter>
+      <Filter>Source Files\Object\GameObject\Misc</Filter>
     </ClCompile>
     <ClCompile Include="Portal.cpp">
-      <Filter>Source Files\GameObject\Misc</Filter>
+      <Filter>Source Files\Object\GameObject\Misc</Filter>
     </ClCompile>
     <ClCompile Include="QuestionBlock.cpp">
-      <Filter>Source Files\GameObject\Misc</Filter>
+      <Filter>Source Files\Object\GameObject\Misc</Filter>
     </ClCompile>
     <ClCompile Include="Venus.cpp">
-      <Filter>Source Files\GameObject\Enemy</Filter>
+      <Filter>Source Files\Object\GameObject\Enemy</Filter>
     </ClCompile>
     <ClCompile Include="ColorBox.cpp">
-      <Filter>Source Files\GameObject\Misc</Filter>
+      <Filter>Source Files\Object\GameObject\Misc</Filter>
     </ClCompile>
     <ClCompile Include="Coin.cpp">
-      <Filter>Source Files\GameObject\Item</Filter>
+      <Filter>Source Files\Object\GameObject\Item</Filter>
     </ClCompile>
     <ClCompile Include="Mushroom.cpp">
-      <Filter>Source Files\GameObject\Item</Filter>
+      <Filter>Source Files\Object\GameObject\Item</Filter>
     </ClCompile>
     <ClCompile Include="Game.cpp">
       <Filter>Source Files\Core</Filter>
@@ -181,22 +190,22 @@
       <Filter>Source Files\Scene</Filter>
     </ClCompile>
     <ClCompile Include="FallCheckingObject.cpp">
-      <Filter>Source Files\GameObject\CheckingObj</Filter>
+      <Filter>Source Files\Object\GameObject\CheckingObj</Filter>
     </ClCompile>
     <ClCompile Include="SpawnCheck.cpp">
-      <Filter>Source Files\GameObject\CheckingObj</Filter>
+      <Filter>Source Files\Object\GameObject\CheckingObj</Filter>
     </ClCompile>
     <ClCompile Include="FireShot.cpp">
-      <Filter>Source Files\GameObject\Enemy</Filter>
+      <Filter>Source Files\Object\GameObject\Enemy</Filter>
     </ClCompile>
     <ClCompile Include="Collision.cpp">
       <Filter>Source Files\Core</Filter>
     </ClCompile>
     <ClCompile Include="ParaGoomba.cpp">
-      <Filter>Source Files\GameObject\Enemy</Filter>
+      <Filter>Source Files\Object\GameObject\Enemy</Filter>
     </ClCompile>
     <ClCompile Include="Leaf.cpp">
-      <Filter>Source Files\GameObject\Item</Filter>
+      <Filter>Source Files\Object\GameObject\Item</Filter>
     </ClCompile>
     <ClCompile Include="HUD.cpp">
       <Filter>Source Files\UI</Filter>
@@ -205,25 +214,25 @@
       <Filter>Source Files\UI</Filter>
     </ClCompile>
     <ClCompile Include="OW_GameObject.cpp">
-      <Filter>Source Files\OverworldGameObject</Filter>
+      <Filter>Source Files\Object\OverworldGameObject</Filter>
     </ClCompile>
     <ClCompile Include="OW_Mario.cpp">
-      <Filter>Source Files\OverworldGameObject</Filter>
+      <Filter>Source Files\Object\OverworldGameObject</Filter>
     </ClCompile>
     <ClCompile Include="OW_Path.cpp">
-      <Filter>Source Files\OverworldGameObject</Filter>
+      <Filter>Source Files\Object\OverworldGameObject</Filter>
     </ClCompile>
     <ClCompile Include="OW_Terrain.cpp">
-      <Filter>Source Files\OverworldGameObject</Filter>
+      <Filter>Source Files\Object\OverworldGameObject</Filter>
     </ClCompile>
     <ClCompile Include="OW_MapHolder.cpp">
-      <Filter>Source Files\OverworldGameObject</Filter>
+      <Filter>Source Files\Object\OverworldGameObject</Filter>
     </ClCompile>
     <ClCompile Include="OW_Portal.cpp">
-      <Filter>Source Files\OverworldGameObject</Filter>
+      <Filter>Source Files\Object\OverworldGameObject</Filter>
     </ClCompile>
     <ClCompile Include="OW_Point.cpp">
-      <Filter>Source Files\OverworldGameObject</Filter>
+      <Filter>Source Files\Object\OverworldGameObject</Filter>
     </ClCompile>
     <ClCompile Include="LevelKeyHandler.cpp">
       <Filter>Source Files\KeyEventHandler</Filter>
@@ -240,16 +249,22 @@
     <ClCompile Include="CharacterIconUI.cpp">
       <Filter>Source Files\UI</Filter>
     </ClCompile>
+    <ClCompile Include="Tube.cpp">
+      <Filter>Source Files\Object\GameObject\Misc</Filter>
+    </ClCompile>
+    <ClCompile Include="BackgroundObject.cpp">
+      <Filter>Source Files\Object\BackgroundObject</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AssetIDs.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="GameObject.h">
-      <Filter>Header Files\GameObject</Filter>
+      <Filter>Header Files\Object\GameObject</Filter>
     </ClInclude>
     <ClInclude Include="Mario.h">
-      <Filter>Header Files\GameObject</Filter>
+      <Filter>Header Files\Object\GameObject</Filter>
     </ClInclude>
     <ClInclude Include="Animation.h">
       <Filter>Header Files\Visual</Filter>
@@ -281,38 +296,35 @@
     <ClInclude Include="KeyEventHandler.h">
       <Filter>Header Files\KeyEventHandler</Filter>
     </ClInclude>
-    <ClInclude Include="Background.h">
-      <Filter>Header Files\GameObject\Misc</Filter>
-    </ClInclude>
     <ClInclude Include="Brick.h">
-      <Filter>Header Files\GameObject\Misc</Filter>
+      <Filter>Header Files\Object\GameObject\Misc</Filter>
     </ClInclude>
     <ClInclude Include="Goomba.h">
-      <Filter>Header Files\GameObject\Enemy</Filter>
+      <Filter>Header Files\Object\GameObject\Enemy</Filter>
     </ClInclude>
     <ClInclude Include="Koopas.h">
-      <Filter>Header Files\GameObject\Enemy</Filter>
+      <Filter>Header Files\Object\GameObject\Enemy</Filter>
     </ClInclude>
     <ClInclude Include="Platform.h">
-      <Filter>Header Files\GameObject\Misc</Filter>
+      <Filter>Header Files\Object\GameObject\Misc</Filter>
     </ClInclude>
     <ClInclude Include="Portal.h">
-      <Filter>Header Files\GameObject\Misc</Filter>
+      <Filter>Header Files\Object\GameObject\Misc</Filter>
     </ClInclude>
     <ClInclude Include="QuestionBlock.h">
-      <Filter>Header Files\GameObject\Misc</Filter>
+      <Filter>Header Files\Object\GameObject\Misc</Filter>
     </ClInclude>
     <ClInclude Include="Venus.h">
-      <Filter>Header Files\GameObject\Enemy</Filter>
+      <Filter>Header Files\Object\GameObject\Enemy</Filter>
     </ClInclude>
     <ClInclude Include="ColorBox.h">
-      <Filter>Header Files\GameObject\Misc</Filter>
+      <Filter>Header Files\Object\GameObject\Misc</Filter>
     </ClInclude>
     <ClInclude Include="Coin.h">
-      <Filter>Header Files\GameObject\Item</Filter>
+      <Filter>Header Files\Object\GameObject\Item</Filter>
     </ClInclude>
     <ClInclude Include="Mushroom.h">
-      <Filter>Header Files\GameObject\Item</Filter>
+      <Filter>Header Files\Object\GameObject\Item</Filter>
     </ClInclude>
     <ClInclude Include="Game.h">
       <Filter>Header Files\Core</Filter>
@@ -324,16 +336,16 @@
       <Filter>Header Files\Core</Filter>
     </ClInclude>
     <ClInclude Include="FireShot.h">
-      <Filter>Header Files\GameObject\Enemy</Filter>
+      <Filter>Header Files\Object\GameObject\Enemy</Filter>
     </ClInclude>
     <ClInclude Include="SpawnCheck.h">
-      <Filter>Header Files\GameObject\CheckingObj</Filter>
+      <Filter>Header Files\Object\GameObject\CheckingObj</Filter>
     </ClInclude>
     <ClInclude Include="ParaGoomba.h">
-      <Filter>Header Files\GameObject\Enemy</Filter>
+      <Filter>Header Files\Object\GameObject\Enemy</Filter>
     </ClInclude>
     <ClInclude Include="Leaf.h">
-      <Filter>Header Files\GameObject\Item</Filter>
+      <Filter>Header Files\Object\GameObject\Item</Filter>
     </ClInclude>
     <ClInclude Include="UI.txt">
       <Filter>Resource Files\UI</Filter>
@@ -342,34 +354,34 @@
       <Filter>Header Files\UI</Filter>
     </ClInclude>
     <ClInclude Include="OW_Mario.h">
-      <Filter>Header Files\OverworldGameObject</Filter>
+      <Filter>Header Files\Object\OverworldGameObject</Filter>
     </ClInclude>
     <ClInclude Include="OW_Portal.h">
-      <Filter>Header Files\OverworldGameObject</Filter>
+      <Filter>Header Files\Object\OverworldGameObject</Filter>
     </ClInclude>
     <ClInclude Include="OW_Path.h">
-      <Filter>Header Files\OverworldGameObject</Filter>
+      <Filter>Header Files\Object\OverworldGameObject</Filter>
     </ClInclude>
     <ClInclude Include="OW_Terrain.h">
-      <Filter>Header Files\OverworldGameObject</Filter>
+      <Filter>Header Files\Object\OverworldGameObject</Filter>
     </ClInclude>
     <ClInclude Include="ow_map_holder.txt">
       <Filter>Resource Files\Overworld</Filter>
     </ClInclude>
     <ClInclude Include="OW_MapHolder.h">
-      <Filter>Header Files\OverworldGameObject</Filter>
+      <Filter>Header Files\Object\OverworldGameObject</Filter>
     </ClInclude>
     <ClInclude Include="OW_Point.h">
-      <Filter>Header Files\OverworldGameObject</Filter>
+      <Filter>Header Files\Object\OverworldGameObject</Filter>
     </ClInclude>
     <ClInclude Include="UIObject.h">
       <Filter>Header Files\UI</Filter>
     </ClInclude>
     <ClInclude Include="FallCheckingObject.h">
-      <Filter>Header Files\GameObject\CheckingObj</Filter>
+      <Filter>Header Files\Object\GameObject\CheckingObj</Filter>
     </ClInclude>
     <ClInclude Include="OW_GameObject.h">
-      <Filter>Header Files\OverworldGameObject</Filter>
+      <Filter>Header Files\Object\OverworldGameObject</Filter>
     </ClInclude>
     <ClInclude Include="PlayScene.h">
       <Filter>Header Files\Scene</Filter>
@@ -388,6 +400,12 @@
     </ClInclude>
     <ClInclude Include="CharacterIconUI.h">
       <Filter>Header Files\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Tube.h">
+      <Filter>Header Files\Object\GameObject\Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="BackgroundObject.h">
+      <Filter>Header Files\Object\BackgroundObject</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -462,6 +480,9 @@
     </Text>
     <Text Include="ow_portal.txt">
       <Filter>Resource Files\Overworld</Filter>
+    </Text>
+    <Text Include="scene001-bonus.txt">
+      <Filter>Resource Files\Scenes</Filter>
     </Text>
   </ItemGroup>
   <ItemGroup>

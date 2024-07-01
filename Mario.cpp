@@ -78,6 +78,7 @@ void CMario::MovingBehavior(DWORD dt) {
 		vx = max(vx, maxVx);
 	}
 
+	#pragma region Set sprint power state
 
 	if (abs(vx) <= MARIO_WALKING_SPEED) {
 		powerSprintState = 0;
@@ -106,6 +107,8 @@ void CMario::MovingBehavior(DWORD dt) {
 	if(abs(vx) >= MARIO_RUNNING_SPEED) {
 		powerSprintState = 6;
 	}
+#pragma endregion
+
 }
 
 void CMario::PickUpBehavior() {
@@ -158,10 +161,9 @@ void CMario::TimeChecking() {
 		untouchable = 0;
 	}
 
-	if(isSprinting && vx == maxVx && GetTickCount64() - sprint_start > MARIO_SPRINT_TIME)
+	if(isSprinting && vx == maxVx && GetTickCount64())
 	{
 		isRunning = true;
-		sprint_start = -1;
 	}
 }
 

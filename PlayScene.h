@@ -5,6 +5,7 @@
 #include "GameObject.h"
 #include "OW_MapHolder.h"
 #include "OW_GameObject.h"
+#include "BackgroundObject.h"
 #include "HUD.h"
 
 class CPlayScene : public CScene
@@ -17,10 +18,7 @@ protected:
 	vector<LPGAMEOBJECT> itemObjs;
 	vector<LPGAMEOBJECT> terrainObjs;
 	vector<LPGAMEOBJECT> frontTerrainObjs;
-	vector<LPGAMEOBJECT> tileBackgroundObjs;
-	vector<LPGAMEOBJECT> backgroundObjs;
 	vector<LPGAMEOBJECT> detectObjs;
-
 
 	bool isOnOverworldMap = false;
 	LPOWGAMEOBJECT OW_player;
@@ -29,6 +27,8 @@ protected:
 	vector<LPOWGAMEOBJECT> OW_terrainObjs;
 	vector<LPOWGAMEOBJECT> OW_portalObjs;
 	vector<LPOWGAMEOBJECT> OW_pointObjs;
+
+	vector<CBackgroundObject*> backgroundObjs;
 
 	CHUD* mainHUD;
 

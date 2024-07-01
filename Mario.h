@@ -10,7 +10,7 @@
 
 #include "AssetIDs.h"
 
-#define MARIO_WALKING_SPEED		0.08f	// 5 block 1s
+#define MARIO_WALKING_SPEED		0.1f	// 5 block 1s
 #define MARIO_WALKING_FAST_SPEED		0.18f
 #define MARIO_RUNNING_SPEED		0.2f
 #define MARIO_MAX_FALL_SPEED		0.5f

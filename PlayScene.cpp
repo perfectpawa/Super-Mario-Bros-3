@@ -18,6 +18,7 @@
 
 #include "Platform.h"
 #include "ColorBox.h"
+#include "Tube.h"
 
 #include "Goomba.h"
 #include "ParaGoomba.h"
@@ -30,7 +31,6 @@
 #include "Mushroom.h"
 
 #include "SpawnCheck.h"
-#include "Background.h"
 
 #include "OW_Mario.h"
 #include "OW_Path.h"
@@ -126,6 +126,8 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	// skip invalid lines - an object set must have at least id, x, y
 	if (tokens.size() < 2) return;
 
+	DebugOut(L"--> %s\n", ToWSTR(line).c_str());
+
 	int object_type = atoi(tokens[0].c_str());
 	float x = (float)atof(tokens[1].c_str());
 	float y = (float)atof(tokens[2].c_str());
@@ -134,7 +136,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	CGameObject* itemObj = NULL;
 	CGameObject* terrainObj = NULL;
 	CGameObject* frontTerrainObj = NULL;
-	CGameObject* backgroundObj = NULL;
+	CBackgroundObject* backgroundObj = NULL;
 
 	switch (object_type)
 	{
@@ -163,9 +165,18 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		int type = atoi(tokens[3].c_str());
 		enemyObj = new CKoopas(x, y, type); break;
 	}
-	case OBJECT_TYPE_BREAKABLE_BRICK: enemyObj = new CBrick(x,y); break;
+	case OBJECT_TYPE_BRICK: {
+		int type = atoi(tokens[3].c_str());
+		int spriteId = -1;
+		if (tokens.size() == 5) {
+			spriteId = atoi(tokens[4].c_str());
+		}
+		terrainObj = new CBrick(x, y, type, spriteId);
+		break;
+	
+	}
 	case OBJECT_TYPE_SPAWN_CHECK: enemyObj = new CSpawnCheck(); break;
-	case OBJECT_TYPE_MUSHROOM: enemyObj = new CMushroom(x, y); break;
+	case OBJECT_TYPE_MUSHROOM: itemObj = new CMushroom(x, y); break;
 	case OBJECT_TYPE_VENUS: enemyObj = new CVenus(x, y); break;
 	case OBJECT_TYPE_QUESTION_BLOCK: {
 		int type = atoi(tokens[3].c_str());
@@ -179,8 +190,8 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		float cell_height = (float)atof(tokens[4].c_str());
 		int length = atoi(tokens[5].c_str());
 		int sprite_begin = atoi(tokens[6].c_str());
-		int sprite_middle = -1;
-		int sprite_end = -1;
+		int sprite_middle = sprite_begin;
+		int sprite_end = sprite_begin;
 		bool isDirectionColliable = false;
 		bool isVertical = false;
 		bool isFront = false;
@@ -232,32 +243,18 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	
 	}
 	case OBJECT_TYPE_TUBE: {
-		float cell_width = (float)atof(tokens[3].c_str());
-		float cell_height = (float)atof(tokens[4].c_str());
-		int length = atoi(tokens[5].c_str());
-		
-		int isFront = false;
-		if (tokens.size() == 7) {
-			isFront = (atoi(tokens[6].c_str()) == 1);
-		}
-		
-		if (isFront) {
-			frontTerrainObj = new CPlatform(
-				x, y,
-				cell_width, cell_height, length,
-				ID_SPRITE_TUBE_MOUTH, ID_SPRITE_TUBE_BODY, ID_SPRITE_TUBE_BODY,
-				0, 1
-			);
-		}
-		else {
-			terrainObj = new CPlatform(
-				x, y,
-				cell_width, cell_height, length,
-				ID_SPRITE_TUBE_MOUTH, ID_SPRITE_TUBE_BODY, ID_SPRITE_TUBE_BODY,
-				0, 1
-			);
+		int length = atoi(tokens[3].c_str());
+		bool isUpsideDown = false;
+		int type = 0;	
+		if (tokens.size() == 6) {
+			isUpsideDown = (atoi(tokens[4].c_str()) == 1);
+			type = atoi(tokens[5].c_str());	
 		}
 
+		//debug out tube type and isUpsideDown
+		DebugOut(L"Tube type: %d, isUpsideDown: %d\n", type, isUpsideDown);
+
+		terrainObj = new CTube(x, y, length, isUpsideDown, type);
 		break;
 	}
 	case OBJECT_TYPE_GROUND: {
@@ -311,39 +308,16 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 
 	}
 	case OBJECT_TYPE_BACKGROUND: {
-		float cell_width = (float)atof(tokens[3].c_str());
-		float cell_height = (float)atof(tokens[4].c_str());
-		int length = atoi(tokens[5].c_str());
-		int sprite_begin = atoi(tokens[6].c_str());
-		int sprite_middle = -1;
-		int sprite_end = -1;
-		if (length > 1) {
-			sprite_middle = atoi(tokens[7].c_str());
-			sprite_end = atoi(tokens[8].c_str());
-		}
+		int type = atoi(tokens[3].c_str());
+		int length = 1;
 
-		backgroundObj = new CBackground(
-			x, y,
-			cell_width, cell_height, length,
-			sprite_begin, sprite_middle, sprite_end
-		);
-		break;
-	}
-	case OBJECT_TYPE_TILE_BACKGROUND: {
-		int length = atoi(tokens[3].c_str());
-		float width = (float)atof(tokens[4].c_str());
-		int spriteId = atoi(tokens[5].c_str());
-		float posX = x, posY = y;
-		for (int i = 0; i < length; i++) {
-			CBackground* tileBackgroundObj = new CBackground(
-				posX, posY,
-				width, 240, 1,
-				spriteId, -1, -1
-			);
-			tileBackgroundObjs.push_back(tileBackgroundObj);
-			posX += width;
+		if(tokens.size() == 5) {
+			length = atoi(tokens[4].c_str());
 		}
+		backgroundObj = new CBackgroundObject(x, y, type, length);
+		backgroundObjs.push_back(backgroundObj);
 		break;
+	
 	}
 
 	default:
@@ -369,11 +343,6 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	if (frontTerrainObj != NULL) {
 		frontTerrainObjs.push_back(frontTerrainObj);
 		frontTerrainObj->SetPosition(x, y);
-	}
-
-	if (backgroundObj != NULL) {
-		backgroundObjs.push_back(backgroundObj);
-		backgroundObj->SetPosition(x, y);
 	}
 }
 
@@ -575,11 +544,6 @@ void CPlayScene::Unload()
 		delete frontTerrainObjs[i];
 	frontTerrainObjs.clear();
 
-	//unload backgroundObjs
-	for (int i = 0; i < backgroundObjs.size(); i++)
-		delete backgroundObjs[i];
-	backgroundObjs.clear();
-
 	//unload dectectObjs
 	for (int i = 0; i < detectObjs.size(); i++)
 		delete detectObjs[i];
@@ -659,43 +623,6 @@ void CPlayScene::Update(DWORD dt)
 
 
 	PurgeDeletedObjects();
-
-	//for all item in tilebackground, if x of item is < cx, update to x = last item x + width
-	float posX, posY;
-	tileBackgroundObjs[tileBackgroundObjs.size() - 1]->GetPosition(posX, posY);
-	posX += 16;
-	for (int i = 0; i < tileBackgroundObjs.size(); i++) {
-		float x, y;
-		tileBackgroundObjs[i]->GetPosition(x, y);
-		if (x < cx - 16) {
-			tileBackgroundObjs[i]->SetPosition(posX, y);
-			posX += 16;
-		}
-		else
-			break;
-	}
-	//for last to first, if x of item is > cx + width, update to x = first item x - width
-	tileBackgroundObjs[0]->GetPosition(posX, posY);
-	posX -= 16;
-	float maxPosX = cx + 16 * (tileBackgroundObjs.size() - 1);
-	for (int i = (int)tileBackgroundObjs.size() - 1; i >= 0; i--) {
-		float x, y;
-		tileBackgroundObjs[i]->GetPosition(x, y);
-		if (x > maxPosX) {
-			tileBackgroundObjs[i]->SetPosition(posX, y);
-			posX -= 16;
-		}
-		else
-			break;
-	}
-
-	//sort tileBackgroundObjs by x
-	sort(tileBackgroundObjs.begin(), tileBackgroundObjs.end(), [](LPGAMEOBJECT a, LPGAMEOBJECT b) {
-		float x1, y1, x2, y2;
-		a->GetPosition(x1, y1);
-		b->GetPosition(x2, y2);
-		return x1 < x2;
-	});
 }
 
 void CPlayScene::Update_OW(DWORD dt) {
@@ -732,14 +659,6 @@ void CPlayScene::Render()
 		return;
 	}
 
-	//render tileBackgroundObjs
-	for (int i = 0; i < tileBackgroundObjs.size(); i++)
-		tileBackgroundObjs[i]->Render();
-
-	//render backgroundObjs
-	for (int i = 0; i < backgroundObjs.size(); i++)
-		backgroundObjs[i]->Render();
-
 	//render terrainObjs
 	for (int i = 0; i < terrainObjs.size(); i++) {
 		terrainObjs[i]->Render();
@@ -764,7 +683,12 @@ void CPlayScene::Render()
 	//render player
 	player->Render();
 
-	mainHUD->Render();
+	//render backgroundObjs
+	for (int i = 0; i < backgroundObjs.size(); i++) {
+		backgroundObjs[i]->Render();
+	}
+
+	if(mainHUD != NULL) mainHUD->Render();
 }
 
 void CPlayScene::Render_OW() {
@@ -828,26 +752,12 @@ void CPlayScene::Clear()
 	}
 	frontTerrainObjs.clear();
 
-	//clear backgroundObjs
-	for (it = backgroundObjs.begin(); it != backgroundObjs.end(); it++)
-	{
-		delete (*it);
-	}
-	backgroundObjs.clear();
-
 	//clear detectObjs
 	for (it = detectObjs.begin(); it != detectObjs.end(); it++)
 	{
 		delete (*it);
 	}
 	detectObjs.clear();
-
-	//clear tileBackgroundObjs
-	for (it = tileBackgroundObjs.begin(); it != tileBackgroundObjs.end(); it++)
-	{
-		delete (*it);
-	}
-	tileBackgroundObjs.clear();
 }
 
 void CPlayScene::PurgeDeletedObjects()
@@ -909,20 +819,6 @@ void CPlayScene::PurgeDeletedObjects()
 		std::remove_if(frontTerrainObjs.begin(), frontTerrainObjs.end(), CPlayScene::IsGameObjectDeleted),
 		frontTerrainObjs.end());
 
-	//check in backgroundObjs
-	for (it = backgroundObjs.begin(); it != backgroundObjs.end(); it++)
-	{
-		LPGAMEOBJECT o = *it;
-		if (o->IsDeleted())
-		{
-			delete o;
-			*it = NULL;
-		}
-	}
-	backgroundObjs.erase(
-		std::remove_if(backgroundObjs.begin(), backgroundObjs.end(), CPlayScene::IsGameObjectDeleted),
-		backgroundObjs.end());
-
 	//check in detectObjs
 	for (it = detectObjs.begin(); it != detectObjs.end(); it++)
 	{
@@ -977,6 +873,7 @@ void CPlayScene::MoveFrontToBack(LPGAMEOBJECT obj)
 }
 
 void CPlayScene::UpdateUI(DWORD dt, float cx, float cy) {
+	if(mainHUD == NULL) return;
 	UpdateUIPosFixedCam(cx,cy);
 	UpdateUITimeLimit(dt);
 	UpdateUIPower();
@@ -990,7 +887,7 @@ void CPlayScene::UpdateUIPosFixedCam() {
 	game->GetCamPos(cam_x, cam_y);
 	hud_x = (float)cam_x + game->GetBackBufferWidth() / 2.0f - 16 * 2.5f;
 	hud_y = (float)cam_y + game->GetBackBufferHeight() - 16 * 1.75f;
-
+	
 	mainHUD->SetPosition(hud_x, hud_y);
 }
 

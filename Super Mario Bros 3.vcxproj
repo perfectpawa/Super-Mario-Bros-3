@@ -130,7 +130,7 @@
   <ItemGroup>
     <ClCompile Include="Animation.cpp" />
     <ClCompile Include="Animations.cpp" />
-    <ClCompile Include="Background.cpp" />
+    <ClCompile Include="BackgroundObject.cpp" />
     <ClCompile Include="Brick.cpp" />
     <ClCompile Include="CharacterIconUI.cpp" />
     <ClCompile Include="Coin.cpp" />
@@ -169,6 +169,7 @@
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="Sprites.cpp" />
     <ClCompile Include="Textures.cpp" />
+    <ClCompile Include="Tube.cpp" />
     <ClCompile Include="UIObject.cpp" />
     <ClCompile Include="Utils.cpp" />
     <ClCompile Include="Venus.cpp" />
@@ -178,7 +179,7 @@
     <ClInclude Include="AnimationFrame.h" />
     <ClInclude Include="Animations.h" />
     <ClInclude Include="AssetIDs.h" />
-    <ClInclude Include="Background.h" />
+    <ClInclude Include="BackgroundObject.h" />
     <ClInclude Include="Brick.h" />
     <ClInclude Include="CharacterIconUI.h" />
     <ClInclude Include="Coin.h" />
@@ -204,6 +205,7 @@
     <ClInclude Include="OW_Portal.h" />
     <ClInclude Include="OW_Terrain.h" />
     <ClInclude Include="PlayScene.h" />
+    <ClInclude Include="Tube.h" />
     <ClInclude Include="UI.txt" />
     <ClInclude Include="KeyEventHandler.h" />
     <ClInclude Include="Koopas.h" />
@@ -246,6 +248,7 @@
     <Text Include="playground.txt" />
     <Text Include="reward.txt" />
     <Text Include="question_block.txt" />
+    <Text Include="scene001-bonus.txt" />
     <Text Include="scene001.txt" />
     <Text Include="tube.txt" />
     <Text Include="venus.txt" />
