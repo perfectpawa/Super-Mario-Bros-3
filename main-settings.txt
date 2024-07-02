@@ -1,5 +1,5 @@
 [SETTINGS]
-start	11
+start	10
 width	256 
 height	256
 
@@ -16,16 +16,17 @@ height	256
 [TEXTURES]
 -100	textures\bbox.png
 1	textures\mario_new.png
+
 12	textures\enemies_2.png
 13	textures\enemies_2_flip.png
+
 50	textures\misc.png
-51	textures\misc_2.png
-52	textures\misc_3.png
-55	textures\misc_flip.png
-60	textures\sky-background.png
+51	textures\misc_flip.png
+
 70	textures\tiles.png
+
 80	textures\ui.png
 81	textures\ui_holder.png
+
 8881	textures\overworld-icons.png
 8882	textures\overworld-tile.png
-8891	textures\ow_bacground_yellow.png

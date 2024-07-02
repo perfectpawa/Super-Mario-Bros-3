@@ -10,10 +10,8 @@ protected:
 	float y;
 	int width;
 	int height;
-	int idTextureBG;
 public:
-	COWMapHolder(float x, float y, int width, int height, int bgColor);
+	COWMapHolder(float x, float y, int width, int height);
 	void Render();
-	void DrawBG();
 	void DrawBorder();
 };

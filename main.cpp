@@ -48,10 +48,10 @@ HOW TO INSTALL Microsoft.DXSDK.D3DX
 #define MAIN_WINDOW_TITLE L"04 - Collision"
 #define WINDOW_ICON_PATH L"mario.ico"
 
-#define BACKGROUND_COLOR D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.0f)
+#define BACKGROUND_COLOR D3DXCOLOR(156.0f/ 255, 252.0f/255, 240.0f/255, 0.0f)
 
-#define SCREEN_WIDTH 2560
-#define SCREEN_HEIGHT 2560
+#define SCREEN_WIDTH 256
+#define SCREEN_HEIGHT 256
 
 LRESULT CALLBACK WinProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
@@ -87,7 +87,10 @@ void Render()
 	ID3D10RenderTargetView* pRenderTargetView = g->GetRenderTargetView();
 	ID3DX10Sprite* spriteHandler = g->GetSpriteHandler();
 
-	pD3DDevice->ClearRenderTargetView(pRenderTargetView, BACKGROUND_COLOR);
+	D3DXCOLOR bgColor;
+	g->GetBackgroundColor(bgColor);
+
+	pD3DDevice->ClearRenderTargetView(pRenderTargetView, bgColor);
 
 	spriteHandler->Begin(D3DX10_SPRITE_SORT_TEXTURE);
 

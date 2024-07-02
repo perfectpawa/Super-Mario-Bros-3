@@ -35,6 +35,11 @@ protected:
 	//scene setting
 	float timeLimit = 0;
 
+	float camLimitLeft = NULL;
+	float camLimitRight = NULL;
+	float camLimitTop = NULL;
+	float camLimitBottom = NULL;
+
 
 	void _ParseSection_SPRITES(string line);
 	void _ParseSection_ANIMATIONS(string line);
@@ -49,6 +54,8 @@ protected:
 	virtual void AddObject(LPGAMEOBJECT obj, int type);
 	virtual void MoveFrontToBack(LPGAMEOBJECT obj);
 
+	virtual void CamPosFollowPlayer();
+
 public:
 	CPlayScene(int id, LPCWSTR filePath);
 
@@ -61,7 +68,7 @@ public:
 	virtual void Render_OW();
 
 	virtual void LoadUI();
-	virtual void UpdateUI(DWORD dt, float cx, float cy);
+	virtual void UpdateUI(DWORD dt);
 	virtual void UpdateUIPosFixedCam();
 	virtual void UpdateUIPosFixedCam(float cx, float cy);
 	virtual void UpdateUITimeLimit(DWORD dt);

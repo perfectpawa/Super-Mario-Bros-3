@@ -57,6 +57,8 @@ class CGame
 	int current_scene;
 	int next_scene = -1;
 
+	D3DXCOLOR bgColor = D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.0f);
+
 	void _ParseSection_SETTINGS(string line);
 	void _ParseSection_SCENES(string line);
 
@@ -87,6 +89,9 @@ public:
 	int IsKeyDown(int KeyCode);
 	void ProcessKeyboard();
 	void SetKeyHandler(LPKEYEVENTHANDLER handler) { keyHandler = handler; }
+
+	void SetBackgroundColor(D3DXCOLOR color) { bgColor = color; }
+	void GetBackgroundColor(D3DXCOLOR& color) { color = bgColor; }
 
 
 	ID3D10Device* GetDirect3DDevice() { return this->pD3DDevice; }

@@ -3,48 +3,17 @@
 #include "Sprites.h"
 #include "Textures.h"
 
-COWMapHolder::COWMapHolder(float x, float y, int width, int height, int bgColor)
+COWMapHolder::COWMapHolder(float x, float y, int width, int height)
 {
 	this->x = x;
 	this->y = y;
 	this->width = width;
 	this->height = height;
-	switch (bgColor)
-	{
-	case BG_YELLOW:
-		this->idTextureBG = 8891;
-		break;
-	default:
-		this->idTextureBG = 8891;
-		break;
-	}
 }
 
 void COWMapHolder::Render()
 {
-	DrawBG();
 	DrawBorder();
-}
-
-void COWMapHolder::DrawBG()
-{
-	D3DXVECTOR3 p(x, y, 0);
-	RECT rect;
-
-	LPTEXTURE bbox = CTextures::GetInstance()->Get(idTextureBG);
-
-	rect.left = 0;
-	rect.top = 0;
-	rect.right = this->width * 16;
-	rect.bottom = this->height * 16;
-
-	float cx, cy;
-	CGame::GetInstance()->GetCamPos(cx, cy);
-
-	float xx = x - 8 + rect.right / 2;
-	float yy = y - 8 + rect.bottom / 2;
-
-	CGame::GetInstance()->Draw(xx - cx, yy - cy, bbox, nullptr, 1.0f, rect.right - 1, rect.bottom - 1);
 }
 
 void COWMapHolder::DrawBorder()

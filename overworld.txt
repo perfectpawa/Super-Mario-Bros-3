@@ -8,13 +8,15 @@ ow_portal.txt
 ow_point.txt
 UI.txt
 [UI]
+[SETTINGS]
+background_color	255	218	121
 
 [OBJECTS]
 #MARIO
 88880001	16	32
 
 #MAP_HOLDER
-88880099	0	0	14	10	0
+88880099	0	0	14	10
 
 #PORTAL
 88880004	48	0	1	1

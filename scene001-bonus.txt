@@ -11,10 +11,11 @@ tube.txt
 [UI]
 [SETTINGS]
 time	300
+background_color	0	0	0
 [OBJECTS]
 
 # MARIO
-0	128	16
+0	128	112
 
 #TUBE
 720	128	16	2	1	1

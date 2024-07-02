@@ -5,6 +5,11 @@
 #define TYPE_BUSH_SMALL	2
 #define TYPE_BUSH_BIG_1	3
 #define TYPE_BUSH_BIG_2	4
+#define TYPE_BUSH_TALL	5
+#define TYPE_BLACK_BACKGROUND	10
+#define TYPE_BLACK_BACKGROUND_BOUNDARY	11
+#define TYPE_BLACK_BUSH_SMALL	12
+#define TYPE_BLACK_BUSH_MEDIUM	13
 
 class CBackgroundObject
 {
@@ -18,5 +23,12 @@ public:
 	void Render();
 	void RenderCloud();
 	void RenderGrass();
+	void RenderBushSmall();
 	void RenderBushBig1();
+	void RenderBushBig2();
+	void RenderBushTall();
+	void RenderBlackBackground();
+	void RenderBlackBackgroundBoundary();
+	void RenderBlackBushSmall();
+	void RenderBlackBushMedium();
 };
