@@ -21,6 +21,7 @@ protected:
 	vector<LPGAMEOBJECT> detectObjs;
 
 	vector<LPGAMEOBJECT> brickCoins;
+	vector<LPGAMEOBJECT> coinBricks;
 
 	bool isOnOverworldMap = false;
 	LPOWGAMEOBJECT OW_player;

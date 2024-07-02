@@ -305,11 +305,8 @@ void CMario::OnCollisionWithKoopas(LPCOLLISIONEVENT e)
 
 void CMario::OnCollisionWithCoin(LPCOLLISIONEVENT e)
 {
-	CCoin* coin = dynamic_cast<CCoin*>(e->obj);
-	if (coin->CanInteract()) {
-		coin->Delete();
-		coin++;
-	}
+	e->obj->Delete();
+	coin++;
 }
 
 void CMario::OnCollisionWithPortal(LPCOLLISIONEVENT e)

@@ -607,6 +607,8 @@ void CPlayScene::Update(DWORD dt)
 		coObjects.push_back(detectObjs[i]);
 	for (int i = 0; i < brickCoins.size(); i++)
 		coObjects.push_back(brickCoins[i]);
+	for (int i = 0; i < coinBricks.size(); i++)
+		coObjects.push_back(coinBricks[i]);
 
 	// skip the rest if scene was already unloaded (Mario::Update might trigger PlayScene::Unload)
 	if (player == NULL) return;
@@ -680,8 +682,6 @@ void CPlayScene::Render()
 		backgroundObjs[i]->Render();
 	}
 
-
-
 	//render terrainObjs
 	for (int i = 0; i < terrainObjs.size(); i++) {
 		terrainObjs[i]->Render();
@@ -690,6 +690,11 @@ void CPlayScene::Render()
 	//render brickCoins
 	for (int i = 0; i < brickCoins.size(); i++) {
 		brickCoins[i]->Render();
+	}
+
+	//render coinBricks
+	for (int i = 0; i < coinBricks.size(); i++) {
+		coinBricks[i]->Render();
 	}
 
 	//render itemObjs
@@ -775,6 +780,13 @@ void CPlayScene::Clear()
 	}
 	brickCoins.clear();
 
+	//clear coinBricks
+	for (it = coinBricks.begin(); it != coinBricks.end(); it++)
+	{
+		delete (*it);
+	}
+	coinBricks.clear();
+
 	//clear frontTerrainObjs
 	for (it = frontTerrainObjs.begin(); it != frontTerrainObjs.end(); it++)
 	{
@@ -848,6 +860,20 @@ void CPlayScene::PurgeDeletedObjects()
 	brickCoins.erase(
 		std::remove_if(brickCoins.begin(), brickCoins.end(), CPlayScene::IsGameObjectDeleted),
 		brickCoins.end());
+
+	//check in coinBricks
+	for (it = coinBricks.begin(); it != coinBricks.end(); it++)
+	{
+		LPGAMEOBJECT o = *it;
+		if (o->IsDeleted())
+		{
+			delete o;
+			*it = NULL;
+		}
+	}
+	coinBricks.erase(
+		std::remove_if(coinBricks.begin(), coinBricks.end(), CPlayScene::IsGameObjectDeleted),
+		coinBricks.end());
 
 	//check in frontTerrainObjs
 	for (it = frontTerrainObjs.begin(); it != frontTerrainObjs.end(); it++)
@@ -943,29 +969,35 @@ void CPlayScene::MoveFrontToBack(LPGAMEOBJECT obj)
 
 void CPlayScene::ChangeBrickCoin(int type)
 {
-	for (int i = 0; i < brickCoins.size(); i++) {
-		CBrickCoin* brickCoin = dynamic_cast<CBrickCoin*>(brickCoins[i]);
-		if (brickCoin != NULL) {
-			if (type == 0) {
+	if (type == 0) {
+		for (int i = 0; i < brickCoins.size(); i++) {
+			CBrickCoin* brickCoin = dynamic_cast<CBrickCoin*>(brickCoins[i]);
+			if (brickCoin != NULL) {
 				if(brickCoin->GetType() == 1) continue;
-				brickCoin->SetHide(true);
 				float x, y;
 				brickCoin->GetPosition(x, y);
+
+				brickCoin->Delete();
+
 				CCoin* coin = new CCoin(x,y);
-				brickCoin->SetCoin(coin);
-				itemObjs.push_back(coin);
-			}
-			else {
-				brickCoin->SetHide(false);
-				CCoin* coin = brickCoin->GetCoin();
-				if (coin != NULL) {
-					coin->Delete();
-				}
-				brickCoin->SetCoin(NULL);
+				coinBricks.push_back(coin);
 			}
 		}
 	}
+	else {
+		for (int i = 0; i < coinBricks.size(); i++) {
+			CCoin* coin = dynamic_cast<CCoin*>(coinBricks[i]);
+			if (coin != NULL) {
+				float x, y;
+				coin->GetPosition(x, y);
 
+				coin->Delete();
+
+				CBrickCoin* brickCoin = new CBrickCoin(x, y, 0);
+				brickCoins.push_back(brickCoin);
+			}
+		}
+	}
 }
 
 void CPlayScene::UpdateUI(DWORD dt) {

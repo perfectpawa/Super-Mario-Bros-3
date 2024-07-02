@@ -9,14 +9,12 @@ CBrickCoin::CBrickCoin(float x, float y, int type) : CBrick(x, y, 0)
 
 void CBrickCoin::Render()
 {
-	if(isHide) return;
 	if(!hited) CAnimations::GetInstance()->Get(ID_ANI_BRICK_BREAKABLE)->Render(x, y);
 	else CAnimations::GetInstance()->Get(ID_ANI_BRICK_BREAKABLE_HIT)->Render(x, y); 
 }
 
 void CBrickCoin::Breaking()
 {
-	if(isHide) return;
 	if (type != TYPE_HAVE_BUTTON) {
 		this->Delete();
 		return;

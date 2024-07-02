@@ -3,7 +3,6 @@
 
 void CCoin::Render()
 {
-	//if (!canInteract) return;
 	CAnimations* animations = CAnimations::GetInstance();
 	animations->Get(ID_ANI_COIN)->Render(x, y);
 

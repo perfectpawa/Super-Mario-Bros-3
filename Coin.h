@@ -13,16 +13,12 @@
 
 
 class CCoin : public CGameObject {
-protected:
-	bool canInteract = false;
 public:
 	CCoin(float x, float y) : CGameObject(x, y) {}
 	void Render();
 	void Update(DWORD dt) {}
 	void GetBoundingBox(float& l, float& t, float& r, float& b);
 	int IsBlocking() { return 0; }
-	void SetCanInteract(bool canInteract) { this->canInteract = canInteract; }
-	bool CanInteract() { return canInteract; }
 };
 
 class CCoinEffect : public CGameObject {
