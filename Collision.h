@@ -12,6 +12,9 @@ typedef CGameObject* LPGAMEOBJECT;
 class COWGameObject;
 typedef COWGameObject* LPOWGAMEOBJECT;
 
+class CEffectObject;
+typedef CEffectObject* LPEFFECTOBJECT;
+
 struct CCollisionEvent;
 typedef CCollisionEvent* LPCOLLISIONEVENT;
 

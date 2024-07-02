@@ -6,6 +6,7 @@
 #include "OW_MapHolder.h"
 #include "OW_GameObject.h"
 #include "BackgroundObject.h"
+#include "EffectObject.h"
 #include "HUD.h"
 
 class CPlayScene : public CScene
@@ -22,6 +23,8 @@ protected:
 
 	vector<LPGAMEOBJECT> brickCoins;
 	vector<LPGAMEOBJECT> coinBricks;
+
+	vector<LPEFFECTOBJECT> effectObjs;
 
 	bool isOnOverworldMap = false;
 	LPOWGAMEOBJECT OW_player;
@@ -57,6 +60,7 @@ protected:
 	void LoadAssets(LPCWSTR assetFile);
 
 	virtual void AddObject(LPGAMEOBJECT obj, int type);
+	virtual void AddEffect(LPEFFECTOBJECT obj);
 	virtual void MoveFrontToBack(LPGAMEOBJECT obj);
 	virtual void ChangeBrickCoin(int type);
 
@@ -88,6 +92,7 @@ public:
 	void PurgeDeletedObjects();
 
 	static bool IsGameObjectDeleted(const LPGAMEOBJECT& o);
+	static bool IsEffectObjectDeleted(const LPEFFECTOBJECT& o);
 };
 
 typedef CPlayScene* LPPLAYSCENE;

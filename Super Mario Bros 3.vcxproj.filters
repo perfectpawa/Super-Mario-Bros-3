@@ -118,6 +118,12 @@
     <Filter Include="Source Files\Object\BackgroundObject">
       <UniqueIdentifier>{7b8cfaab-0e81-47b9-b3b9-3512d5d10bc7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Object\EffectObject">
+      <UniqueIdentifier>{7c13cd5b-a674-47bc-a6a6-72a25c4e048a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Object\EffectObject">
+      <UniqueIdentifier>{705da7de-2c17-43f2-9010-002983bee957}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameObject.cpp">
@@ -260,6 +266,9 @@
     </ClCompile>
     <ClCompile Include="Button.cpp">
       <Filter>Source Files\Object\GameObject\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="CoinEffect.cpp">
+      <Filter>Source Files\Object\EffectObject</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -418,6 +427,12 @@
     </ClInclude>
     <ClInclude Include="Button.h">
       <Filter>Header Files\Object\GameObject\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="EffectObject.h">
+      <Filter>Header Files\Object\EffectObject</Filter>
+    </ClInclude>
+    <ClInclude Include="CoinEffect.h">
+      <Filter>Header Files\Object\EffectObject</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

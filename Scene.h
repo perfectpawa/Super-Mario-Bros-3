@@ -24,6 +24,7 @@ public:
 	virtual void Render() = 0; 
 
 	virtual void AddObject(LPGAMEOBJECT obj, int type) = 0;
+	virtual void AddEffect(LPEFFECTOBJECT obj) = 0;
 	virtual void MoveFrontToBack(LPGAMEOBJECT obj) = 0;
 	virtual void ChangeBrickCoin(int type) = 0;
 	virtual LPGAMEOBJECT GetPlayer() = 0;

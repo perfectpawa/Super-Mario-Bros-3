@@ -1,7 +1,7 @@
 #include "QuestionBlock.h"
 #include "Mushroom.h"
 #include "Leaf.h"
-#include "Coin.h"
+#include "CoinEffect.h"
 #include "Mario.h"
 #include "debug.h"
 
@@ -109,8 +109,8 @@ void CQuestionBlock::GetReward()
 }
 
 void CQuestionBlock::SpawnCoinEffect() {
-	CCoinEffect* coinEffect = new CCoinEffect(x, y);
-	CGame::GetInstance()->GetCurrentScene()->AddObject(coinEffect, OBJECT_TYPE_COIN);
+	CEffectObject* coinEffect = new CCoinEffect(x, y);
+	CGame::GetInstance()->GetCurrentScene()->AddEffect(coinEffect);
 }
 
 void CQuestionBlock::SpawnMusroom()

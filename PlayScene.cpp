@@ -635,6 +635,10 @@ void CPlayScene::Update(DWORD dt)
 	for (int i = 0; i < itemObjs.size(); i++)
 		itemObjs[i]->Update(dt, &coObjects);
 
+	//update effectObjs
+	for (int i = 0; i < effectObjs.size(); i++)
+		effectObjs[i]->Update(dt);
+
 	CamPosFollowPlayer();
 
 	UpdateUI(dt);
@@ -718,6 +722,10 @@ void CPlayScene::Render()
 
 	//render hud
 	if (mainHUD != NULL) mainHUD->Render();
+
+	//render effectObjs
+	for (int i = 0; i < effectObjs.size(); i++)
+		effectObjs[i]->Render();
 }
 
 void CPlayScene::Render_OW() {
@@ -800,6 +808,15 @@ void CPlayScene::Clear()
 		delete (*it);
 	}
 	detectObjs.clear();
+
+	//clear effectObjs
+	vector<LPEFFECTOBJECT>::iterator it_effect;
+	for (it_effect = effectObjs.begin(); it_effect != effectObjs.end(); it_effect++)
+	{
+		delete (*it_effect);
+	}
+	effectObjs.clear();
+
 }
 
 void CPlayScene::PurgeDeletedObjects()
@@ -903,6 +920,21 @@ void CPlayScene::PurgeDeletedObjects()
 		std::remove_if(detectObjs.begin(), detectObjs.end(), CPlayScene::IsGameObjectDeleted),
 		detectObjs.end());
 
+	//check in effectObjs
+	vector<LPEFFECTOBJECT>::iterator it_effect;
+	for (it_effect = effectObjs.begin(); it_effect != effectObjs.end(); it_effect++)
+	{
+		LPEFFECTOBJECT o = *it_effect;
+		if (o->IsDeleted())
+		{
+			delete o;
+			*it_effect = NULL;
+		}
+	}
+	effectObjs.erase(
+		std::remove_if(effectObjs.begin(), effectObjs.end(), CPlayScene::IsEffectObjectDeleted),
+		effectObjs.end());
+
 	// NOTE: remove_if will swap all deleted items to the end of the vector
 	// then simply trim the vector, this is much more efficient than deleting individual items
 }
@@ -911,6 +943,7 @@ void CPlayScene::PurgeDeletedObjects()
 
 #pragma region Utils
 bool CPlayScene::IsGameObjectDeleted(const LPGAMEOBJECT& o) { return o == NULL; }
+bool CPlayScene::IsEffectObjectDeleted(const LPEFFECTOBJECT& o) { return o == NULL; }
 
 void CPlayScene::CamPosFollowPlayer() {
 	float cx, cy, ocx, ocy;
@@ -954,6 +987,11 @@ void CPlayScene::AddObject(LPGAMEOBJECT obj, int type)
 		itemObjs.push_back(obj);
 		break;
 	}
+}
+
+void CPlayScene::AddEffect(LPEFFECTOBJECT obj)
+{
+	effectObjs.push_back(obj);
 }
 
 void CPlayScene::MoveFrontToBack(LPGAMEOBJECT obj)
