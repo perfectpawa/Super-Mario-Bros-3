@@ -16,8 +16,8 @@ protected:
 	int visualId;
 public:
 	CBrick(float x, float y, int type, int visualId = -1);
-	void Render();
-	void Update(DWORD dt) {}
+	virtual void Render();
 	void GetBoundingBox(float& l, float& t, float& r, float& b);
 	bool IsBreakable() { return type == TYPE_BREAKABLE; }
+	virtual void Breaking();
 };

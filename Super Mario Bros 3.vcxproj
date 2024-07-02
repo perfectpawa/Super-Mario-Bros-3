@@ -132,6 +132,8 @@
     <ClCompile Include="Animations.cpp" />
     <ClCompile Include="BackgroundObject.cpp" />
     <ClCompile Include="Brick.cpp" />
+    <ClCompile Include="BrickCoin.cpp" />
+    <ClCompile Include="Button.cpp" />
     <ClCompile Include="CharacterIconUI.cpp" />
     <ClCompile Include="Coin.cpp" />
     <ClCompile Include="Collision.cpp" />
@@ -181,6 +183,8 @@
     <ClInclude Include="AssetIDs.h" />
     <ClInclude Include="BackgroundObject.h" />
     <ClInclude Include="Brick.h" />
+    <ClInclude Include="BrickCoin.h" />
+    <ClInclude Include="Button.h" />
     <ClInclude Include="CharacterIconUI.h" />
     <ClInclude Include="Coin.h" />
     <ClInclude Include="Collision.h" />
@@ -234,6 +238,7 @@
     <Text Include="color_box.txt" />
     <Text Include="goomba.txt" />
     <Text Include="ground.txt" />
+    <Text Include="button.txt" />
     <Text Include="koopas.txt" />
     <Text Include="main-settings.txt" />
     <Text Include="mario_big.txt" />
@@ -246,8 +251,8 @@
     <Text Include="ow_portal.txt" />
     <Text Include="ow_terrain.txt" />
     <Text Include="playground.txt" />
-    <Text Include="reward.txt" />
     <Text Include="question_block.txt" />
+    <Text Include="reward.txt" />
     <Text Include="scene001-bonus.txt" />
     <Text Include="scene001.txt" />
     <Text Include="tube.txt" />

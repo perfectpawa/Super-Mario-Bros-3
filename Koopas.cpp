@@ -69,7 +69,7 @@ void CKoopas::OnCollisionWith(LPCOLLISIONEVENT e)
 			CBrick* brick = dynamic_cast<CBrick*>(e->obj);
 			if (brick) {
 				if (brick->IsBreakable()) {
-					brick->Delete();
+					brick->Breaking();
 				}
 			}
 		}

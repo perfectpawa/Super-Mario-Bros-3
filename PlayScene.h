@@ -20,6 +20,8 @@ protected:
 	vector<LPGAMEOBJECT> frontTerrainObjs;
 	vector<LPGAMEOBJECT> detectObjs;
 
+	vector<LPGAMEOBJECT> brickCoins;
+
 	bool isOnOverworldMap = false;
 	LPOWGAMEOBJECT OW_player;
 	COWMapHolder* OW_mapHolder;
@@ -55,6 +57,7 @@ protected:
 
 	virtual void AddObject(LPGAMEOBJECT obj, int type);
 	virtual void MoveFrontToBack(LPGAMEOBJECT obj);
+	virtual void ChangeBrickCoin(int type);
 
 	virtual void CamPosFollowPlayer();
 

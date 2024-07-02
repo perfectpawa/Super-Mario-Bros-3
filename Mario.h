@@ -141,6 +141,9 @@ class CMario : public CGameObject
 	void OnCollisionWithFireShot(LPCOLLISIONEVENT e);
 
 	void OnCollisionWithQuestionBlock(LPCOLLISIONEVENT e);
+	void OnCollisionWithButton(LPCOLLISIONEVENT e);
+
+
 	void TakingDamage();
 
 	void MovingBehavior(DWORD dt);

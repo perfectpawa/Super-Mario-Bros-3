@@ -255,6 +255,12 @@
     <ClCompile Include="PlayScene.cpp">
       <Filter>Source Files\Scene</Filter>
     </ClCompile>
+    <ClCompile Include="BrickCoin.cpp">
+      <Filter>Source Files\Object\GameObject\Misc</Filter>
+    </ClCompile>
+    <ClCompile Include="Button.cpp">
+      <Filter>Source Files\Object\GameObject\Item</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AssetIDs.h">
@@ -407,6 +413,12 @@
     <ClInclude Include="BackgroundObject.h">
       <Filter>Header Files\Object\BackgroundObject</Filter>
     </ClInclude>
+    <ClInclude Include="BrickCoin.h">
+      <Filter>Header Files\Object\GameObject\Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="Button.h">
+      <Filter>Header Files\Object\GameObject\Item</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="main-settings.txt">
@@ -445,12 +457,6 @@
     <Text Include="background.txt">
       <Filter>Resource Files\Misc</Filter>
     </Text>
-    <Text Include="reward.txt">
-      <Filter>Resource Files\Item</Filter>
-    </Text>
-    <Text Include="coin.txt">
-      <Filter>Resource Files\Item</Filter>
-    </Text>
     <Text Include="mario_small.txt">
       <Filter>Resource Files\Mario</Filter>
     </Text>
@@ -483,6 +489,15 @@
     </Text>
     <Text Include="scene001-bonus.txt">
       <Filter>Resource Files\Scenes</Filter>
+    </Text>
+    <Text Include="button.txt">
+      <Filter>Resource Files\Item</Filter>
+    </Text>
+    <Text Include="coin.txt">
+      <Filter>Resource Files\Item</Filter>
+    </Text>
+    <Text Include="reward.txt">
+      <Filter>Resource Files\Item</Filter>
     </Text>
   </ItemGroup>
   <ItemGroup>

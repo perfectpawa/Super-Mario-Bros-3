@@ -15,6 +15,7 @@
 #include "QuestionBlock.h"
 #include "Venus.h"
 #include "FireShot.h"
+#include "Button.h"
 
 #include "Brick.h"
 
@@ -184,7 +185,7 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 			CBrick* brick = dynamic_cast<CBrick*>(e->obj);
 			if (brick) {
 				if (brick->IsBreakable()) {
-					brick->Delete();
+					brick->Breaking();
 				}
 			}
 		}
@@ -217,6 +218,9 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithVenus(e);
 	else if (dynamic_cast<CFireShot*>(e->obj))
 		OnCollisionWithFireShot(e);
+	else if (dynamic_cast<CButton*>(e->obj))
+		OnCollisionWithButton(e);
+		
 }
 
 void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
@@ -301,8 +305,11 @@ void CMario::OnCollisionWithKoopas(LPCOLLISIONEVENT e)
 
 void CMario::OnCollisionWithCoin(LPCOLLISIONEVENT e)
 {
-	e->obj->Delete();
-	coin++;
+	CCoin* coin = dynamic_cast<CCoin*>(e->obj);
+	if (coin->CanInteract()) {
+		coin->Delete();
+		coin++;
+	}
 }
 
 void CMario::OnCollisionWithPortal(LPCOLLISIONEVENT e)
@@ -348,6 +355,12 @@ void CMario::OnCollisionWithQuestionBlock(LPCOLLISIONEVENT e) {
 			coin++;
 		questionBlock->GetReward();
 	}
+}
+
+void CMario::OnCollisionWithButton(LPCOLLISIONEVENT e)
+{
+	CButton* button = dynamic_cast<CButton*>(e->obj);
+	button->Pressing();
 }
 
 void CMario::OnCollisionWithVenus(LPCOLLISIONEVENT e)

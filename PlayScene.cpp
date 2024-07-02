@@ -15,6 +15,7 @@
 #include "Coin.h"
 #include "Brick.h"
 #include "QuestionBlock.h"
+#include "BrickCoin.h"
 
 #include "Platform.h"
 #include "ColorBox.h"
@@ -138,6 +139,8 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	CGameObject* frontTerrainObj = NULL;
 	CBackgroundObject* backgroundObj = NULL;
 
+	CGameObject* brickCoin = NULL;
+
 	switch (object_type)
 	{
 	case OBJECT_TYPE_MARIO: {
@@ -150,7 +153,6 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		player = (CMario*)obj;  */
 
 		player = new CMario(x, y);
-		player->SetPosition(x, y);
 
 		DebugOut(L"[INFO] Player object has been created!\n");
 		break;
@@ -159,11 +161,14 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		int type = atoi(tokens[3].c_str());
 		if (type == 1) enemyObj = new CParaGoomba(x, y);
 		else enemyObj = new CGoomba(x, y);
+		enemyObjs.push_back(enemyObj);
 		break;
 	}
 	case OBJECT_TYPE_KOOPAS: {
 		int type = atoi(tokens[3].c_str());
-		enemyObj = new CKoopas(x, y, type); break;
+		enemyObj = new CKoopas(x, y, type);
+		enemyObjs.push_back(enemyObj);
+		break;
 	}
 	case OBJECT_TYPE_BRICK: {
 		int type = atoi(tokens[3].c_str());
@@ -172,18 +177,41 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 			spriteId = atoi(tokens[4].c_str());
 		}
 		terrainObj = new CBrick(x, y, type, spriteId);
+		terrainObjs.push_back(terrainObj);
 		break;
-
 	}
-	case OBJECT_TYPE_SPAWN_CHECK: enemyObj = new CSpawnCheck(); break;
-	case OBJECT_TYPE_MUSHROOM: itemObj = new CMushroom(x, y); break;
-	case OBJECT_TYPE_VENUS: enemyObj = new CVenus(x, y); break;
+	case OBJECT_TYPE_BRICK_COIN: {
+		int type = atoi(tokens[3].c_str());
+		brickCoin = new CBrickCoin(x, y, type);
+		brickCoins.push_back(brickCoin);
+		break;
+	}
+	case OBJECT_TYPE_SPAWN_CHECK: {
+		enemyObj = new CSpawnCheck();
+		enemyObjs.push_back(enemyObj);
+		break;
+	}
+	case OBJECT_TYPE_MUSHROOM: {
+		itemObj = new CMushroom(x, y);
+		itemObjs.push_back(itemObj);
+		break;
+	}
+	case OBJECT_TYPE_VENUS: {
+		enemyObj = new CVenus(x, y);
+		enemyObjs.push_back(enemyObj);
+		break;
+	}
 	case OBJECT_TYPE_QUESTION_BLOCK: {
 		int type = atoi(tokens[3].c_str());
 		frontTerrainObj = new CQuestionBlock(x, y, type);
+		frontTerrainObjs.push_back(frontTerrainObj);
 		break;
 	}
-	case OBJECT_TYPE_COIN: itemObj = new CCoin(x, y); break;
+	case OBJECT_TYPE_COIN: {
+		itemObj = new CCoin(x, y); 
+		itemObjs.push_back(itemObj);
+		break;
+	}
 	case OBJECT_TYPE_PLATFORM:
 	{
 		float cell_width = (float)atof(tokens[3].c_str());
@@ -224,6 +252,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 				isDirectionColliable, isVertical
 			);
 		}
+		terrainObjs.push_back(terrainObj);
 		break;
 	}
 	case OBJECT_TYPE_COLOR_BOX: {
@@ -239,6 +268,8 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 			width, height,
 			color_id
 		);
+
+		terrainObjs.push_back(terrainObj);
 		break;
 
 	}
@@ -252,6 +283,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		}
 
 		terrainObj = new CTube(x, y, length, isUpsideDown, type);
+		terrainObjs.push_back(terrainObj);
 		break;
 	}
 	case OBJECT_TYPE_GROUND: {
@@ -301,6 +333,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		float b = (float)atof(tokens[4].c_str());
 		int scene_id = atoi(tokens[5].c_str());
 		terrainObj = new CPortal(x, y, r, b, scene_id);
+		terrainObjs.push_back(terrainObj);
 		break;
 
 	}
@@ -320,26 +353,6 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	default:
 		DebugOut(L"[ERROR] Invalid object type: %d\n", object_type);
 		return;
-	}
-
-	if (enemyObj != NULL) {
-		enemyObjs.push_back(enemyObj);
-		enemyObj->SetPosition(x, y);
-	}
-
-	if (itemObj != NULL) {
-		itemObjs.push_back(itemObj);
-		itemObj->SetPosition(x, y);
-	}
-
-	if (terrainObj != NULL) {
-		terrainObjs.push_back(terrainObj);
-		terrainObj->SetPosition(x, y);
-	}
-
-	if (frontTerrainObj != NULL) {
-		frontTerrainObjs.push_back(frontTerrainObj);
-		frontTerrainObj->SetPosition(x, y);
 	}
 }
 
@@ -592,6 +605,8 @@ void CPlayScene::Update(DWORD dt)
 		coObjects.push_back(frontTerrainObjs[i]);
 	for (int i = 0; i < detectObjs.size(); i++)
 		coObjects.push_back(detectObjs[i]);
+	for (int i = 0; i < brickCoins.size(); i++)
+		coObjects.push_back(brickCoins[i]);
 
 	// skip the rest if scene was already unloaded (Mario::Update might trigger PlayScene::Unload)
 	if (player == NULL) return;
@@ -665,10 +680,21 @@ void CPlayScene::Render()
 		backgroundObjs[i]->Render();
 	}
 
+
+
 	//render terrainObjs
 	for (int i = 0; i < terrainObjs.size(); i++) {
 		terrainObjs[i]->Render();
 	}
+
+	//render brickCoins
+	for (int i = 0; i < brickCoins.size(); i++) {
+		brickCoins[i]->Render();
+	}
+
+	//render itemObjs
+	for (int i = 0; i < itemObjs.size(); i++)
+		itemObjs[i]->Render();
 
 	//render enemyObjs
 	for (int i = 0; i < enemyObjs.size(); i++)
@@ -677,10 +703,6 @@ void CPlayScene::Render()
 	//render detectObjs
 	for (int i = 0; i < detectObjs.size(); i++)
 		detectObjs[i]->Render();
-
-	//render itemObjs
-	for (int i = 0; i < itemObjs.size(); i++)
-		itemObjs[i]->Render();
 
 	//render frontTerrainObjs
 	for (int i = 0; i < frontTerrainObjs.size(); i++)
@@ -746,6 +768,13 @@ void CPlayScene::Clear()
 	}
 	terrainObjs.clear();
 
+	//clear brickCoins
+	for (it = brickCoins.begin(); it != brickCoins.end(); it++)
+	{
+		delete (*it);
+	}
+	brickCoins.clear();
+
 	//clear frontTerrainObjs
 	for (it = frontTerrainObjs.begin(); it != frontTerrainObjs.end(); it++)
 	{
@@ -805,6 +834,20 @@ void CPlayScene::PurgeDeletedObjects()
 	terrainObjs.erase(
 		std::remove_if(terrainObjs.begin(), terrainObjs.end(), CPlayScene::IsGameObjectDeleted),
 		terrainObjs.end());
+
+	//check in brickCoins
+	for (it = brickCoins.begin(); it != brickCoins.end(); it++)
+	{
+		LPGAMEOBJECT o = *it;
+		if (o->IsDeleted())
+		{
+			delete o;
+			*it = NULL;
+		}
+	}
+	brickCoins.erase(
+		std::remove_if(brickCoins.begin(), brickCoins.end(), CPlayScene::IsGameObjectDeleted),
+		brickCoins.end());
 
 	//check in frontTerrainObjs
 	for (it = frontTerrainObjs.begin(); it != frontTerrainObjs.end(); it++)
@@ -881,6 +924,9 @@ void CPlayScene::AddObject(LPGAMEOBJECT obj, int type)
 	case OBJECT_TYPE_VENUS_FIRE_BALL:
 		detectObjs.push_back(obj);
 		break;
+	case OBJECT_TYPE_BUTTON:
+		itemObjs.push_back(obj);
+		break;
 	}
 }
 
@@ -893,6 +939,33 @@ void CPlayScene::MoveFrontToBack(LPGAMEOBJECT obj)
 
 	//add obj to terrainObjs
 	terrainObjs.push_back(obj);
+}
+
+void CPlayScene::ChangeBrickCoin(int type)
+{
+	for (int i = 0; i < brickCoins.size(); i++) {
+		CBrickCoin* brickCoin = dynamic_cast<CBrickCoin*>(brickCoins[i]);
+		if (brickCoin != NULL) {
+			if (type == 0) {
+				if(brickCoin->GetType() == 1) continue;
+				brickCoin->SetHide(true);
+				float x, y;
+				brickCoin->GetPosition(x, y);
+				CCoin* coin = new CCoin(x,y);
+				brickCoin->SetCoin(coin);
+				itemObjs.push_back(coin);
+			}
+			else {
+				brickCoin->SetHide(false);
+				CCoin* coin = brickCoin->GetCoin();
+				if (coin != NULL) {
+					coin->Delete();
+				}
+				brickCoin->SetCoin(NULL);
+			}
+		}
+	}
+
 }
 
 void CPlayScene::UpdateUI(DWORD dt) {
