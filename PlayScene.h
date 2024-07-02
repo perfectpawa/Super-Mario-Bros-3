@@ -40,6 +40,8 @@ protected:
 	float camLimitTop = NULL;
 	float camLimitBottom = NULL;
 
+	float camVerticalFreeZone = NULL;
+
 
 	void _ParseSection_SPRITES(string line);
 	void _ParseSection_ANIMATIONS(string line);

@@ -2,7 +2,7 @@
 #include "Goomba.h"
 #include "FallCheckingObject.h"
 #include "QuestionBlock.h"
-
+#include "Brick.h"
 
 CKoopas::CKoopas(float x, float y, int type) :CGameObject(x, y)
 {
@@ -64,6 +64,15 @@ void CKoopas::OnCollisionWith(LPCOLLISIONEVENT e)
 	}
 	else if (e->nx != 0)
 	{
+		if (state == KOOPAS_STATE_SLIDE)
+		{
+			CBrick* brick = dynamic_cast<CBrick*>(e->obj);
+			if (brick) {
+				if (brick->IsBreakable()) {
+					brick->Delete();
+				}
+			}
+		}
 		vx = -vx;
 	}
 }

@@ -362,8 +362,9 @@ void CPlayScene::_ParseSection_SETTINGS(string line) {
 	if (tokens[0] == "cam_limit") {
 		if(tokens.size() > 1) camLimitLeft = (float)atof(tokens[1].c_str());
 		if (tokens.size() > 2) camLimitRight = (float)atof(tokens[2].c_str());
-		if (tokens.size() > 3) camLimitTop = (float)atof(tokens[3].c_str());
-		if (tokens.size() > 4) camLimitBottom = (float)atof(tokens[4].c_str());
+		if (tokens.size() > 3) camLimitBottom = (float)atof(tokens[3].c_str());
+		if (tokens.size() > 4) camLimitTop = (float)atof(tokens[4].c_str());
+		if (tokens.size() > 5) camVerticalFreeZone = (float)atof(tokens[5].c_str());
 	}
 }
 
@@ -843,17 +844,23 @@ void CPlayScene::PurgeDeletedObjects()
 bool CPlayScene::IsGameObjectDeleted(const LPGAMEOBJECT& o) { return o == NULL; }
 
 void CPlayScene::CamPosFollowPlayer() {
-	float cx, cy;
+	float cx, cy, ocx, ocy;
 	player->GetPosition(cx, cy);
-
 	CGame* game = CGame::GetInstance();
+	game->GetCamPos(ocx, ocy);
+
+
 	cx -= (float)game->GetBackBufferWidth() / 2;
 	cy -= (float)game->GetBackBufferHeight() / 2;
 
 	if(camLimitLeft != NULL && cx < camLimitLeft) cx = camLimitLeft;
 	if (camLimitRight != NULL && cx > camLimitRight - game->GetBackBufferWidth()) cx = camLimitRight - game->GetBackBufferWidth();
 
-	if(camLimitBottom != NULL && cy > camLimitBottom) cy = camLimitBottom;
+
+	if (camLimitTop != NULL && cy < camLimitTop - game->GetBackBufferHeight()) cy = camLimitTop - game->GetBackBufferHeight();
+
+	if (camLimitBottom != NULL && cy > camLimitBottom) cy = camLimitBottom;
+
 
 	CGame::GetInstance()->SetCamPos(cx, cy);
 }

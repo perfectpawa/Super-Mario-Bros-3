@@ -196,7 +196,7 @@ void CBackgroundObject::RenderBushTall() {
 void CBackgroundObject::RenderBlackBackground() {
 	for (int i = 0; i < length; i++)
 	{
-		for (int j = 0; j < 10; j++) {
+		for (int j = 0; j < 26; j++) {
 			CSprites::GetInstance()->Get(ID_SPRITE_BLACK_BACKGROUND)->Draw(x + 16 * i, y - 16 * j);
 		}
 	}

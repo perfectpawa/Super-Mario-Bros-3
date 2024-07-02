@@ -21,10 +21,10 @@ UI.txt
 [SETTINGS]
 time	300
 background_color	156	252	240
-cam_limit	8	2824	0	32
+cam_limit	8	2824	32	-16	64	
 [OBJECTS]
 # MARIO
-0	2560	-180
+0	1968	-240
 
 #QUESTION_BLOCK
 601	192	128	0
@@ -220,7 +220,7 @@ cam_limit	8	2824	0	32
 
 ##### BACKGROUND OBJ ##### 8000	x	y	type	length
 #BLACK_BACKGROUND
-8000	2496	176	11	20
+8000	2496	176	11	26
 8000	2512	176	10	20
 
 #CLOUD

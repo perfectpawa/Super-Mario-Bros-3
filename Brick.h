@@ -13,10 +13,11 @@
 class CBrick : public CGameObject {
 protected:
 	int type;
-	int spriteId;
+	int visualId;
 public:
-	CBrick(float x, float y, int type, int spriteId = -1);
+	CBrick(float x, float y, int type, int visualId = -1);
 	void Render();
 	void Update(DWORD dt) {}
 	void GetBoundingBox(float& l, float& t, float& r, float& b);
+	bool IsBreakable() { return type == TYPE_BREAKABLE; }
 };

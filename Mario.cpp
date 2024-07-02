@@ -16,6 +16,8 @@
 #include "Venus.h"
 #include "FireShot.h"
 
+#include "Brick.h"
+
 #include "Collision.h"
 
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
@@ -178,6 +180,14 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 {
 	if (e->ny != 0 && e->obj->IsBlocking())
 	{
+		if (e->ny > 0) {
+			CBrick* brick = dynamic_cast<CBrick*>(e->obj);
+			if (brick) {
+				if (brick->IsBreakable()) {
+					brick->Delete();
+				}
+			}
+		}
 		vy = 0;
 		if (e->ny < 0) Landed();
 	}

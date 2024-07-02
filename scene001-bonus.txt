@@ -12,6 +12,7 @@ tube.txt
 [SETTINGS]
 time	300
 background_color	0	0	0
+cam_limit	8	2824	32	226
 [OBJECTS]
 
 # MARIO

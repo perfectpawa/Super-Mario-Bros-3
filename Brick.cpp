@@ -2,28 +2,29 @@
 #include "Animations.h"
 #include "Sprites.h"
 
-CBrick::CBrick(float x, float y, int type, int spriteId)
+CBrick::CBrick(float x, float y, int type, int visualId)
 {
 	this->x = x;
 	this->y = y;
 	this->type = type;
-	this->spriteId = spriteId;
+	this->visualId = visualId;
 }
 
 void CBrick::Render()
 {
 	if (type == TYPE_BREAKABLE) {
-		if (spriteId == -1) {
-			spriteId = ID_SPRITE_BRICK_BREAKABLE;
+		if (visualId == -1) {
+			CAnimations::GetInstance()->Get(ID_ANI_BRICK_BREAKABLE)->Render(x, y);
 		}
+		return;
 	}
 	else if (type == TYPE_UNBREAKABLE) {
-		if (spriteId == -1) {
-			spriteId = ID_SPRITE_BRICK_UNBREAKABLE;
+		if (visualId == -1) {
+			CSprites::GetInstance()->Get(ID_SPRITE_BRICK_UNBREAKABLE)->Draw(x, y);
 		}
+		return;
 	}
-
-	CSprites::GetInstance()->Get(spriteId)->Draw(x, y);
+	CSprites::GetInstance()->Get(visualId)->Draw(x, y);
 }
 
 void CBrick::GetBoundingBox(float &l, float &t, float &r, float &b)
