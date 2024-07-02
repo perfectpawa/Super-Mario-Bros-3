@@ -1046,7 +1046,7 @@ void CPlayScene::UpdateUIPower() {
 	int power = 0;
 	CMario* mario = dynamic_cast<CMario*>(player);
 	if (mario != NULL) {
-		mario->GetPowerSprintState(power);
+		mario->GetGearUpState(power);
 	}
 	mainHUD->SetPower(power);
 }

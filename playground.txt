@@ -5,7 +5,13 @@ mario_big.txt
 mario_small.txt
 mario_racoon.txt
 cloud.txt
+ui.txt
 #
+[UI]
+[SETTINGS]
+time	300
+background_color	156	252	240
+cam_limit	8	2824	32	-16	64	
 [OBJECTS]
 # TILE_BACKGROUND
 # id	start_x	start_y	length	width	sprite_id

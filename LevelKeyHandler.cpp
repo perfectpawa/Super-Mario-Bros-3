@@ -48,17 +48,15 @@ void CLevelKeyHandler::OnKeyDown(int KeyCode)
 	}
 	case DIK_A: {
 		mario->SetWantWhip(true);
-		//mario->StartSprinting();
+		mario->StartGearing();
 		break;
 	}
 	case DIK_RIGHT: {
 		mario->SetMovingRight(true);
-		mario->ResetSprint();
 		break;
 	}
 	case DIK_LEFT: {
 		mario->SetMovingLeft(true);
-		mario->ResetSprint();
 		break;
 	}
 	}
@@ -85,7 +83,7 @@ void CLevelKeyHandler::OnKeyUp(int KeyCode)
 		break;
 	}
 	case DIK_A: {	
-		mario->StopSprinting();
+		mario->EndGearing();
 		break;
 	}
 	case DIK_RIGHT: {
@@ -103,10 +101,4 @@ void CLevelKeyHandler::KeyState(BYTE *states)
 {
 	LPGAME game = CGame::GetInstance();
 	CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
-
-	if (game->IsKeyDown(DIK_A))
-	{
-		mario->StartSprinting();
-	}
-
 }

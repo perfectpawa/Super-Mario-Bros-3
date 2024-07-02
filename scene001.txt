@@ -25,7 +25,7 @@ background_color	156	252	240
 cam_limit	8	2824	32	-16	64	
 [OBJECTS]
 # MARIO
-0	1968	-240
+0	1520	-240
 
 #QUESTION_BLOCK
 601	192	128	0
