@@ -40,6 +40,7 @@ void CLevelKeyHandler::OnKeyDown(int KeyCode)
 	case DIK_S: {
 		mario->SetWantJump(true);
 		mario->SetWantFloat(true);
+		mario->SetWantFly(true);
 		break;
 	}
 	case DIK_D: {

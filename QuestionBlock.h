@@ -34,6 +34,7 @@ public:
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	void GetBoundingBox(float& l, float& t, float& r, float& b);
 	int GetRewardType() { return reward_type; }
+	int IsBlocking() { return 1; }
 	void GetReward();
 	void SetState(int state);
 	void SpawnMusroom();

@@ -11,19 +11,20 @@
 #include "AssetIDs.h"
 
 #define MARIO_WALKING_SPEED		0.08f
-#define MARIO_RUNNING_SPEED		0.12f
+#define MARIO_GEARING_SPEED		0.12f
+#define MARIO_RUNNING_SPEED		0.16f
 #define MARIO_MAX_FALL_SPEED		0.3f
 
 #define MARIO_WALK_DECAY 0.0003f
 #define MARIO_RUN_DECAY 0.001f
 
 #define MARIO_ACCEL_WALK		0.0005f
-#define MARIO_ACCEL_GEAR		0.0003f
+#define MARIO_ACCEL_GEAR		0.0005f
 
 #define MARIO_QUICK_JUMP_SPEED_Y	0.25f
 #define MARIO_JUMP_SPEED_Y			0.55f
 #define MARIO_JUMP_RUN_SPEED_Y		0.65f
-#define MARIO_FLY_SPEED_Y		1.0f
+#define MARIO_FLY_SPEED_Y		0.4f
 
 #define MARIO_UNTOUCHABLE_TIME 2500
 #define MARIO_KICK_TIME 100
@@ -31,6 +32,9 @@
 #define MARIO_FLOAT_TIME 300
 
 #define MARIO_GEAR_UP_TIME 200
+
+#define MARIO_FLYING_TIME 3000
+
 
 
 #define MARIO_GRAVITY			0.002f
@@ -92,12 +96,13 @@ class CMario : public CGameObject
 	BOOLEAN wantJump;
 	BOOLEAN wantReleaseJump;
 	BOOLEAN wantFloat;
+	BOOLEAN wantFly;
 
 	BOOLEAN isGearing;
 	BOOLEAN isRunning;
 	BOOLEAN isMovingRight;
 	BOOLEAN isMovingLeft;
-
+	BOOLEAN isFlying;
 
 	float maxVx;
 	float maxVy;
@@ -115,6 +120,7 @@ class CMario : public CGameObject
 	ULONGLONG whip_start;
 	ULONGLONG float_start;
 	ULONGLONG gear_start;
+	ULONGLONG flying_start;
 
 	BOOLEAN isOnPlatform;
 	int coin;
@@ -184,6 +190,7 @@ public:
 	void SetWantPickUp(bool b) { wantPickUp = b; }
 	void SetWantWhip(bool b) { wantWhip = b; }
 	void SetWantJump(bool b) { wantJump = b; }
+	void SetWantFly(bool b) { wantFly = b; }
 	void SetWantReleaseJump(bool b) { wantReleaseJump = b; }
 	void SetWantFloat(bool b) {
 		if (isOnPlatform) return;

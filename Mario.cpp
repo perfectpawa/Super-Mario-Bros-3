@@ -32,11 +32,13 @@ CMario::CMario(float x, float y) : CGameObject(x, y)
 	wantJump = false;
 	wantReleaseJump = false;
 	wantFloat = false;
+	wantFly = false;
 
 	isGearing = false;
 	isRunning = false;
 	isMovingRight = false;
 	isMovingLeft = false;
+	isFlying = false;
 
 	maxVx = 0.0f;
 	maxVy = MARIO_MAX_FALL_SPEED;
@@ -52,6 +54,7 @@ CMario::CMario(float x, float y) : CGameObject(x, y)
 	whip_start = -1;
 	float_start = -1;
 	gear_start = -1;
+	flying_start = -1;
 
 	isOnPlatform = false;
 	coin = 0;
@@ -70,6 +73,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	if (level == MARIO_LEVEL_RACOON) RacoonBehavior();
 	wantFloat = false;
 	wantWhip = false;
+	wantFly = false;
 
 	TimeChecking();
 
@@ -110,8 +114,7 @@ void CMario::MovingBehavior(DWORD dt) {
 		if (vx < maxVx) vx = maxVx;
 	}
 
-	if (abs(vx) == MARIO_RUNNING_SPEED) {
-		DebugOut(L"GearUpState: %d\n", gearUpState);
+	if (abs(vx) >= MARIO_GEARING_SPEED) {
 		if(gear_start == -1) gear_start = GetTickCount64();
 	}
 
@@ -147,12 +150,22 @@ void CMario::PickUpBehavior() {
 
 void CMario::RacoonBehavior() {
 	if (wantWhip) SetState(MARIO_STATE_WHIP);
-		
-	if(wantFloat) SetState(MARIO_STATE_FLOAT);
+	
+	if(!isFlying && wantFloat) SetState(MARIO_STATE_FLOAT);
+
+	//DebugOut(L"---isOnPlatform: %d, isFlying: %d, wantFly: %d--- \n", isOnPlatform, isFlying, wantFly);
+	if(!isOnPlatform && isFlying && wantFly) SetState(MARIO_STATE_FLY);
 }
 
 void CMario::JumpingBehavior() {
-	if (isOnPlatform && wantJump) SetState(MARIO_STATE_JUMP);
+	if (isOnPlatform && wantJump) {
+		SetState(MARIO_STATE_JUMP);
+		if (level == MARIO_LEVEL_RACOON && gearUpState == 6) {
+			isFlying = true;
+			maxVy = MARIO_MAX_FALL_SPEED / 5;
+			flying_start = GetTickCount64();
+		}
+	}
 	if (wantReleaseJump) SetState(MARIO_STATE_RELEASE_JUMP);
 
 	wantJump = false;
@@ -166,10 +179,8 @@ void CMario::TimeChecking() {
 		untouchable_start = 0;
 		untouchable = 0;
 	}
-	if(gear_start != -1 && GetTickCount64() - gear_start > MARIO_GEAR_UP_TIME)
+	if( !isFlying && gear_start != -1 && GetTickCount64() - gear_start > MARIO_GEAR_UP_TIME)
 	{
-		DebugOut(L"IsOnPlatform: %d\n", isOnPlatform);
-
 		if (abs(vx) == MARIO_RUNNING_SPEED && isOnPlatform) {
 			gearUpState += 1;
 			if (gearUpState > 6) gearUpState = 6;
@@ -183,6 +194,13 @@ void CMario::TimeChecking() {
 			}
 			else gear_start = GetTickCount64();
 		}
+	}
+
+	if (flying_start != -1 && GetTickCount64() - flying_start > MARIO_FLYING_TIME)
+	{
+		isFlying = false;
+		maxVy = MARIO_MAX_FALL_SPEED;
+		flying_start = -1;
 	}
 }
 
@@ -414,6 +432,8 @@ void CMario::TakingDamage() {
 void CMario::Landed()
 {
 	isOnPlatform = true;
+	isFlying = false;
+	maxVy = MARIO_MAX_FALL_SPEED;
 }
 #pragma endregion
 
@@ -506,12 +526,21 @@ void CMario::Render()
 		)
 	{
 		if (!isOnPlatform && vy > 0) aniId += 1000;
-		else if (isRunning) aniId += 100;
+		else if (gearUpState == 6) aniId += 100;
+
 	}
 
 
 	if (level == MARIO_LEVEL_BIG) aniId += 10000;
 	if (level == MARIO_LEVEL_RACOON) aniId += 20000;
+
+	if (isFlying) {
+		if (vy < 0) aniId = ID_ANI_RACOON_MARIO_FLY_RIGHT;
+		else aniId = ID_ANI_RACOON_MARIO_GLIDE_RIGHT;
+
+		if (!lookingRight) aniId += 10;
+	}
+
 
 	if (state == MARIO_STATE_WHIP) {
 		aniId = ID_ANI_RACOON_MARIO_WHIP_RIGHT;
@@ -523,17 +552,19 @@ void CMario::Render()
 		if (!lookingRight) aniId += 10;
 	}
 
-	if (state == MARIO_STATE_FLY) {
-		aniId = ID_ANI_RACOON_MARIO_FLY_RIGHT;
-		if (!lookingRight) aniId += 10;
-	
-	}
-
 	if (state == MARIO_STATE_DIE) {
 		aniId = ID_ANI_MARIO_DIE;
 	}
 
-	animations->Get(aniId)->Render(x, y);
+	if (untouchable == 1 && (GetTickCount64() - untouchable_start) < 100) {
+		CSprites::GetInstance()->Get(ID_SPRITE_MARIO_UNTOUCHABLE)->Draw(x, y);
+	}
+	else if (untouchable == 1 &&
+		((GetTickCount64() - untouchable_start) % 100 >= 0 && (GetTickCount64() - untouchable_start) % 100 <= 30)) {
+		CSprites::GetInstance()->Get(ID_SPRITE_MARIO_UNTOUCHABLE)->Draw(x, y);
+	}
+
+	else animations->Get(aniId)->Render(x, y);
 
 	//RenderBoundingBox();
 	
@@ -641,8 +672,7 @@ void CMario::SetState(int state)
 		break;
 	}
 	case MARIO_STATE_FLY: {
-		vy -= MARIO_FLY_SPEED_Y;
-		maxVy = MARIO_MAX_FALL_SPEED / 5;
+		vy = -MARIO_FLY_SPEED_Y;
 		break;
 	}
 	}

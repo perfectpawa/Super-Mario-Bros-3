@@ -102,8 +102,8 @@ void CParaGoomba::Render()
 {
 	int aniId = ID_ANI_PARA_GOOMBA_WALKING;
 
-	if (!haveWing) {
-		aniId = ID_ANI_PARA_GOOMBA_WALKING_NO_WING;
+	if (haveWing) {
+		aniId = ID_ANI_PARA_GOOMBA_WALKING_WITH_WING;
 	}
 
 	if(state == GOOMBA_STATE_HOPPING)
