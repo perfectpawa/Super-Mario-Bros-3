@@ -23,9 +23,10 @@
 
 #include "Goomba.h"
 #include "ParaGoomba.h"
-
 #include "Koopas.h"
-#include "Venus.h"
+#include "Plant.h"
+#include "PlantFire.h"
+#include "FireBall.h"
 
 #include "Mario.h"
 
@@ -170,6 +171,26 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		enemyObjs.push_back(enemyObj);
 		break;
 	}
+	case OBJECT_TYPE_PLANT: {
+		int height = 1;
+		int color = 1;
+		int type = 0;
+		if (tokens.size() >= 4) {
+			height = atoi(tokens[3].c_str());
+		}
+		if (tokens.size() >= 5) {
+			color = atoi(tokens[4].c_str());
+		}
+		if (tokens.size() == 6) {
+			type = atoi(tokens[5].c_str());
+		}
+
+		if (type == 1) enemyObj = new CPlantFire(x, y, height);
+		else enemyObj = new CPlant(x, y, height, color);
+		enemyObjs.push_back(enemyObj);
+
+		break;
+	}
 	case OBJECT_TYPE_BRICK: {
 		int type = atoi(tokens[3].c_str());
 		int spriteId = -1;
@@ -196,11 +217,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		itemObjs.push_back(itemObj);
 		break;
 	}
-	case OBJECT_TYPE_VENUS: {
-		enemyObj = new CVenus(x, y);
-		enemyObjs.push_back(enemyObj);
-		break;
-	}
+
 	case OBJECT_TYPE_QUESTION_BLOCK: {
 		int type = atoi(tokens[3].c_str());
 		frontTerrainObj = new CQuestionBlock(x, y, type);
@@ -704,7 +721,9 @@ void CPlayScene::Render()
 	//render itemObjs
 	for (int i = 0; i < itemObjs.size(); i++)
 		itemObjs[i]->Render();
-
+	//render frontTerrainObjs
+	for (int i = 0; i < frontTerrainObjs.size(); i++)
+		frontTerrainObjs[i]->Render();
 	//render enemyObjs
 	for (int i = 0; i < enemyObjs.size(); i++)
 		enemyObjs[i]->Render();
@@ -713,9 +732,7 @@ void CPlayScene::Render()
 	for (int i = 0; i < detectObjs.size(); i++)
 		detectObjs[i]->Render();
 
-	//render frontTerrainObjs
-	for (int i = 0; i < frontTerrainObjs.size(); i++)
-		frontTerrainObjs[i]->Render();
+	
 
 	//render player
 	player->Render();
@@ -980,11 +997,11 @@ void CPlayScene::AddObject(LPGAMEOBJECT obj, int type)
 	case OBJECT_TYPE_LEAF:
 		itemObjs.push_back(obj);
 		break;
-	case OBJECT_TYPE_VENUS_FIRE_BALL:
-		detectObjs.push_back(obj);
-		break;
 	case OBJECT_TYPE_BUTTON:
 		itemObjs.push_back(obj);
+		break;
+	case OBJECT_TYPE_ATTACK:
+		enemyObjs.push_back(obj);
 		break;
 	}
 }

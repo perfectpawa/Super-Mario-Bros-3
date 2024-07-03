@@ -141,7 +141,7 @@
     <ClCompile Include="ColorBox.cpp" />
     <ClCompile Include="debug.cpp" />
     <ClCompile Include="FallCheckingObject.cpp" />
-    <ClCompile Include="FireShot.cpp" />
+    <ClCompile Include="FireBall.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="Goomba.cpp" />
@@ -162,6 +162,8 @@
     <ClCompile Include="OW_Portal.cpp" />
     <ClCompile Include="OW_Terrain.cpp" />
     <ClCompile Include="ParaGoomba.cpp" />
+    <ClCompile Include="Plant.cpp" />
+    <ClCompile Include="PlantFire.cpp" />
     <ClCompile Include="Platform.cpp" />
     <ClCompile Include="PlayScene.cpp" />
     <ClCompile Include="Portal.cpp" />
@@ -175,7 +177,6 @@
     <ClCompile Include="Tube.cpp" />
     <ClCompile Include="UIObject.cpp" />
     <ClCompile Include="Utils.cpp" />
-    <ClCompile Include="Venus.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
@@ -194,7 +195,7 @@
     <ClInclude Include="debug.h" />
     <ClInclude Include="EffectObject.h" />
     <ClInclude Include="FallCheckingObject.h" />
-    <ClInclude Include="FireShot.h" />
+    <ClInclude Include="FireBall.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Goomba.h" />
@@ -211,6 +212,8 @@
     <ClInclude Include="OW_Point.h" />
     <ClInclude Include="OW_Portal.h" />
     <ClInclude Include="OW_Terrain.h" />
+    <ClInclude Include="Plant.h" />
+    <ClInclude Include="PlantFire.h" />
     <ClInclude Include="PlayScene.h" />
     <ClInclude Include="Tube.h" />
     <ClInclude Include="UI.txt" />
@@ -221,7 +224,6 @@
     <ClInclude Include="Mushroom.h" />
     <ClInclude Include="ParaGoomba.h" />
     <ClInclude Include="UIObject.h" />
-    <ClInclude Include="Venus.h" />
     <ClInclude Include="Platform.h" />
     <ClInclude Include="Portal.h" />
     <ClInclude Include="QuestionBlock.h" />
@@ -253,13 +255,13 @@
     <Text Include="ow_point.txt" />
     <Text Include="ow_portal.txt" />
     <Text Include="ow_terrain.txt" />
+    <Text Include="plant.txt" />
     <Text Include="playground.txt" />
     <Text Include="question_block.txt" />
     <Text Include="reward.txt" />
     <Text Include="scene001-bonus.txt" />
     <Text Include="scene001.txt" />
     <Text Include="tube.txt" />
-    <Text Include="venus.txt" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -7,19 +7,21 @@
 #include "Goomba.h"
 #include "ParaGoomba.h"
 #include "Koopas.h"
+#include "Plant.h"
+#include "FireBall.h"
+
 #include "Mushroom.h"
 #include "Leaf.h"
 #include "Coin.h"
-#include "Portal.h"
-#include "SpawnCheck.h"
-#include "QuestionBlock.h"
-#include "Venus.h"
-#include "FireShot.h"
-#include "Button.h"
 
+#include "Portal.h"
+#include "QuestionBlock.h"
+#include "Button.h"
 #include "Brick.h"
+#include "SpawnCheck.h"
 
 #include "Collision.h"
+
 
 CMario::CMario(float x, float y) : CGameObject(x, y)
 {
@@ -216,12 +218,16 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 
 	if (dynamic_cast<CGoomba*>(e->obj))
 		OnCollisionWithGoomba(e);
+	else if (dynamic_cast<CKoopas*>(e->obj))
+		OnCollisionWithKoopas(e);
+	else if (dynamic_cast<CPlant*>(e->obj))
+		OnCollisionWithPlant(e);
+	else if (dynamic_cast<CFireBall*>(e->obj))
+		OnCollisionWithFireBall(e);
 	else if (dynamic_cast<CCoin*>(e->obj))
 		OnCollisionWithCoin(e);
 	else if (dynamic_cast<CPortal*>(e->obj))
 		OnCollisionWithPortal(e);
-	else if (dynamic_cast<CKoopas*>(e->obj))
-		OnCollisionWithKoopas(e);
 	else if (dynamic_cast<CSpawnCheck*>(e->obj))
 		OnCollisionWithSpawnCheck(e);
 	else if (dynamic_cast<CMushroom*>(e->obj)) 
@@ -230,10 +236,6 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithLeaf(e);
 	else if (dynamic_cast<CQuestionBlock*>(e->obj))
 		OnCollisionWithQuestionBlock(e);
-	else if (dynamic_cast<CVenus*>(e->obj))
-		OnCollisionWithVenus(e);
-	else if (dynamic_cast<CFireShot*>(e->obj))
-		OnCollisionWithFireShot(e);
 	else if (dynamic_cast<CButton*>(e->obj))
 		OnCollisionWithButton(e);
 		
@@ -319,6 +321,18 @@ void CMario::OnCollisionWithKoopas(LPCOLLISIONEVENT e)
 	}
 }	
 
+void CMario::OnCollisionWithPlant(LPCOLLISIONEVENT e)
+{
+	TakingDamage();
+}
+
+void CMario::OnCollisionWithFireBall(LPCOLLISIONEVENT e)
+{
+	CFireBall* fireBall = dynamic_cast<CFireBall*>(e->obj);
+	TakingDamage();
+	fireBall->Delete();
+}
+
 void CMario::OnCollisionWithCoin(LPCOLLISIONEVENT e)
 {
 	e->obj->Delete();
@@ -374,20 +388,6 @@ void CMario::OnCollisionWithButton(LPCOLLISIONEVENT e)
 {
 	CButton* button = dynamic_cast<CButton*>(e->obj);
 	button->Pressing();
-}
-
-void CMario::OnCollisionWithVenus(LPCOLLISIONEVENT e)
-{
-	CVenus* venus = dynamic_cast<CVenus*>(e->obj);
-	if (venus->GetState() != VENUS_STATE_IDLE)
-		TakingDamage();
-}
-
-void CMario::OnCollisionWithFireShot(LPCOLLISIONEVENT e)
-{
-	CFireShot* fireShot = dynamic_cast<CFireShot*>(e->obj);
-	TakingDamage();
-	fireShot->Delete();
 }
 
 void CMario::TakingDamage() {

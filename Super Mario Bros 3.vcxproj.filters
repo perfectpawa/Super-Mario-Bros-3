@@ -171,9 +171,6 @@
     <ClCompile Include="QuestionBlock.cpp">
       <Filter>Source Files\Object\GameObject\Misc</Filter>
     </ClCompile>
-    <ClCompile Include="Venus.cpp">
-      <Filter>Source Files\Object\GameObject\Enemy</Filter>
-    </ClCompile>
     <ClCompile Include="ColorBox.cpp">
       <Filter>Source Files\Object\GameObject\Misc</Filter>
     </ClCompile>
@@ -197,9 +194,6 @@
     </ClCompile>
     <ClCompile Include="SpawnCheck.cpp">
       <Filter>Source Files\Object\GameObject\CheckingObj</Filter>
-    </ClCompile>
-    <ClCompile Include="FireShot.cpp">
-      <Filter>Source Files\Object\GameObject\Enemy</Filter>
     </ClCompile>
     <ClCompile Include="Collision.cpp">
       <Filter>Source Files\Core</Filter>
@@ -270,6 +264,15 @@
     <ClCompile Include="CoinEffect.cpp">
       <Filter>Source Files\Object\EffectObject</Filter>
     </ClCompile>
+    <ClCompile Include="Plant.cpp">
+      <Filter>Source Files\Object\GameObject\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="PlantFire.cpp">
+      <Filter>Source Files\Object\GameObject\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="FireBall.cpp">
+      <Filter>Source Files\Object\GameObject\Enemy</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AssetIDs.h">
@@ -329,9 +332,6 @@
     <ClInclude Include="QuestionBlock.h">
       <Filter>Header Files\Object\GameObject\Misc</Filter>
     </ClInclude>
-    <ClInclude Include="Venus.h">
-      <Filter>Header Files\Object\GameObject\Enemy</Filter>
-    </ClInclude>
     <ClInclude Include="ColorBox.h">
       <Filter>Header Files\Object\GameObject\Misc</Filter>
     </ClInclude>
@@ -349,9 +349,6 @@
     </ClInclude>
     <ClInclude Include="Collision.h">
       <Filter>Header Files\Core</Filter>
-    </ClInclude>
-    <ClInclude Include="FireShot.h">
-      <Filter>Header Files\Object\GameObject\Enemy</Filter>
     </ClInclude>
     <ClInclude Include="SpawnCheck.h">
       <Filter>Header Files\Object\GameObject\CheckingObj</Filter>
@@ -434,6 +431,15 @@
     <ClInclude Include="CoinEffect.h">
       <Filter>Header Files\Object\EffectObject</Filter>
     </ClInclude>
+    <ClInclude Include="Plant.h">
+      <Filter>Header Files\Object\GameObject\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="PlantFire.h">
+      <Filter>Header Files\Object\GameObject\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="FireBall.h">
+      <Filter>Header Files\Object\GameObject\Enemy</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="main-settings.txt">
@@ -465,9 +471,6 @@
     </Text>
     <Text Include="tube.txt">
       <Filter>Resource Files\Misc</Filter>
-    </Text>
-    <Text Include="venus.txt">
-      <Filter>Resource Files\Enemy</Filter>
     </Text>
     <Text Include="background.txt">
       <Filter>Resource Files\Misc</Filter>
@@ -513,6 +516,9 @@
     </Text>
     <Text Include="reward.txt">
       <Filter>Resource Files\Item</Filter>
+    </Text>
+    <Text Include="plant.txt">
+      <Filter>Resource Files\Enemy</Filter>
     </Text>
   </ItemGroup>
   <ItemGroup>
