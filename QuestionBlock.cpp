@@ -108,7 +108,7 @@ void CQuestionBlock::GetReward()
 }
 
 void CQuestionBlock::SpawnCoinEffect() {
-	CEffectObject* coinEffect = new CCoinEffect(x, y);
+	CEffectObject* coinEffect = new CCoinEffect(x, y - 16);
 	CGame::GetInstance()->GetCurrentScene()->AddEffect(coinEffect);
 }
 

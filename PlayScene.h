@@ -82,7 +82,6 @@ public:
 	virtual void UpdateUIPosFixedCam(float cx, float cy);
 	virtual void UpdateUITimeLimit(DWORD dt);
 	virtual void UpdateUIPower();
-	virtual void UpdateUICoin();
 
 	LPGAMEOBJECT GetPlayer() { return player; }
 	LPOWGAMEOBJECT GetOWPlayer() { return OW_player; }

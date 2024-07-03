@@ -57,7 +57,6 @@ CMario::CMario(float x, float y) : CGameObject(x, y)
 	flying_start = -1;
 
 	isOnPlatform = false;
-	coin = 0;
 	gearUpState = 0;
 }
 
@@ -354,7 +353,7 @@ void CMario::OnCollisionWithFireBall(LPCOLLISIONEVENT e)
 void CMario::OnCollisionWithCoin(LPCOLLISIONEVENT e)
 {
 	e->obj->Delete();
-	coin++;
+	SaveFile::GetInstance()->AddCoin(1);
 }
 
 void CMario::OnCollisionWithPortal(LPCOLLISIONEVENT e)
@@ -396,8 +395,9 @@ void CMario::OnCollisionWithQuestionBlock(LPCOLLISIONEVENT e) {
 	CQuestionBlock* questionBlock = dynamic_cast<CQuestionBlock*>(e->obj);
 	if (questionBlock->GetState() == QBLOCK_STATE_IDLE) {
 		questionBlock->SetState(QBLOCK_STATE_BOUND_UP);
-		if (questionBlock->GetRewardType() == REWARD_COIN)
-			coin++;
+		if (questionBlock->GetRewardType() == REWARD_COIN) {
+			SaveFile::GetInstance()->AddCoin(1);
+		}
 		questionBlock->GetReward();
 	}
 }
@@ -567,8 +567,6 @@ void CMario::Render()
 	else animations->Get(aniId)->Render(x, y);
 
 	//RenderBoundingBox();
-	
-	DebugOutTitle(L"Coins: %d", coin);
 }
 
 void CMario::SetState(int state)

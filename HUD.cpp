@@ -5,7 +5,7 @@ CHUD::CHUD(float x, float y) : CUIObject(x, y)
 {
 	life = 4;
 	coin = 0;
-	point = 0;
+	score = 0;
 	level = 1;
 	time = 000;
 	power = 0;
@@ -18,7 +18,7 @@ CHUD::CHUD(float x, float y) : CUIObject(x, y)
 
 	levelUI = new CNumberUI(x - 35, y - 4, level, 1);
 	coinUI = new CNumberUI(x + 68, y - 4, coin, 2);
-	pointUI = new CNumberUI(x + 28, y + 4, point, 7);
+	scoreUI = new CNumberUI(x + 28, y + 4, score, 7);
 	lifeUI = new CNumberUI(x - 35, y + 4, life, 2);
 	timeUI = new CNumberUI(x + 68, y + 4, time, 3);
 
@@ -60,7 +60,7 @@ void CHUD::RenderNumberInfoHUD()
 {
 	levelUI->Render();
 	coinUI->Render();
-	pointUI->Render();
+	scoreUI->Render();
 	lifeUI->Render();
 	timeUI->Render();
 }
@@ -98,7 +98,7 @@ void CHUD::SetPosition(float x, float y)
 	CUIObject::SetPosition(x, y);
 	levelUI->SetPosition(x - 35, y - 4);
 	coinUI->SetPosition(x + 68, y - 4);
-	pointUI->SetPosition(x + 28, y + 4);
+	scoreUI->SetPosition(x + 28, y + 4);
 	lifeUI->SetPosition(x - 35, y + 4);
 	timeUI->SetPosition(x + 68, y + 4);
 
@@ -126,3 +126,25 @@ void CHUD::SetCoin(int coin)
 	this->coin = coin;
 	coinUI->SetNumber(coin);
 }
+
+void CHUD::SetScore(int score)
+{
+	if (score < 0) score = 0;
+	this->score = score;
+	scoreUI->SetNumber(score);
+}
+
+void CHUD::SetLife(int life)
+{
+	if (life < 0) life = 0;
+	this->life = life;
+	lifeUI->SetNumber(life);
+}
+
+void CHUD::SetLevel(int level)
+{
+	if (level < 0) level = 0;
+	this->level = level;
+	levelUI->SetNumber(level);
+}
+

@@ -1,7 +1,6 @@
 [SETTINGS]
 start	10
-width	256 
-height	256
+savefile	1
 
 #id	type	file
 # type: 0: intro, 1: play scene 
@@ -30,3 +29,6 @@ height	256
 
 8881	textures\overworld-icons.png
 8882	textures\overworld-tile.png
+
+[SAVEFILES]
+1	save\save_1.txt

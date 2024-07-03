@@ -124,6 +124,15 @@
     <Filter Include="Source Files\Object\EffectObject">
       <UniqueIdentifier>{705da7de-2c17-43f2-9010-002983bee957}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\SaveFile">
+      <UniqueIdentifier>{d6a47ce4-815d-4bcc-aa87-8947bf2036b5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\SaveFile">
+      <UniqueIdentifier>{e740f21e-5caa-44f5-ad5d-1d1fcc6ac46c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\SaveFile">
+      <UniqueIdentifier>{b402b9e3-98bf-44b7-a90c-4c3fe7be40df}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameObject.cpp">
@@ -272,6 +281,9 @@
     </ClCompile>
     <ClCompile Include="FireBall.cpp">
       <Filter>Source Files\Object\GameObject\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="SaveFile.cpp">
+      <Filter>Source Files\SaveFile</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -440,6 +452,9 @@
     <ClInclude Include="FireBall.h">
       <Filter>Header Files\Object\GameObject\Enemy</Filter>
     </ClInclude>
+    <ClInclude Include="SaveFile.h">
+      <Filter>Header Files\SaveFile</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="main-settings.txt">
@@ -519,6 +534,9 @@
     </Text>
     <Text Include="plant.txt">
       <Filter>Resource Files\Enemy</Filter>
+    </Text>
+    <Text Include="save\save_1.txt">
+      <Filter>Resource Files\SaveFile</Filter>
     </Text>
   </ItemGroup>
   <ItemGroup>

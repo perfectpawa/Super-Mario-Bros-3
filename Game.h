@@ -13,6 +13,8 @@ using namespace std;
 #include "Texture.h"
 #include "KeyEventHandler.h"
 #include "Scene.h"
+#include "SaveFile.h"
+
 
 #define MAX_FRAME_RATE 100
 #define KEYBOARD_BUFFER_SIZE 1024
@@ -54,13 +56,20 @@ class CGame
 	ID3D10SamplerState* pPointSamplerState;
 
 	unordered_map<int, LPSCENE> scenes;
+
+	unordered_map<int, LPCWSTR> saveFiles;
+
+
 	int current_scene;
 	int next_scene = -1;
+
+	int current_save_file_id;
 
 	D3DXCOLOR bgColor = D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.0f);
 
 	void _ParseSection_SETTINGS(string line);
 	void _ParseSection_SCENES(string line);
+	void _ParseSection_SAVEFILES(string line);
 
 public:
 	// Init DirectX, Sprite Handler
@@ -118,7 +127,12 @@ public:
 	void ReloadScene();
 	void InitiateSwitchScene(int scene_id);
 
+	void LoadSaveFile();
+
 	void _ParseSection_TEXTURES(string line);
+
+	int GetCurrentSaveFileId() { return current_save_file_id; }
+	LPCWSTR GetSaveFileName(int save_file_id) { return saveFiles[save_file_id]; }
 
 
 	~CGame();

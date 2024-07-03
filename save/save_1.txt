@@ -1,0 +1,7 @@
+score	98
+life	9
+coin	12
+level	1
+card_slot_1	0
+card_slot_2	0
+card_slot_3	0

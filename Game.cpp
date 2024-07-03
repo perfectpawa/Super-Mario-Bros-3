@@ -436,6 +436,7 @@ void CGame::ProcessKeyboard()
 #define GAME_FILE_SECTION_SETTINGS 1
 #define GAME_FILE_SECTION_SCENES 2
 #define GAME_FILE_SECTION_TEXTURES 3
+#define GAME_FILE_SECTION_SAVEFILES 4
 
 
 void CGame::_ParseSection_SETTINGS(string line)
@@ -445,6 +446,8 @@ void CGame::_ParseSection_SETTINGS(string line)
 	if (tokens.size() < 2) return;
 	if (tokens[0] == "start")
 		next_scene = atoi(tokens[1].c_str());
+	if (tokens[0] == "savefile")
+		current_save_file_id = atoi(tokens[1].c_str());
 	else
 		DebugOut(L"[ERROR] Unknown game setting: %s\n", ToWSTR(tokens[0]).c_str());
 }
@@ -459,6 +462,17 @@ void CGame::_ParseSection_SCENES(string line)
 
 	LPSCENE scene = new CPlayScene(id, path);
 	scenes[id] = scene;
+}
+
+void CGame::_ParseSection_SAVEFILES(string line)
+{
+	vector<string> tokens = split(line);
+
+	if (tokens.size() < 2) return;
+	int id = atoi(tokens[0].c_str());
+	LPCWSTR path = ToLPCWSTR(tokens[1]);   // file: ASCII format (single-byte char) => Wide Char
+
+	saveFiles[id] = path;
 }
 
 /*
@@ -484,6 +498,7 @@ void CGame::Load(LPCWSTR gameFile)
 		if (line == "[SETTINGS]") { section = GAME_FILE_SECTION_SETTINGS; continue; }
 		if (line == "[TEXTURES]") { section = GAME_FILE_SECTION_TEXTURES; continue; }
 		if (line == "[SCENES]") { section = GAME_FILE_SECTION_SCENES; continue; }
+		if (line == "[SAVEFILES]") { section = GAME_FILE_SECTION_SAVEFILES; continue; }
 		if (line[0] == '[') 
 		{ 
 			section = GAME_FILE_SECTION_UNKNOWN; 
@@ -499,13 +514,20 @@ void CGame::Load(LPCWSTR gameFile)
 		case GAME_FILE_SECTION_SETTINGS: _ParseSection_SETTINGS(line); break;
 		case GAME_FILE_SECTION_SCENES: _ParseSection_SCENES(line); break;
 		case GAME_FILE_SECTION_TEXTURES: _ParseSection_TEXTURES(line); break;
+		case GAME_FILE_SECTION_SAVEFILES: _ParseSection_SAVEFILES(line); break;
 		}
 	}
 	f.close();
 
 	DebugOut(L"[INFO] Loading game file : %s has been loaded successfully\n", gameFile);
 
+	LoadSaveFile();
 	SwitchScene();
+}
+
+void CGame::LoadSaveFile() {
+	LPSAVEFILE saveFile = SaveFile::GetInstance();
+	saveFile->Load(current_save_file_id);
 }
 
 void CGame::SwitchScene()

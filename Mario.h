@@ -123,7 +123,6 @@ class CMario : public CGameObject
 	ULONGLONG flying_start;
 
 	BOOLEAN isOnPlatform;
-	int coin;
 	
 	bool wantPickUp = false;
 	CKoopas* koopasPickedUp = NULL;
@@ -185,8 +184,6 @@ public:
 
 	void GetGearUpState(int& s) { s = gearUpState; }
 
-	void GetCoin(int& c) { c = coin; }
-	
 	void SetWantPickUp(bool b) { wantPickUp = b; }
 	void SetWantWhip(bool b) { wantWhip = b; }
 	void SetWantJump(bool b) { wantJump = b; }

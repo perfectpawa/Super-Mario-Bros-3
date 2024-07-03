@@ -39,6 +39,7 @@
 #include "OW_Terrain.h"
 #include "OW_Portal.h"
 #include "OW_Point.h"
+#include "SaveFile.h"
 
 #pragma endregion
 
@@ -564,6 +565,7 @@ void CPlayScene::LoadUI()
 	DebugOut(L"[INFO] Start loading UI\n");
 	mainHUD = new CHUD(0, 0);
 
+
 	UpdateUIPosFixedCam();
 }
 
@@ -1051,9 +1053,15 @@ void CPlayScene::UpdateUI(DWORD dt) {
 	CGame::GetInstance()->GetCamPos(cx, cy);
 	UpdateUIPosFixedCam(cx, cy);
 
+	LPSAVEFILE saveFile = SaveFile::GetInstance();
+
+	mainHUD->SetCoin(saveFile->GetCoin());
+	mainHUD->SetScore(saveFile->GetScore());
+	mainHUD->SetLife(saveFile->GetLife());
+	mainHUD->SetLevel(saveFile->GetLevel());
+
 	UpdateUITimeLimit(dt);
 	UpdateUIPower();
-	UpdateUICoin();
 }
 
 void CPlayScene::UpdateUIPosFixedCam() {
@@ -1094,15 +1102,6 @@ void CPlayScene::UpdateUIPower() {
 		mario->GetGearUpState(power);
 	}
 	mainHUD->SetPower(power);
-}
-
-void CPlayScene::UpdateUICoin() {
-	int coin = 0;
-	CMario* mario = dynamic_cast<CMario*>(player);
-	if (mario != NULL) {
-		mario->GetCoin(coin);
-	}
-	mainHUD->SetCoin(coin);
 }
 #pragma endregion
 

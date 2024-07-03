@@ -8,7 +8,7 @@ CPlant::CPlant(float x, float y, int height, int color) : CGameObject(x,y)
 	this->height = height;
 	this->color = color;
 
-	this->plant_height = (float)PLANT_PART_BBOX_HEIGHT * (height + 1);
+	this->plant_height = PLANT_PART_BBOX_HEIGHT * (height + 1);
 
 	this->up_point = y - plant_height;
 	this->down_point = y;
@@ -53,7 +53,7 @@ void CPlant::Render()
 	int headId = ID_ANI_PLANT_HEAD + color * 100;
 	CAnimations::GetInstance()->Get(headId)->Render(x, y, 0);
 
-	int yy = y + PLANT_PART_BBOX_HEIGHT * 1.5;
+	float yy = y + PLANT_PART_BBOX_HEIGHT * 1.5f;
 	for (int i = 1; i < height; i++)
 	{
 		CSprites::GetInstance()->Get(ID_SPRITE_PLANT_BODY)->Draw(x, yy);

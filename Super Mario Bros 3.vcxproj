@@ -169,6 +169,7 @@
     <ClCompile Include="Portal.cpp" />
     <ClCompile Include="QuestionBlock.cpp" />
     <ClCompile Include="LevelKeyHandler.cpp" />
+    <ClCompile Include="SaveFile.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SpawnCheck.cpp" />
     <ClCompile Include="Sprite.cpp" />
@@ -215,6 +216,7 @@
     <ClInclude Include="Plant.h" />
     <ClInclude Include="PlantFire.h" />
     <ClInclude Include="PlayScene.h" />
+    <ClInclude Include="SaveFile.h" />
     <ClInclude Include="Tube.h" />
     <ClInclude Include="UI.txt" />
     <ClInclude Include="KeyEventHandler.h" />
@@ -259,6 +261,7 @@
     <Text Include="playground.txt" />
     <Text Include="question_block.txt" />
     <Text Include="reward.txt" />
+    <Text Include="save\save_1.txt" />
     <Text Include="scene001-bonus.txt" />
     <Text Include="scene001.txt" />
     <Text Include="tube.txt" />
