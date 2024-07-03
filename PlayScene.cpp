@@ -282,8 +282,8 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 			type = atoi(tokens[5].c_str());
 		}
 
-		terrainObj = new CTube(x, y, length, isUpsideDown, type);
-		terrainObjs.push_back(terrainObj);
+		frontTerrainObj = new CTube(x, y, length, isUpsideDown, type);
+		frontTerrainObjs.push_back(frontTerrainObj);
 		break;
 	}
 	case OBJECT_TYPE_GROUND: {
@@ -994,16 +994,6 @@ void CPlayScene::AddEffect(LPEFFECTOBJECT obj)
 	effectObjs.push_back(obj);
 }
 
-void CPlayScene::MoveFrontToBack(LPGAMEOBJECT obj)
-{
-	//remove obj from frontTerrainObjs
-	vector<LPGAMEOBJECT>::iterator it = find(frontTerrainObjs.begin(), frontTerrainObjs.end(), obj);
-	if (it != frontTerrainObjs.end())
-		frontTerrainObjs.erase(it);
-
-	//add obj to terrainObjs
-	terrainObjs.push_back(obj);
-}
 
 void CPlayScene::ChangeBrickCoin(int type)
 {

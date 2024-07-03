@@ -72,7 +72,6 @@ void CQuestionBlock::SetState(int state)
 			break;
 		case QBLOCK_STATE_EMPTY:
 			vy = 0;
-			CGame::GetInstance()->GetCurrentScene()->MoveFrontToBack(this);
 			break;
 
 	}

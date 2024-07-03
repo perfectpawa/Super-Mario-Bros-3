@@ -153,9 +153,9 @@ void CMario::JumpingBehavior() {
 	if (isOnPlatform && wantJump) SetState(MARIO_STATE_JUMP);
 	if (wantReleaseJump) SetState(MARIO_STATE_RELEASE_JUMP);
 
-	isOnPlatform = false;
 	wantJump = false;
 	wantReleaseJump = false;
+
 }
 
 void CMario::TimeChecking() {
@@ -166,14 +166,19 @@ void CMario::TimeChecking() {
 	}
 	if(gear_start != -1 && GetTickCount64() - gear_start > MARIO_GEAR_UP_TIME)
 	{
-		if (abs(vx) == MARIO_RUNNING_SPEED) {
+		DebugOut(L"IsOnPlatform: %d\n", isOnPlatform);
+
+		if (abs(vx) == MARIO_RUNNING_SPEED && isOnPlatform) {
 			gearUpState += 1;
 			if (gearUpState > 6) gearUpState = 6;
 			else gear_start = GetTickCount64();
 		}
 		else {
 			gearUpState -= 1;
-			if(gearUpState == 0) gear_start = -1;
+			if (gearUpState <= 0) {
+				gearUpState = 0;
+				gear_start = -1;
+			}
 			else gear_start = GetTickCount64();
 		}
 	}
@@ -184,6 +189,8 @@ void CMario::OnNoCollision(DWORD dt)
 {
 	x += vx * dt;
 	y += vy * dt;
+
+	if(vy < 0) isOnPlatform = false;
 }
 
 void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
