@@ -545,11 +545,15 @@ void CGame::SwitchScene()
 	LPSCENE s = scenes[next_scene];
 	s->Load();
 
-	if(haveDefaultPos)
+	if (haveDefaultPos) {
 		s->SetDefaultPos(start_x, start_y);
+		haveDefaultPos = false;
+	}
 
-	if (havedefaultTimeLimit)
+	if (havedefaultTimeLimit) {
 		s->SetTimeLimit(defaultTimeLimit);
+		havedefaultTimeLimit = false;
+	}
 
 	this->SetKeyHandler(s->GetKeyEventHandler());
 }
@@ -563,8 +567,6 @@ void CGame::ReloadScene()
 void CGame::InitiateSwitchScene(int scene_id)
 {
 	next_scene = scene_id;
-	this->haveDefaultPos = false;
-	this->havedefaultTimeLimit = false;
 }
 
 

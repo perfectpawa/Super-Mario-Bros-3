@@ -1,3 +1,4 @@
+#pragma region Include
 #include <iostream>
 #include <fstream>
 #include "AssetIDs.h"
@@ -42,6 +43,7 @@
 #include "OW_Point.h"
 #include "SaveFile.h"
 
+#pragma endregion
 #pragma endregion
 
 using namespace std;
@@ -896,241 +898,104 @@ void CPlayScene::RenderOnFreeze() {
 #pragma region Clean Up
 void CPlayScene::Clear()
 {
+	ClearGameObject(enemyObjs);
+	ClearGameObject(itemObjs);
+	ClearGameObject(terrainObjs);
+	ClearGameObject(brickCoins);
+	ClearGameObject(coinBricks);
+	ClearGameObject(frontTerrainObjs);
+	ClearGameObject(detectObjs);
+	ClearGameObject(attackObjs);
+	ClearGameObject(barrierObjs);
+
+	ClearEffectObject(effectObjs);
+
+	ClearBackgroundObject(backgroundObjs);
+}
+
+void CPlayScene::ClearGameObject(vector<LPGAMEOBJECT>& objs)
+{
 	vector<LPGAMEOBJECT>::iterator it;
-
-	//clear enemyObjs
-	for (it = enemyObjs.begin(); it != enemyObjs.end(); it++)
+	for (it = objs.begin(); it != objs.end(); it++)
 	{
 		delete (*it);
 	}
-	enemyObjs.clear();
+	objs.clear();
+}
 
-	//clear itemObjs
-	for (it = itemObjs.begin(); it != itemObjs.end(); it++)
+void CPlayScene::ClearEffectObject(vector<LPEFFECTOBJECT>& objs)
+{
+	vector<LPEFFECTOBJECT>::iterator it;
+	for (it = objs.begin(); it != objs.end(); it++)
 	{
 		delete (*it);
 	}
-	itemObjs.clear();
+	objs.clear();
+}
 
-	//clear terrainObjs
-	for (it = terrainObjs.begin(); it != terrainObjs.end(); it++)
+void CPlayScene::ClearBackgroundObject(vector<CBackgroundObject*>& objs)
+{
+	vector<CBackgroundObject*>::iterator it;
+	for (it = objs.begin(); it != objs.end(); it++)
 	{
 		delete (*it);
 	}
-	terrainObjs.clear();
-
-	//clear brickCoins
-	for (it = brickCoins.begin(); it != brickCoins.end(); it++)
-	{
-		delete (*it);
-	}
-	brickCoins.clear();
-
-	//clear coinBricks
-	for (it = coinBricks.begin(); it != coinBricks.end(); it++)
-	{
-		delete (*it);
-	}
-	coinBricks.clear();
-
-	//clear frontTerrainObjs
-	for (it = frontTerrainObjs.begin(); it != frontTerrainObjs.end(); it++)
-	{
-		delete (*it);
-	}
-	frontTerrainObjs.clear();
-
-	//clear detectObjs
-	for (it = detectObjs.begin(); it != detectObjs.end(); it++)
-	{
-		delete (*it);
-	}
-	detectObjs.clear();
-
-	//clear effectObjs
-	vector<LPEFFECTOBJECT>::iterator it_effect;
-	for (it_effect = effectObjs.begin(); it_effect != effectObjs.end(); it_effect++)
-	{
-		delete (*it_effect);
-	}
-	effectObjs.clear();
-
-	//clear attackObjs
-	for (it = attackObjs.begin(); it != attackObjs.end(); it++)
-	{
-		delete (*it);
-	}
-	attackObjs.clear();
-
-	//clear barrierObjs
-	for (it = barrierObjs.begin(); it != barrierObjs.end(); it++)
-	{
-		delete (*it);
-	}
-	barrierObjs.clear();
-
-	vector<CBackgroundObject*>::iterator it_bg;
-	//clear backgroundObjs
-	for (it_bg = backgroundObjs.begin(); it_bg != backgroundObjs.end(); it_bg++)
-	{
-		delete (*it_bg);
-	}
-	backgroundObjs.clear();
+	objs.clear();
 }
 
 void CPlayScene::PurgeDeletedObjects()
 {
-	vector<LPGAMEOBJECT>::iterator it;
-	//check in enemyObjs
-	for (it = enemyObjs.begin(); it != enemyObjs.end(); it++)
-	{
-		LPGAMEOBJECT o = *it;
-		if (o->IsDeleted())
-		{
-			delete o;
-			*it = NULL;
-		}
-	}
-	enemyObjs.erase(
-		std::remove_if(enemyObjs.begin(), enemyObjs.end(), CPlayScene::IsGameObjectDeleted),
-		enemyObjs.end());
+	PurgeDeletedGameObjects(enemyObjs);
+	PurgeDeletedGameObjects(itemObjs);
+	PurgeDeletedGameObjects(terrainObjs);
+	PurgeDeletedGameObjects(brickCoins);
+	PurgeDeletedGameObjects(coinBricks);
+	PurgeDeletedGameObjects(frontTerrainObjs);
+	PurgeDeletedGameObjects(detectObjs);
+	PurgeDeletedGameObjects(attackObjs);
+	PurgeDeletedGameObjects(barrierObjs);
 
-	//check in itemObjs
-	for (it = itemObjs.begin(); it != itemObjs.end(); it++)
-	{
-		LPGAMEOBJECT o = *it;
-		if (o->IsDeleted())
-		{
-			delete o;
-			*it = NULL;
-		}
-	}
-	itemObjs.erase(
-		std::remove_if(itemObjs.begin(), itemObjs.end(), CPlayScene::IsGameObjectDeleted),
-		itemObjs.end());
+	PurgeDeletedEffectObjects(effectObjs);
 
-	//check in terrainObjs
-	for (it = terrainObjs.begin(); it != terrainObjs.end(); it++)
-	{
-		LPGAMEOBJECT o = *it;
-		if (o->IsDeleted())
-		{
-			delete o;
-			*it = NULL;
-		}
-	}
-	terrainObjs.erase(
-		std::remove_if(terrainObjs.begin(), terrainObjs.end(), CPlayScene::IsGameObjectDeleted),
-		terrainObjs.end());
-
-	//check in brickCoins
-	for (it = brickCoins.begin(); it != brickCoins.end(); it++)
-	{
-		LPGAMEOBJECT o = *it;
-		if (o->IsDeleted())
-		{
-			delete o;
-			*it = NULL;
-		}
-	}
-	brickCoins.erase(
-		std::remove_if(brickCoins.begin(), brickCoins.end(), CPlayScene::IsGameObjectDeleted),
-		brickCoins.end());
-
-	//check in coinBricks
-	for (it = coinBricks.begin(); it != coinBricks.end(); it++)
-	{
-		LPGAMEOBJECT o = *it;
-		if (o->IsDeleted())
-		{
-			delete o;
-			*it = NULL;
-		}
-	}
-	coinBricks.erase(
-		std::remove_if(coinBricks.begin(), coinBricks.end(), CPlayScene::IsGameObjectDeleted),
-		coinBricks.end());
-
-	//check in frontTerrainObjs
-	for (it = frontTerrainObjs.begin(); it != frontTerrainObjs.end(); it++)
-	{
-		LPGAMEOBJECT o = *it;
-		if (o->IsDeleted())
-		{
-			delete o;
-			*it = NULL;
-		}
-	}
-	frontTerrainObjs.erase(
-		std::remove_if(frontTerrainObjs.begin(), frontTerrainObjs.end(), CPlayScene::IsGameObjectDeleted),
-		frontTerrainObjs.end());
-
-	//check in detectObjs
-	for (it = detectObjs.begin(); it != detectObjs.end(); it++)
-	{
-		LPGAMEOBJECT o = *it;
-		if (o->IsDeleted())
-		{
-			delete o;
-			*it = NULL;
-		}
-	}
-	detectObjs.erase(
-		std::remove_if(detectObjs.begin(), detectObjs.end(), CPlayScene::IsGameObjectDeleted),
-		detectObjs.end());
-
-	//check in effectObjs
-	vector<LPEFFECTOBJECT>::iterator it_effect;
-	for (it_effect = effectObjs.begin(); it_effect != effectObjs.end(); it_effect++)
-	{
-		LPEFFECTOBJECT o = *it_effect;
-		if (o->IsDeleted())
-		{
-			delete o;
-			*it_effect = NULL;
-		}
-	}
-	effectObjs.erase(
-		std::remove_if(effectObjs.begin(), effectObjs.end(), CPlayScene::IsEffectObjectDeleted),
-		effectObjs.end());
-
-	//check in attackObjs
-	for (it = attackObjs.begin(); it != attackObjs.end(); it++)
-	{
-		LPGAMEOBJECT o = *it;
-		if (o->IsDeleted())
-		{
-			delete o;
-			*it = NULL;
-		}
-	}
-	attackObjs.erase(
-		std::remove_if(attackObjs.begin(), attackObjs.end(), CPlayScene::IsGameObjectDeleted),
-		attackObjs.end());
-
-	//check in barrierObjs
-	for (it = barrierObjs.begin(); it != barrierObjs.end(); it++)
-	{
-		LPGAMEOBJECT o = *it;
-		if (o->IsDeleted())
-		{
-			delete o;
-			*it = NULL;
-		}
-	}
-	barrierObjs.erase(
-		std::remove_if(barrierObjs.begin(), barrierObjs.end(), CPlayScene::IsGameObjectDeleted),
-		barrierObjs.end());
-
-	// NOTE: remove_if will swap all deleted items to the end of the vector
-	// then simply trim the vector, this is much more efficient than deleting individual items
 }
 
+void CPlayScene::PurgeDeletedGameObjects(vector<LPGAMEOBJECT>& objs) {
+	vector<LPGAMEOBJECT>::iterator it;
+	for (it = objs.begin(); it != objs.end(); it++)
+	{
+		LPGAMEOBJECT o = *it;
+		if (o->IsDeleted())
+		{
+			delete o;
+			*it = NULL;
+		}
+	}
+	objs.erase(
+		std::remove_if(objs.begin(), objs.end(), CPlayScene::IsGameObjectDeleted),
+		objs.end());
+}
+
+void CPlayScene::PurgeDeletedEffectObjects(vector<LPEFFECTOBJECT>& objs) {
+	vector<LPEFFECTOBJECT>::iterator it;
+	for (it = objs.begin(); it != objs.end(); it++)
+	{
+		LPEFFECTOBJECT o = *it;
+		if (o->IsDeleted())
+		{
+			delete o;
+			*it = NULL;
+		}
+	}
+	objs.erase(
+		std::remove_if(objs.begin(), objs.end(), CPlayScene::IsEffectObjectDeleted),
+		objs.end());
+}
+
+bool CPlayScene::IsGameObjectDeleted(const LPGAMEOBJECT& o) { return o == NULL; }
+bool CPlayScene::IsEffectObjectDeleted(const LPEFFECTOBJECT& o) { return o == NULL; }
 #pragma endregion
 
 #pragma region Utils
-bool CPlayScene::IsGameObjectDeleted(const LPGAMEOBJECT& o) { return o == NULL; }
-bool CPlayScene::IsEffectObjectDeleted(const LPEFFECTOBJECT& o) { return o == NULL; }
 
 void CPlayScene::CamPosFollowPlayer() {
 	float cx, cy, ocx, ocy;

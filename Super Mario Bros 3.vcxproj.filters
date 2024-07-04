@@ -285,9 +285,6 @@
     <ClCompile Include="FireBall.cpp">
       <Filter>Source Files\Object\GameObject\Enemy</Filter>
     </ClCompile>
-    <ClCompile Include="SaveFile.cpp">
-      <Filter>Source Files\SaveFile</Filter>
-    </ClCompile>
     <ClCompile Include="Mario.cpp">
       <Filter>Source Files\Object\GameObject\Mario</Filter>
     </ClCompile>
@@ -296,6 +293,9 @@
     </ClCompile>
     <ClCompile Include="CardBlock.cpp">
       <Filter>Source Files\Object\GameObject\Misc</Filter>
+    </ClCompile>
+    <ClCompile Include="SaveFile.cpp">
+      <Filter>Source Files\Scene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

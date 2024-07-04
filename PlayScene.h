@@ -82,8 +82,8 @@ public:
 	virtual void Unload();
 
 	virtual void SetDefaultPos(float x, float y);
-	virtual void SetDefaultTimeLimit(float timeLimit) { this->timeLimit = timeLimit; }
 
+	virtual float GetTimeLimit() { return timeLimit; }
 	virtual void SetTimeLimit(float timeLimit) { this->timeLimit = timeLimit; }
 
 	virtual void RenderOnFreeze();
@@ -106,7 +106,14 @@ public:
 	LPOWGAMEOBJECT GetOWPlayer() { return OW_player; }
 
 	void Clear();
+	void ClearGameObject(vector<LPGAMEOBJECT>& objs);
+	void ClearEffectObject(vector<LPEFFECTOBJECT>& objs);
+	void ClearBackgroundObject(vector<CBackgroundObject*>& objs);
+
 	void PurgeDeletedObjects();
+	void PurgeDeletedGameObjects(vector<LPGAMEOBJECT>& objs);
+	void PurgeDeletedEffectObjects(vector<LPEFFECTOBJECT>& objs);
+
 
 	static bool IsGameObjectDeleted(const LPGAMEOBJECT& o);
 	static bool IsEffectObjectDeleted(const LPEFFECTOBJECT& o);

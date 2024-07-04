@@ -843,6 +843,11 @@ void CMario::StartSwitchingScene() {
 	CGame::GetInstance()->GetCurrentScene()->FreezeScene(1100);
 	switch_delay_start = GetTickCount64();
 
+
+	float time = CGame::GetInstance()->GetCurrentScene()->GetTimeLimit();
+
+	CGame::GetInstance()->InitDefauleTimeLimit(time);
+
 	freezeId = ID_ANI_MARIO_SMALL_STRAIGHT;
 	if(level == MARIO_LEVEL_BIG) freezeId += 100;
 	if(level == MARIO_LEVEL_RACOON) freezeId += 200;
