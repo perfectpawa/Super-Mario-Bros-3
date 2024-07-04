@@ -92,3 +92,9 @@ void CGoomba::SetState(int state)
 			break;
 	}
 }
+
+
+void CGoomba::TakeDamage()
+{
+	SetState(GOOMBA_STATE_DIE);
+}

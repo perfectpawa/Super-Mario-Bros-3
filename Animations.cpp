@@ -25,6 +25,14 @@ LPANIMATION CAnimations::Get(int id)
 	return ani;
 }
 
+void CAnimations::ResetAnimation(int id)
+{
+	LPANIMATION ani = animations[id];
+	if (ani == NULL)
+		DebugOut(L"[ERROR] Animation ID %d not found\n", id);
+	ani->Reset();
+}
+
 void CAnimations::Clear()
 {
 	for (auto x : animations)

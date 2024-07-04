@@ -68,9 +68,7 @@ void CKoopas::OnCollisionWith(LPCOLLISIONEVENT e)
 		{
 			CBrick* brick = dynamic_cast<CBrick*>(e->obj);
 			if (brick) {
-				if (brick->IsBreakable()) {
 					brick->Breaking();
-				}
 			}
 		}
 		vx = -vx;
@@ -226,5 +224,20 @@ void CKoopas::SetState(int state)
 			fallCheckingObject->SetSpeed(-fallCheckingObject_vx, fallCheckingObject_vy);
 
 		break;
+	}
+}
+
+void CKoopas::TakeDamage(bool canTakeDown)
+{
+	if (type == KOOPAS_TYPE_WING) {
+		this->SetType(KOOPAS_TYPE_GREEN);
+	}
+	else if (this->GetState() == KOOPAS_STATE_WALKING)
+	{
+		this->SetState(KOOPAS_STATE_HIDE);
+	}
+	else if (this->GetState() == KOOPAS_STATE_SLIDE)
+	{
+		this->SetState(KOOPAS_STATE_HIDE);
 	}
 }

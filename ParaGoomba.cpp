@@ -148,3 +148,13 @@ void CParaGoomba::SetState(int state)
 		break;
 	}
 }
+
+void CParaGoomba::TakeDamage()
+{
+	if (haveWing) {
+		BreakWing();
+	}else
+	{
+		CGoomba::TakeDamage();
+	}
+}

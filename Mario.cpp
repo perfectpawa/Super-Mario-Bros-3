@@ -58,6 +58,7 @@ CMario::CMario(float x, float y) : CGameObject(x, y)
 
 	isOnPlatform = false;
 	gearUpState = 0;
+
 }
 
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
@@ -77,10 +78,10 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	TimeChecking();
 
 	CCollision::GetInstance()->Process(this, dt, coObjects);
-
 }
 
 void CMario::MovingBehavior(DWORD dt) {
+	if(isSitting) return;
 
 	if (isMovingRight == isMovingLeft) {
 		SetState(MARIO_STATE_IDLE);
@@ -91,7 +92,7 @@ void CMario::MovingBehavior(DWORD dt) {
 	}
 	else if (isMovingRight) {
 		lookingRight = true;
-		
+
 		if(isGearing) SetState(MARIO_STATE_GEAR_RIGHT);
 		else SetState(MARIO_STATE_WALK_RIGHT);
 
@@ -209,7 +210,7 @@ void CMario::OnNoCollision(DWORD dt)
 	x += vx * dt;
 	y += vy * dt;
 
-	if(vy < 0) isOnPlatform = false;
+	if(vy != 0) isOnPlatform = false;
 }
 
 void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
@@ -249,31 +250,23 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithBrick(e);
 	else if (dynamic_cast<CButton*>(e->obj))
 		OnCollisionWithButton(e);
-		
 }
 
 void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 {
 	CGoomba* goomba = dynamic_cast<CGoomba*>(e->obj);
-
-
-	// jump on top >> kill Goomba and deflect a bit 
-	if (e->ny < 0 || state == MARIO_STATE_WHIP)
+	if (e->ny < 0)
 	{
-		if (goomba->GetState() == GOOMBA_STATE_DIE) return;
-		//check is para goomba
 		if (dynamic_cast<CParaGoomba*>(goomba))
 		{
 			CParaGoomba* paraGoomba = dynamic_cast<CParaGoomba*>(goomba);
-			if (paraGoomba->IsHaveWing())
-				paraGoomba->BreakWing();
-			else if (goomba->GetState() != GOOMBA_STATE_DIE)
-				goomba->SetState(GOOMBA_STATE_DIE);
+			paraGoomba->TakeDamage();
 		}
-		else if (goomba->GetState() != GOOMBA_STATE_DIE)
-			goomba->SetState(GOOMBA_STATE_DIE);
+		else {
+			goomba->TakeDamage();
+		}
 
-		if (e->ny < 0) vy = -MARIO_JUMP_DEFLECT_SPEED;
+		vy = -MARIO_JUMP_DEFLECT_SPEED;
 	}
 	else // hit by Goomba
 	{ 
@@ -309,18 +302,8 @@ void CMario::OnCollisionWithKoopas(LPCOLLISIONEVENT e)
 
 	}
 	else {
-		if (e->ny < 0 || state == MARIO_STATE_WHIP) {
-			if (type == KOOPAS_TYPE_WING) {
-				koopas->SetType(KOOPAS_TYPE_GREEN);
-			}
-			else if (koopas->GetState() == KOOPAS_STATE_WALKING)
-			{
-				koopas->SetState(KOOPAS_STATE_HIDE);
-			}
-			else if (koopas->GetState() == KOOPAS_STATE_SLIDE)
-			{
-				koopas->SetState(KOOPAS_STATE_HIDE);
-			}
+		if (e->ny < 0) {
+			koopas->TakeDamage();
 			if (e->ny < 0) vy = -MARIO_JUMP_DEFLECT_SPEED;
 		}
 		else {
@@ -429,23 +412,14 @@ void CMario::OnCollisionWithBrick(LPCOLLISIONEVENT e)
 {
 	CBrick* brick = dynamic_cast<CBrick*>(e->obj);
 
-	if (!brick->IsBreakable()) return;
-
 	if (e->ny < 0) return;
 	
 	if(e->ny > 0) brick->Breaking();
-
-	if(state == MARIO_STATE_WHIP)
-	{
-		brick->Breaking();
-	}
-
-
 }
 
 void CMario::TakingDamage() {
 
-	if (untouchable == 0)
+	if (untouchable == 0 || state == MARIO_STATE_WHIP)
 	{
 		int freezeTime = 400;
 		isMovingLeft = isMovingRight = false;
@@ -610,7 +584,7 @@ void CMario::Render()
 
 	else animations->Get(aniId)->Render(x, y);
 
-	//RenderBoundingBox();
+
 }
 
 void CMario::SetState(int state)
@@ -674,6 +648,7 @@ void CMario::SetState(int state)
 			state = MARIO_STATE_IDLE;
 			isSitting = true;
 			vx = 0; vy = 0.0f;
+			isMovingLeft = isMovingRight = false;
 			y +=MARIO_SIT_HEIGHT_ADJUST;
 		}
 		break;
@@ -727,7 +702,11 @@ void CMario::SetState(int state)
 	if (GetTickCount64() - whip_start < MARIO_WHIP_TIME) {
 		state = MARIO_STATE_WHIP;
 	}
-	else whip_start = -1;
+	else {
+		whip_start = -1;
+		CAnimations::GetInstance()->ResetAnimation(ID_ANI_RACOON_MARIO_WHIP_RIGHT);
+		CAnimations::GetInstance()->ResetAnimation(ID_ANI_RACOON_MARIO_WHIP_LEFT);
+	}
 
 	if (GetTickCount64() - float_start < MARIO_FLOAT_TIME) {
 		state = MARIO_STATE_FLOAT;	
@@ -757,11 +736,6 @@ void CMario::GetBoundingBox(float &left, float &top, float &right, float &bottom
 			top = y - MARIO_BIG_BBOX_HEIGHT/2;
 			right = left + MARIO_BIG_BBOX_WIDTH;
 			bottom = top + MARIO_BIG_BBOX_HEIGHT;
-		}
-		if (state == MARIO_STATE_WHIP)
-		{
-			left = x - MARIO_RACOON_BBOX_WIDTH / 2;
-			right = left + MARIO_RACOON_BBOX_WIDTH;
 		}
 	}
 	else

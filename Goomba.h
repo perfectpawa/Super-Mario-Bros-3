@@ -36,4 +36,5 @@ protected:
 public: 	
 	CGoomba(float x, float y);
 	virtual void SetState(int state);
+	virtual void TakeDamage();
 };

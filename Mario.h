@@ -1,7 +1,5 @@
 #pragma once
 #include "GameObject.h"
-
-#include "Animation.h"
 #include "Animations.h"
 
 #include "Koopas.h"
@@ -28,9 +26,11 @@
 #define MARIO_JUMP_RUN_SPEED_Y		0.65f
 #define MARIO_FLY_SPEED_Y		0.4f
 
+#define MARIO_WHIP_RANGE 12.0f
+
 #define MARIO_UNTOUCHABLE_TIME 2500
 #define MARIO_KICK_TIME 100
-#define MARIO_WHIP_TIME 200
+#define MARIO_WHIP_TIME 400
 #define MARIO_FLOAT_TIME 300
 
 #define MARIO_GEAR_UP_TIME 200

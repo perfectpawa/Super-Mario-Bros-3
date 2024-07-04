@@ -67,4 +67,6 @@ public:
 	void SetIsPickedUp(bool isPickedUp) { this->isPickedUp = isPickedUp; }
 	void GetType(int& type) { type = this->type; }
 	void SetType(int type) { this->type = type; }
+
+	virtual void TakeDamage(bool canTakeDown = false);
 };

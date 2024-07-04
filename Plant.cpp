@@ -51,7 +51,7 @@ void CPlant::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 void CPlant::Render()
 {
 	int headId = ID_ANI_PLANT_HEAD + color * 100;
-	CAnimations::GetInstance()->Get(headId)->Render(x, y, 0);
+	CAnimations::GetInstance()->Get(headId)->Render(x, y);
 
 	float yy = y + PLANT_PART_BBOX_HEIGHT * 1.5f;
 	for (int i = 1; i < height; i++)

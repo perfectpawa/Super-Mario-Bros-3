@@ -47,4 +47,5 @@ public:
 	virtual void SetState(int state);
 	bool IsHaveWing() const { return haveWing; }
 	void BreakWing() { haveWing = false; }
+	virtual void TakeDamage();
 };

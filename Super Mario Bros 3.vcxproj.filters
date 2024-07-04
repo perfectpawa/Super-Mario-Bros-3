@@ -133,6 +133,12 @@
     <Filter Include="Source Files\SaveFile">
       <UniqueIdentifier>{b402b9e3-98bf-44b7-a90c-4c3fe7be40df}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Object\GameObject\Mario">
+      <UniqueIdentifier>{bb2f26e0-22ed-46a6-a1bc-360742b16c4d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Object\GameObject\Mario">
+      <UniqueIdentifier>{c5046f84-7ac3-4dd4-bc87-1629511b11ee}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameObject.cpp">
@@ -167,9 +173,6 @@
     </ClCompile>
     <ClCompile Include="Koopas.cpp">
       <Filter>Source Files\Object\GameObject\Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="Mario.cpp">
-      <Filter>Source Files\Object\GameObject</Filter>
     </ClCompile>
     <ClCompile Include="Platform.cpp">
       <Filter>Source Files\Object\GameObject\Misc</Filter>
@@ -285,15 +288,15 @@
     <ClCompile Include="SaveFile.cpp">
       <Filter>Source Files\SaveFile</Filter>
     </ClCompile>
+    <ClCompile Include="Mario.cpp">
+      <Filter>Source Files\Object\GameObject\Mario</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AssetIDs.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="GameObject.h">
-      <Filter>Header Files\Object\GameObject</Filter>
-    </ClInclude>
-    <ClInclude Include="Mario.h">
       <Filter>Header Files\Object\GameObject</Filter>
     </ClInclude>
     <ClInclude Include="Animation.h">
@@ -454,6 +457,9 @@
     </ClInclude>
     <ClInclude Include="SaveFile.h">
       <Filter>Header Files\SaveFile</Filter>
+    </ClInclude>
+    <ClInclude Include="Mario.h">
+      <Filter>Header Files\Object\GameObject\Mario</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
