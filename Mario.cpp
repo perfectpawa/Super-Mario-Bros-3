@@ -22,6 +22,8 @@
 #include "Collision.h"
 #include "BrickCoin.h"
 
+#include "CardBlock.h"
+
 
 CMario::CMario(float x, float y) : CGameObject(x, y)
 {
@@ -295,6 +297,8 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithBrick(e);
 	else if (dynamic_cast<CButton*>(e->obj))
 		OnCollisionWithButton(e);
+	else if (dynamic_cast<CCardBlock*>(e->obj))
+		OnCollisionWithCardBlock(e);
 }
 
 void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
@@ -445,6 +449,11 @@ void CMario::OnCollisionWithQuestionBlock(LPCOLLISIONEVENT e) {
 		}
 		questionBlock->GetReward();
 	}
+}
+
+void CMario::OnCollisionWithCardBlock(LPCOLLISIONEVENT e) {
+	CCardBlock* cardBlock = dynamic_cast<CCardBlock*>(e->obj);
+	cardBlock->Hit();
 }
 
 void CMario::OnCollisionWithButton(LPCOLLISIONEVENT e)

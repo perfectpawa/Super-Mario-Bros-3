@@ -16,6 +16,7 @@
 #include "Brick.h"
 #include "QuestionBlock.h"
 #include "BrickCoin.h"
+#include "CardBlock.h"
 
 #include "Platform.h"
 #include "ColorBox.h"
@@ -385,6 +386,14 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_BARRIER: {
 		terrainObj = new CPlatform(x, y, 16, 16, 20, -1, 0, 0, 0, 1);
 		barrierObjs.push_back(terrainObj);
+		break;
+	}
+
+	case OBJECT_TYPE_CARD_BLOCK: {
+		terrainObj = new CCardBlock(x, y);
+		terrainObjs.push_back(terrainObj);
+		break;
+	
 	}
 
 	default:
@@ -590,6 +599,10 @@ void CPlayScene::LoadUI()
 	mainHUD->SetLife(saveFile->GetLife());
 	mainHUD->SetLevel(saveFile->GetLevel());
 
+	mainHUD->SetFirstCard(saveFile->GetCardSlot1());
+	mainHUD->SetSecondCard(saveFile->GetCardSlot2());
+	mainHUD->SetThirdCard(saveFile->GetCardSlot3());
+
 	UpdateUIPosFixedCam();
 }
 
@@ -729,6 +742,10 @@ void CPlayScene::Update(DWORD dt)
 	//update effectObjs
 	for (int i = 0; i < effectObjs.size(); i++)
 		effectObjs[i]->Update(dt);
+
+	//update terrainObjs
+	for (int i = 0; i < terrainObjs.size(); i++)
+		terrainObjs[i]->Update(dt, &coObjects);
 
 	CamPosFollowPlayer();
 
@@ -1215,6 +1232,10 @@ void CPlayScene::UpdateUI(DWORD dt) {
 	mainHUD->SetScore(saveFile->GetScore());
 	mainHUD->SetLife(saveFile->GetLife());
 	mainHUD->SetLevel(saveFile->GetLevel());
+
+	mainHUD->SetFirstCard(saveFile->GetCardSlot1());
+	mainHUD->SetSecondCard(saveFile->GetCardSlot2());
+	mainHUD->SetThirdCard(saveFile->GetCardSlot3());
 
 	UpdateUITimeLimit(dt);
 	UpdateUIPower();

@@ -107,3 +107,19 @@ void SaveFile::Load(int save_file_id)
 
 	DebugOut(L"[INFO] Loading save file : %s has been loaded successfully\n", save_file_path);
 }
+
+void SaveFile::SetCard(int card)
+{
+	if (card_slot_1 == 0)
+	{
+		card_slot_1 = card;
+	}
+	else if (card_slot_2 == 0)
+	{
+		card_slot_2 = card;
+	}
+	else if (card_slot_3 == 0)
+	{
+		card_slot_3 = card;
+	}
+}

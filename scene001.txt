@@ -17,6 +17,7 @@ brick.txt
 question_block.txt
 tube.txt
 cloud.txt
+card_block.txt
 
 ground.txt
 color_box.txt
@@ -32,6 +33,10 @@ cam_limit	8	2824	32	-16	64
 [OBJECTS]
 # MARIO
 0	2816	112
+
+# CARD BLOCK
+699	2720	96
+
 
 #BARRIER
 8888	0	16

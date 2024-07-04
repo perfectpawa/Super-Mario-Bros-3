@@ -244,6 +244,7 @@
   <ItemGroup>
     <Text Include="background.txt" />
     <Text Include="brick.txt" />
+    <Text Include="card_block.txt" />
     <Text Include="cloud.txt" />
     <Text Include="coin.txt" />
     <Text Include="color_box.txt" />

@@ -12,9 +12,9 @@ CHUD::CHUD(float x, float y) : CUIObject(x, y)
 
 	characterIconType = TYPE_MARIO;
 
-	firstCard = ID_SPRITE_UI_CARD_HUD_EMPTY;
-	secondCard = ID_SPRITE_UI_CARD_HUD_EMPTY;
-	thirdCard = ID_SPRITE_UI_CARD_HUD_EMPTY;
+	firstCard = 0;
+	secondCard = 0;
+	thirdCard = 0;
 
 	levelUI = new CNumberUI(x - 35, y - 4, level, 1);
 	coinUI = new CNumberUI(x + 68, y - 4, coin, 2);
@@ -51,9 +51,9 @@ void CHUD::RenderMainHUD()
 
 void CHUD::RenderCardHUD()
 {
-	CSprites::GetInstance()->Get(firstCard)->Draw(x + 16 * 6, y);
-	CSprites::GetInstance()->Get(secondCard)->Draw(x + 16 * 7.5f, y);
-	CSprites::GetInstance()->Get(thirdCard)->Draw(x + 16 * 9, y);
+	CSprites::GetInstance()->Get(ID_SPRITE_UI_CARD_HUD_EMPTY + firstCard)->Draw(x + 16 * 6, y);
+	CSprites::GetInstance()->Get(ID_SPRITE_UI_CARD_HUD_EMPTY + secondCard)->Draw(x + 16 * 7.5f, y);
+	CSprites::GetInstance()->Get(ID_SPRITE_UI_CARD_HUD_EMPTY + thirdCard)->Draw(x + 16 * 9, y);
 }
 
 void CHUD::RenderNumberInfoHUD()
@@ -148,3 +148,17 @@ void CHUD::SetLevel(int level)
 	levelUI->SetNumber(level);
 }
 
+void CHUD::SetFirstCard(int firstCard)
+{
+	this->firstCard = firstCard;
+}
+
+void CHUD::SetSecondCard(int secondCard)
+{
+	this->secondCard = secondCard;
+}
+
+void CHUD::SetThirdCard(int thirdCard)
+{
+	this->thirdCard = thirdCard;
+}

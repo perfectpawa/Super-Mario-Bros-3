@@ -559,6 +559,9 @@
     <Text Include="mario_on_freeze.txt">
       <Filter>Resource Files\Mario</Filter>
     </Text>
+    <Text Include="card_block.txt">
+      <Filter>Resource Files\Misc</Filter>
+    </Text>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
