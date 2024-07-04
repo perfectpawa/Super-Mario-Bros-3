@@ -63,6 +63,13 @@ class CGame
 	int current_scene;
 	int next_scene = -1;
 
+	bool haveDefaultPos = false;
+	float start_x = 0.0f;
+	float start_y = 0.0f;
+
+	bool havedefaultTimeLimit = false;
+	float defaultTimeLimit = 0.0f;
+
 	int current_save_file_id;
 
 	D3DXCOLOR bgColor = D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.0f);
@@ -126,6 +133,9 @@ public:
 	void SwitchScene();
 	void ReloadScene();
 	void InitiateSwitchScene(int scene_id);
+
+	void InitDefaulePos(float start_x, float start_y) { this->start_x = start_x; this->start_y = start_y; haveDefaultPos = true; }
+	void InitDefauleTimeLimit(float defaultTimeLimit) { this->defaultTimeLimit = defaultTimeLimit; havedefaultTimeLimit = true; }
 
 	void LoadSaveFile();
 

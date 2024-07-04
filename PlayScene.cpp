@@ -518,6 +518,7 @@ void CPlayScene::Load()
 	f.close();
 
 	DebugOut(L"[INFO] Done loading scene  %s\n", sceneFilePath);
+
 }
 
 void CPlayScene::LoadAssets(LPCWSTR assetFile)
@@ -551,7 +552,6 @@ void CPlayScene::LoadAssets(LPCWSTR assetFile)
 	}
 
 	f.close();
-
 	DebugOut(L"[INFO] Done loading assets from %s\n", assetFile);
 }
 
@@ -1137,6 +1137,10 @@ void CPlayScene::FreezeScene(int freezeTime) {
 	this->isFreeze = true; 
 	this->freezeTime = freezeTime; 
 	this->freeze_start = GetTickCount64();
+}
+
+void CPlayScene::SetDefaultPos(float x, float y) {
+	this->player->SetPosition(x, y);
 }
 
 #pragma endregion

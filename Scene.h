@@ -23,6 +23,9 @@ public:
 	virtual void Update(DWORD dt) = 0;
 	virtual void Render() = 0; 
 
+	virtual void SetDefaultPos(float x, float y) {};
+	virtual void SetDefaultTimeLimit(float timeLimit) {};
+
 	virtual void SetTimeLimit(float timeLimit) {};
 
 	virtual void AddObject(LPGAMEOBJECT obj, int type) = 0;

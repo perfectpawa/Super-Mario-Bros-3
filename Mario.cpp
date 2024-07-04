@@ -377,6 +377,7 @@ void CMario::OnCollisionWithMushroom(LPCOLLISIONEVENT e)
 		y -= (float)(MARIO_BIG_BBOX_HEIGHT - MARIO_SMALL_BBOX_HEIGHT) / 2;
 
 		CGame::GetInstance()->GetCurrentScene()->FreezeScene(400);
+		isMovingLeft = isMovingRight = false;
 		freezeId = ID_ANI_MARIO_SMALL_TO_BIG_RIGHT;
 		if (!lookingRight) freezeId += 10;
 
@@ -391,6 +392,7 @@ void CMario::OnCollisionWithLeaf(LPCOLLISIONEVENT e)
 	level = MARIO_LEVEL_RACOON;
 
 	CGame::GetInstance()->GetCurrentScene()->FreezeScene(400);
+	isMovingLeft = isMovingRight = false;
 	freezeId = ID_ANI_MARIO_SMOKE;
 
 	leaf->Delete();

@@ -78,6 +78,8 @@ public:
 	virtual void Render();
 	virtual void Unload();
 
+	virtual void SetDefaultPos(float x, float y);
+	virtual void SetDefaultTimeLimit(float timeLimit) { this->timeLimit = timeLimit; }
 
 	virtual void SetTimeLimit(float timeLimit) { this->timeLimit = timeLimit; }
 
