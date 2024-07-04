@@ -34,9 +34,9 @@
 #define MARIO_FLOAT_TIME 300
 
 #define MARIO_GEAR_UP_TIME 200
-
 #define MARIO_FLYING_TIME 3000
 
+#define MARIO_SWITCH_DELAY_TIME 1000
 
 
 #define MARIO_GRAVITY			0.002f
@@ -124,10 +124,14 @@ class CMario : public CGameObject
 	ULONGLONG gear_start;
 	ULONGLONG flying_start;
 
+	ULONGLONG switch_delay_start;
+
 	BOOLEAN isOnPlatform;
 	
 	bool wantPickUp = false;
-	CKoopas* koopasPickedUp = NULL;
+	CKoopas* koopasPickedUp = nullptr;
+
+	CPortal* portalCanUse = nullptr;
 
 	int freezeId = -1;
 
@@ -145,6 +149,7 @@ class CMario : public CGameObject
 	void OnCollisionWithLeaf(LPCOLLISIONEVENT e);
 
 	void OnCollisionWithQuestionBlock(LPCOLLISIONEVENT e);
+	void OnCollisionWithBrick(LPCOLLISIONEVENT e);
 	void OnCollisionWithButton(LPCOLLISIONEVENT e);
 
 
@@ -211,4 +216,8 @@ public:
 
 	void SetMovingRight(bool b) { isMovingRight = b; }
 	void SetMovingLeft(bool b) { isMovingLeft = b; }
+
+	CPortal* GetPortalCanUse() { return portalCanUse; }
+
+	void StartSwitchingScene();
 };

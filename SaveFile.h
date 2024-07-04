@@ -3,6 +3,7 @@
 class SaveFile {
 	static SaveFile* __instance;
 	int save_file_id;
+	int mario_level;
 	int level;
 	int score;
 	int life;
@@ -16,6 +17,9 @@ public:
 	static SaveFile* GetInstance();
 	void Save(int save_file_id);
 	void Load(int save_file_id);
+
+	void SetMarioLevel(int mario_level) { this->mario_level = mario_level; }
+	int GetMarioLevel() { return mario_level; }
 
 	void SetLevel(int level) { this->level = level; }
 	int GetLevel() { return level; }

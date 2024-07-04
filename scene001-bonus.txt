@@ -4,6 +4,7 @@ UI.txt
 mario_big.txt
 mario_small.txt
 mario_racoon.txt
+mario_on_freeze.txt
 brick.txt
 coin.txt
 tube.txt
@@ -18,8 +19,8 @@ cam_limit	8	2824	32	226
 # MARIO
 0	128	112
 
-#PORTAL
-1000	360	38	10	208
+#PORTAL (id	x	y	width	height	scene_id	keyCode	start_x	start_y)
+1000	360	38	16	16	10	200	0	-1	2336	128
 
 #TUBE
 720	128	16	2	1	1

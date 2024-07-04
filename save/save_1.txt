@@ -1,3 +1,4 @@
+mario_level	1
 score	98
 life	9
 coin	12

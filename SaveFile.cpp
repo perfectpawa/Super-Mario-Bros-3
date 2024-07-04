@@ -38,6 +38,7 @@ void SaveFile::Save(int save_file_id)
 	f.open(save_file_path);
 
 	f << "# Save file of game" << endl;
+	f << "mario_level " << mario_level << endl;
 	f << "level " << level << endl;
 	f << "score " << score << endl;
 	f << "life " << life << endl;
@@ -67,6 +68,9 @@ void SaveFile::Load(int save_file_id)
 
 		if (tokens.size() < 2) continue; // skip invalid lines
 
+		if (tokens[0] == "mario_level") {
+			mario_level = atoi(tokens[1].c_str());
+		}
 		
 		if (tokens[0] == "level")
 		{

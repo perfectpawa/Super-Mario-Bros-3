@@ -347,9 +347,27 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	}
 	case OBJECT_TYPE_PORTAL:
 	{
-		terrainObjs.push_back(terrainObj);
-		break;
+		// id	x	y	width	height	scene_id	keyCode	dir_x	dir_y	start_x	start_y	
+		float width = (float)atof(tokens[3].c_str());
+		float height = (float)atof(tokens[4].c_str());
 
+		int scene_id = atoi(tokens[5].c_str());
+		int keyCode = atoi(tokens[6].c_str());
+
+		int dir_x = atoi(tokens[7].c_str());
+		int dir_y = atoi(tokens[8].c_str());
+
+		if (tokens.size() == 11) {
+			float start_x = (float)atof(tokens[9].c_str());
+			float start_y = (float)atof(tokens[10].c_str());
+			terrainObj = new CPortal(x, y, width, height, true, scene_id, keyCode, dir_x, dir_y, true, start_x, start_y);
+		}
+		else {
+			terrainObj = new CPortal(x, y, width, height, true, scene_id, keyCode, dir_x, dir_y);
+		}
+		terrainObjs.push_back(terrainObj);
+
+		break;
 	}
 	case OBJECT_TYPE_BACKGROUND: {
 		int type = atoi(tokens[3].c_str());
@@ -597,6 +615,26 @@ void CPlayScene::Unload()
 		delete detectObjs[i];
 	detectObjs.clear();
 
+	//unload brickCoins
+	for (int i = 0; i < brickCoins.size(); i++)
+		delete brickCoins[i];
+	brickCoins.clear();
+
+	//unload coinBricks
+	for (int i = 0; i < coinBricks.size(); i++)
+		delete coinBricks[i];
+	coinBricks.clear();
+
+	//unload effectObjs
+	for (int i = 0; i < effectObjs.size(); i++)
+		delete effectObjs[i];
+	effectObjs.clear();
+
+	//unload backgroundObjs
+	for (int i = 0; i < backgroundObjs.size(); i++)
+		delete backgroundObjs[i];
+	backgroundObjs.clear();
+
 	player = NULL;
 
 	DebugOut(L"[INFO] Scene %d unloaded! \n", id);
@@ -742,9 +780,7 @@ void CPlayScene::Render()
 	//render itemObjs
 	for (int i = 0; i < itemObjs.size(); i++)
 		itemObjs[i]->Render();
-	//render frontTerrainObjs
-	for (int i = 0; i < frontTerrainObjs.size(); i++)
-		frontTerrainObjs[i]->Render();
+
 	//render enemyObjs
 	for (int i = 0; i < enemyObjs.size(); i++)
 		enemyObjs[i]->Render();
@@ -760,6 +796,11 @@ void CPlayScene::Render()
 		player->RenderOnFreeze();
 	else
 		player->Render();
+
+	//render frontTerrainObjs
+	for (int i = 0; i < frontTerrainObjs.size(); i++)
+		frontTerrainObjs[i]->Render();
+
 
 	//render hud
 	if (mainHUD != NULL) mainHUD->Render();

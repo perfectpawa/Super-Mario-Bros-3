@@ -107,6 +107,18 @@ void CLevelKeyHandler::OnKeyUp(int KeyCode)
 
 void CLevelKeyHandler::KeyState(BYTE *states)
 {
-	//LPGAME game = CGame::GetInstance();
-	//CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
+	LPGAME game = CGame::GetInstance();
+	CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
+	CPortal* portalCanUse = mario->GetPortalCanUse();
+
+	if(portalCanUse != NULL)
+	{
+		int keyCode = portalCanUse->GetKeyCode();
+		if (game->IsKeyDown(keyCode))
+		{
+			mario->StartSwitchingScene();
+		}
+	}
+
+
 }

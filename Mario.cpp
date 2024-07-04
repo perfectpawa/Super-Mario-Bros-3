@@ -45,7 +45,7 @@ CMario::CMario(float x, float y) : CGameObject(x, y)
 	ax = 0.0f;
 	ay = MARIO_GRAVITY;
 
-	level = MARIO_LEVEL_SMALL;
+	level = SaveFile::GetInstance()->GetMarioLevel();
 	untouchable = 0;
 
 	untouchable_start = -1;
@@ -54,6 +54,7 @@ CMario::CMario(float x, float y) : CGameObject(x, y)
 	float_start = -1;
 	gear_start = -1;
 	flying_start = -1;
+	switch_delay_start = -1;
 
 	isOnPlatform = false;
 	gearUpState = 0;
@@ -215,14 +216,6 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 {
 	if (e->ny != 0 && e->obj->IsBlocking())
 	{
-		if (e->ny > 0) {
-			CBrick* brick = dynamic_cast<CBrick*>(e->obj);
-			if (brick) {
-				if (brick->IsBreakable()) {
-					brick->Breaking();
-				}
-			}
-		}
 		vy = 0;
 		if (e->ny < 0) Landed();
 	}
@@ -252,6 +245,8 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithLeaf(e);
 	else if (dynamic_cast<CQuestionBlock*>(e->obj))
 		OnCollisionWithQuestionBlock(e);
+	else if (dynamic_cast<CBrick*>(e->obj))
+		OnCollisionWithBrick(e);
 	else if (dynamic_cast<CButton*>(e->obj))
 		OnCollisionWithButton(e);
 		
@@ -357,7 +352,15 @@ void CMario::OnCollisionWithCoin(LPCOLLISIONEVENT e)
 
 void CMario::OnCollisionWithPortal(LPCOLLISIONEVENT e)
 {
-
+	CPortal* portal = dynamic_cast<CPortal*>(e->obj);
+	if (portal->IsMainPortal())
+	{
+		portalCanUse = portal;
+	}
+	else
+	{
+		portalCanUse = nullptr;
+	}
 }
 
 void CMario:: OnCollisionWithSpawnCheck(LPCOLLISIONEVENT e)
@@ -374,6 +377,9 @@ void CMario::OnCollisionWithMushroom(LPCOLLISIONEVENT e)
 	if (level == MARIO_LEVEL_SMALL)
 	{
 		level = MARIO_LEVEL_BIG;
+
+		SaveFile::GetInstance()->SetMarioLevel(level);
+
 		y -= (float)(MARIO_BIG_BBOX_HEIGHT - MARIO_SMALL_BBOX_HEIGHT) / 2;
 
 		CGame::GetInstance()->GetCurrentScene()->FreezeScene(400);
@@ -390,6 +396,8 @@ void CMario::OnCollisionWithLeaf(LPCOLLISIONEVENT e)
 {
 	CLeaf* leaf = dynamic_cast<CLeaf*>(e->obj);
 	level = MARIO_LEVEL_RACOON;
+
+	SaveFile::GetInstance()->SetMarioLevel(level);
 
 	CGame::GetInstance()->GetCurrentScene()->FreezeScene(400);
 	isMovingLeft = isMovingRight = false;
@@ -415,6 +423,24 @@ void CMario::OnCollisionWithButton(LPCOLLISIONEVENT e)
 {
 	CButton* button = dynamic_cast<CButton*>(e->obj);
 	button->Pressing();
+}
+
+void CMario::OnCollisionWithBrick(LPCOLLISIONEVENT e)
+{
+	CBrick* brick = dynamic_cast<CBrick*>(e->obj);
+
+	if (!brick->IsBreakable()) return;
+
+	if (e->ny < 0) return;
+	
+	if(e->ny > 0) brick->Breaking();
+
+	if(state == MARIO_STATE_WHIP)
+	{
+		brick->Breaking();
+	}
+
+
 }
 
 void CMario::TakingDamage() {
@@ -552,7 +578,6 @@ void CMario::Render()
 
 	}
 
-
 	if (level == MARIO_LEVEL_BIG) aniId += 10000;
 	if (level == MARIO_LEVEL_RACOON) aniId += 20000;
 
@@ -577,6 +602,7 @@ void CMario::Render()
 	if (state == MARIO_STATE_DIE) {
 		aniId = ID_ANI_MARIO_DIE;
 	}
+
 	if (untouchable == 1 &&
 		((GetTickCount64() - untouchable_start) % 100 >= 0 && (GetTickCount64() - untouchable_start) % 100 <= 30)) {
 		CSprites::GetInstance()->Get(ID_SPRITE_MARIO_UNTOUCHABLE)->Draw(x, y);
@@ -756,6 +782,8 @@ void CMario::SetLevel(int l)
 		y -= (float)(MARIO_BIG_BBOX_HEIGHT - MARIO_SMALL_BBOX_HEIGHT) / 2;
 	}
 	level = l;
+
+	SaveFile::GetInstance()->SetMarioLevel(level);
 }
 
 
@@ -765,8 +793,29 @@ void CMario::UpdateOnFreeze(DWORD dt) {
 		y += vy * dt;
 	}
 
+	if (switch_delay_start != -1) {
+		int dir_x, dir_y;
+		portalCanUse->GetDirection(dir_x, dir_y);
+		x += 0.05f * dir_x * dt;
+		y += 0.05f * dir_y * dt;
+	}
+
+	if (switch_delay_start != -1 && GetTickCount64() - switch_delay_start >= 500) {
+		portalCanUse->SwitchScene();
+		switch_delay_start = -1;
+	}
+
 }
 
 void CMario::RenderOnFreeze() {
 	CAnimations::GetInstance()->Get(freezeId)->Render(x, y);
+}
+
+void CMario::StartSwitchingScene() {
+	CGame::GetInstance()->GetCurrentScene()->FreezeScene(1100);
+	switch_delay_start = GetTickCount64();
+
+	freezeId = ID_ANI_MARIO_SMALL_STRAIGHT;
+	if(level == MARIO_LEVEL_BIG) freezeId += 100;
+	if(level == MARIO_LEVEL_RACOON) freezeId += 200;
 }
