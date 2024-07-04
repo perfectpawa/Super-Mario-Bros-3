@@ -39,7 +39,7 @@ protected:
 	CHUD* mainHUD;
 
 	//scene setting
-	float timeLimit = 0;
+	float timeLimit = -1;
 
 	float camLimitLeft = NULL;
 	float camLimitRight = NULL;
@@ -47,6 +47,11 @@ protected:
 	float camLimitBottom = NULL;
 
 	float camVerticalFreeZone = NULL;
+	
+	//
+	BOOLEAN isFreeze = false;
+	ULONGLONG freezeTime = -1;
+	ULONGLONG freeze_start = -1;
 
 
 	void _ParseSection_SPRITES(string line);
@@ -72,6 +77,15 @@ public:
 	virtual void Update(DWORD dt);
 	virtual void Render();
 	virtual void Unload();
+
+
+	virtual void SetTimeLimit(float timeLimit) { this->timeLimit = timeLimit; }
+
+	virtual void RenderOnFreeze();
+	virtual void UpdateOnFreeze(DWORD dt);
+
+	virtual void FreezeScene(int freezeTime);
+	virtual void GetIsFreeze(bool& isFreeze) { isFreeze = this->isFreeze; }
 
 	virtual void Update_OW(DWORD dt);
 	virtual void Render_OW();

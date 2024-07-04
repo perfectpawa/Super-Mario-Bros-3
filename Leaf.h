@@ -2,7 +2,7 @@
 #include "GameObject.h"
 #include "AssetIDs.h"
 
-#define LEAF_GRAVITY 0.0005f
+#define LEAF_GRAVITY 0.0003f
 #define LEAF_MAX_FALL_SPEED 0.08f
 #define LEAF_STARTUP_BOOST 0.15f
 #define LEAF_SWING_ACCELERATION 0.0005f

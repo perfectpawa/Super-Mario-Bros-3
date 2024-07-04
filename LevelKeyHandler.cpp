@@ -9,6 +9,10 @@
 void CLevelKeyHandler::OnKeyDown(int KeyCode)
 {
 	//DebugOut(L"[INFO] KeyDown: %d\n", KeyCode);
+	bool isFreeze = false;
+	CGame::GetInstance()->GetCurrentScene()->GetIsFreeze(isFreeze);
+	if(isFreeze) return;
+
 	CMario* mario = (CMario *)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer(); 
 
 	switch (KeyCode)
@@ -66,6 +70,9 @@ void CLevelKeyHandler::OnKeyDown(int KeyCode)
 void CLevelKeyHandler::OnKeyUp(int KeyCode)
 {
 	//DebugOut(L"[INFO] KeyUp: %d\n", KeyCode);
+	bool isFreeze = false;
+	CGame::GetInstance()->GetCurrentScene()->GetIsFreeze(isFreeze);
+	if (isFreeze) return;
 
 	CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
 	switch (KeyCode)
@@ -100,6 +107,6 @@ void CLevelKeyHandler::OnKeyUp(int KeyCode)
 
 void CLevelKeyHandler::KeyState(BYTE *states)
 {
-	LPGAME game = CGame::GetInstance();
-	CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
+	//LPGAME game = CGame::GetInstance();
+	//CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
 }

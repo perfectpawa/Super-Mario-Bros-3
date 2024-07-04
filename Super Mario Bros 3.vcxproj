@@ -249,6 +249,7 @@
     <Text Include="koopas.txt" />
     <Text Include="main-settings.txt" />
     <Text Include="mario_big.txt" />
+    <Text Include="mario_on_freeze.txt" />
     <Text Include="mario_racoon.txt" />
     <Text Include="mario_small.txt" />
     <Text Include="overworld.txt" />

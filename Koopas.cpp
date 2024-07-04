@@ -97,6 +97,7 @@ void CKoopas::OnCollisionWithQuestionBlock(LPCOLLISIONEVENT e)
 	if (questionBlock->GetState() == QBLOCK_STATE_IDLE)
 	{
 		questionBlock->SetState(QBLOCK_STATE_BOUND_UP);
+		questionBlock->GetReward();
 	}
 }
 

@@ -14,7 +14,6 @@
 #include "Leaf.h"
 #include "Coin.h"
 
-#include "Portal.h"
 #include "QuestionBlock.h"
 #include "Button.h"
 #include "Brick.h"
@@ -358,8 +357,7 @@ void CMario::OnCollisionWithCoin(LPCOLLISIONEVENT e)
 
 void CMario::OnCollisionWithPortal(LPCOLLISIONEVENT e)
 {
-	CPortal* p = (CPortal*)e->obj;
-	CGame::GetInstance()->InitiateSwitchScene(p->GetSceneId());
+
 }
 
 void CMario:: OnCollisionWithSpawnCheck(LPCOLLISIONEVENT e)
@@ -377,6 +375,11 @@ void CMario::OnCollisionWithMushroom(LPCOLLISIONEVENT e)
 	{
 		level = MARIO_LEVEL_BIG;
 		y -= (float)(MARIO_BIG_BBOX_HEIGHT - MARIO_SMALL_BBOX_HEIGHT) / 2;
+
+		CGame::GetInstance()->GetCurrentScene()->FreezeScene(400);
+		freezeId = ID_ANI_MARIO_SMALL_TO_BIG_RIGHT;
+		if (!lookingRight) freezeId += 10;
+
 	}
 
 	mushroom->Delete();
@@ -386,6 +389,10 @@ void CMario::OnCollisionWithLeaf(LPCOLLISIONEVENT e)
 {
 	CLeaf* leaf = dynamic_cast<CLeaf*>(e->obj);
 	level = MARIO_LEVEL_RACOON;
+
+	CGame::GetInstance()->GetCurrentScene()->FreezeScene(400);
+	freezeId = ID_ANI_MARIO_SMOKE;
+
 	leaf->Delete();
 }
 
@@ -409,23 +416,36 @@ void CMario::OnCollisionWithButton(LPCOLLISIONEVENT e)
 }
 
 void CMario::TakingDamage() {
+
 	if (untouchable == 0)
 	{
+		int freezeTime = 400;
+		isMovingLeft = isMovingRight = false;
+
 		if(level == MARIO_LEVEL_RACOON)
 		{
 			level = MARIO_LEVEL_BIG;
+			freezeId = ID_ANI_MARIO_SMOKE;
 			StartUntouchable();
 		}
 		else if (level == MARIO_LEVEL_BIG)
 		{
 			level = MARIO_LEVEL_SMALL;
+
+			freezeId = ID_ANI_MARIO_BIG_TO_SMALL_RIGHT;
+			if (!lookingRight) freezeId += 10;
+
 			StartUntouchable();
 		}
 		else if (level == MARIO_LEVEL_SMALL)
 		{
 			DebugOut(L">>> Mario DIE >>> \n");
+			freezeId = ID_ANI_MARIO_DIE;
+			freezeTime = 10000;
 			SetState(MARIO_STATE_DIE);
 		}
+
+		CGame::GetInstance()->GetCurrentScene()->FreezeScene(freezeTime);
 	}
 }
 
@@ -555,11 +575,7 @@ void CMario::Render()
 	if (state == MARIO_STATE_DIE) {
 		aniId = ID_ANI_MARIO_DIE;
 	}
-
-	if (untouchable == 1 && (GetTickCount64() - untouchable_start) < 100) {
-		CSprites::GetInstance()->Get(ID_SPRITE_MARIO_UNTOUCHABLE)->Draw(x, y);
-	}
-	else if (untouchable == 1 &&
+	if (untouchable == 1 &&
 		((GetTickCount64() - untouchable_start) % 100 >= 0 && (GetTickCount64() - untouchable_start) % 100 <= 30)) {
 		CSprites::GetInstance()->Get(ID_SPRITE_MARIO_UNTOUCHABLE)->Draw(x, y);
 	}
@@ -648,7 +664,7 @@ void CMario::SetState(int state)
 		break;
 	}
 	case MARIO_STATE_DIE: {
-		vy = -MARIO_JUMP_DEFLECT_SPEED;
+		vy = -MARIO_JUMP_SPEED_Y;
 		vx = 0;
 		ax = 0;
 		break;
@@ -740,3 +756,15 @@ void CMario::SetLevel(int l)
 	level = l;
 }
 
+
+void CMario::UpdateOnFreeze(DWORD dt) {
+	if (state == MARIO_STATE_DIE) {
+		vy = min(vy + ay * dt, maxVy);
+		y += vy * dt;
+	}
+
+}
+
+void CMario::RenderOnFreeze() {
+	CAnimations::GetInstance()->Get(freezeId)->Render(x, y);
+}

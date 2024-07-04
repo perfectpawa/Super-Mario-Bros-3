@@ -538,6 +538,9 @@
     <Text Include="save\save_1.txt">
       <Filter>Resource Files\SaveFile</Filter>
     </Text>
+    <Text Include="mario_on_freeze.txt">
+      <Filter>Resource Files\Mario</Filter>
+    </Text>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

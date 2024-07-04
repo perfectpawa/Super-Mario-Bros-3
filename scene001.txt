@@ -3,6 +3,7 @@
 mario_big.txt
 mario_small.txt
 mario_racoon.txt
+mario_on_freeze.txt
 
 goomba.txt
 koopas.txt

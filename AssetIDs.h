@@ -364,6 +364,15 @@
 #define ID_ANI_RACOON_MARIO_GLIDE_LEFT 122310
 #pragma endregion
 
+#pragma region MARIO ON FREEZE
+#define ID_ANI_MARIO_SMOKE 130000
+#define ID_ANI_MARIO_BIG_TO_SMALL_RIGHT 130100
+#define ID_ANI_MARIO_BIG_TO_SMALL_LEFT 130110
+#define ID_ANI_MARIO_SMALL_TO_BIG_RIGHT 130200
+#define ID_ANI_MARIO_SMALL_TO_BIG_LEFT 130210
+
+#pragma endregion
+
 
 #pragma endregion 
 

@@ -347,10 +347,6 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	}
 	case OBJECT_TYPE_PORTAL:
 	{
-		float r = (float)atof(tokens[3].c_str());
-		float b = (float)atof(tokens[4].c_str());
-		int scene_id = atoi(tokens[5].c_str());
-		terrainObj = new CPortal(x, y, r, b, scene_id);
 		terrainObjs.push_back(terrainObj);
 		break;
 
@@ -379,14 +375,13 @@ void CPlayScene::_ParseSection_SETTINGS(string line) {
 	DebugOut(L"--> %s\n", ToWSTR(line).c_str());
 
 	if (tokens[0] == "time") {
-		timeLimit = (float)atof(tokens[1].c_str());
+		if(timeLimit == -1) timeLimit = (float)atof(tokens[1].c_str());
 	}
 
 	if (tokens[0] == "background_color") {
 		float r = (float)atof(tokens[1].c_str());
 		float g = (float)atof(tokens[2].c_str());
 		float b = (float)atof(tokens[3].c_str());
-		DebugOut(L"Background color: %f %f %f\n", r, g, b);
 		CGame::GetInstance()->SetBackgroundColor(D3DXCOLOR(r / 255.0f, g / 255.0f, b / 255.0f, 0.0f));
 	}
 
@@ -565,6 +560,12 @@ void CPlayScene::LoadUI()
 	DebugOut(L"[INFO] Start loading UI\n");
 	mainHUD = new CHUD(0, 0);
 
+	LPSAVEFILE saveFile = SaveFile::GetInstance();
+
+	mainHUD->SetCoin(saveFile->GetCoin());
+	mainHUD->SetScore(saveFile->GetScore());
+	mainHUD->SetLife(saveFile->GetLife());
+	mainHUD->SetLevel(saveFile->GetLevel());
 
 	UpdateUIPosFixedCam();
 }
@@ -610,6 +611,16 @@ void CPlayScene::Update(DWORD dt)
 		Update_OW(dt);
 		return;
 
+	}
+
+	if(isFreeze) {
+		if(GetTickCount64() - freeze_start >= freezeTime) {
+			isFreeze = false;
+		}
+		else {
+			UpdateOnFreeze(dt);
+			return;
+		}
 	}
 
 	vector<LPGAMEOBJECT> coObjects;
@@ -690,6 +701,10 @@ void CPlayScene::Update_OW(DWORD dt) {
 	OW_player->Update(dt, &coObjects);
 }
 
+void CPlayScene::UpdateOnFreeze(DWORD dt) {
+	player->UpdateOnFreeze(dt);
+}
+
 #pragma endregion
 
 #pragma region Render
@@ -698,6 +713,10 @@ void CPlayScene::Render()
 	if (isOnOverworldMap) {
 		Render_OW();
 		return;
+	}
+
+	if (isFreeze) {
+		RenderOnFreeze();
 	}
 
 	//render backgroundObjs
@@ -737,7 +756,10 @@ void CPlayScene::Render()
 	
 
 	//render player
-	player->Render();
+	if(isFreeze)
+		player->RenderOnFreeze();
+	else
+		player->Render();
 
 	//render hud
 	if (mainHUD != NULL) mainHUD->Render();
@@ -769,7 +791,12 @@ void CPlayScene::Render_OW() {
 
 	OW_player->Render();
 
-	if (mainHUD != NULL) mainHUD->Render();
+	if (mainHUD != NULL) 
+		mainHUD->Render();
+}
+
+void CPlayScene::RenderOnFreeze() {
+
 }
 
 #pragma endregion
@@ -1005,6 +1032,9 @@ void CPlayScene::AddObject(LPGAMEOBJECT obj, int type)
 	case OBJECT_TYPE_ATTACK:
 		enemyObjs.push_back(obj);
 		break;
+	case OBJECT_TYPE_PORTAL:
+		terrainObjs.push_back(obj);
+		break;
 	}
 }
 
@@ -1012,7 +1042,6 @@ void CPlayScene::AddEffect(LPEFFECTOBJECT obj)
 {
 	effectObjs.push_back(obj);
 }
-
 
 void CPlayScene::ChangeBrickCoin(int type)
 {
@@ -1103,5 +1132,12 @@ void CPlayScene::UpdateUIPower() {
 	}
 	mainHUD->SetPower(power);
 }
+
+void CPlayScene::FreezeScene(int freezeTime) { 
+	this->isFreeze = true; 
+	this->freezeTime = freezeTime; 
+	this->freeze_start = GetTickCount64();
+}
+
 #pragma endregion
 

@@ -23,11 +23,16 @@ public:
 	virtual void Update(DWORD dt) = 0;
 	virtual void Render() = 0; 
 
+	virtual void SetTimeLimit(float timeLimit) {};
+
 	virtual void AddObject(LPGAMEOBJECT obj, int type) = 0;
 	virtual void AddEffect(LPEFFECTOBJECT obj) = 0;
 	virtual void ChangeBrickCoin(int type) = 0;
 	virtual LPGAMEOBJECT GetPlayer() = 0;
 	virtual LPOWGAMEOBJECT GetOWPlayer() = 0;
+
+	virtual void FreezeScene(int freezeTime) = 0;
+	virtual void GetIsFreeze(bool& isFreeze) = 0;
 	
 };
 typedef CScene * LPSCENE;

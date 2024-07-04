@@ -544,6 +544,7 @@ void CGame::SwitchScene()
 	current_scene = next_scene;
 	LPSCENE s = scenes[next_scene];
 	s->Load();
+
 	this->SetKeyHandler(s->GetKeyEventHandler());
 }
 

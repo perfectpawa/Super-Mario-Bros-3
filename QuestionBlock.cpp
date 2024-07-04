@@ -119,6 +119,6 @@ void CQuestionBlock::SpawnMusroom()
 }
 void CQuestionBlock::SpawnLeaf()
 {
-	CLeaf* leaf = new CLeaf(x, y);
+	CLeaf* leaf = new CLeaf(x, y - 16);
 	CGame::GetInstance()->GetCurrentScene()->AddObject(leaf, OBJECT_TYPE_LEAF);
 }

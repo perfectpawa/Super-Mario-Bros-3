@@ -6,6 +6,8 @@
 
 #include "Koopas.h"
 
+#include "Portal.h"
+
 #include "debug.h"
 
 #include "AssetIDs.h"
@@ -127,6 +129,8 @@ class CMario : public CGameObject
 	bool wantPickUp = false;
 	CKoopas* koopasPickedUp = NULL;
 
+	int freezeId = -1;
+
 	void OnCollisionWithGoomba(LPCOLLISIONEVENT e);
 	void OnCollisionWithKoopas(LPCOLLISIONEVENT e);
 	void OnCollisionWithPlant(LPCOLLISIONEVENT e);
@@ -165,12 +169,14 @@ public:
 	void SetState(int state);
 	void GetState(int& s) { s = this->state; }
 
+	void UpdateOnFreeze(DWORD dt);
+	void RenderOnFreeze();
+
 	int IsCollidable()
 	{ 
 		return (state != MARIO_STATE_DIE); 
 	}
 
-	//int IsBlocking() { return (state != MARIO_STATE_DIE && untouchable == 0); }
 	int IsBlocking() { return 0; }
 
 	void OnNoCollision(DWORD dt);
@@ -205,5 +211,4 @@ public:
 
 	void SetMovingRight(bool b) { isMovingRight = b; }
 	void SetMovingLeft(bool b) { isMovingLeft = b; }
-
 };

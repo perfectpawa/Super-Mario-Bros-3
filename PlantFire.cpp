@@ -19,7 +19,7 @@ void CPlantFire::Render()
 
 	CSprites::GetInstance()->Get(headId)->Draw(x, y); 
 
-	int yy = y + PLANT_PART_BBOX_HEIGHT * 1.5;
+	float yy = y + PLANT_PART_BBOX_HEIGHT * 1.5f;
 	for (int i = 1; i < height; i++)
 	{
 		CSprites::GetInstance()->Get(ID_SPRITE_PLANT_BODY)->Draw(x, yy);

@@ -1,5 +1,5 @@
 [SETTINGS]
-start	10
+start	1
 savefile	1
 
 #id	type	file
