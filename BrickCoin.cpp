@@ -13,12 +13,15 @@ void CBrickCoin::Render()
 	else CAnimations::GetInstance()->Get(ID_ANI_BRICK_BREAKABLE_HIT)->Render(x, y); 
 }
 
-void CBrickCoin::Breaking()
+void CBrickCoin::Breaking(bool canTakeButton)
 {
 	if (type != TYPE_HAVE_BUTTON) {
 		this->Delete();
 		return;
 	}
+
+	if (!canTakeButton) return;
+
 	if(hited) return;
 	hited = true;
 	

@@ -35,7 +35,7 @@ void CBrick::GetBoundingBox(float &l, float &t, float &r, float &b)
 	b = t + BRICK_BBOX_HEIGHT;
 }
 
-void CBrick::Breaking()
+void CBrick::Breaking(bool canTakeButton)
 {
 	if(type == TYPE_BREAKABLE) {
 		this->Delete();

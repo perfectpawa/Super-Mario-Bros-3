@@ -30,6 +30,7 @@ void CPlatform::RenderBoundingBox()
 
 void CPlatform::Render()
 {
+	RenderBoundingBox();
 
 	if (length <= 0) return; 
 	if (spriteIdBegin == -1) return;
@@ -70,6 +71,7 @@ void CPlatform::Render()
 			s->Get(this->spriteIdEnd)->Draw(xx, y);
 
 	}
+
 }
 
 void CPlatform::GetBoundingBox(float& l, float& t, float& r, float& b)

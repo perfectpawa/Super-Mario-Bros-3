@@ -20,6 +20,7 @@
 #include "SpawnCheck.h"
 
 #include "Collision.h"
+#include "BrickCoin.h"
 
 
 CMario::CMario(float x, float y) : CGameObject(x, y)
@@ -59,6 +60,16 @@ CMario::CMario(float x, float y) : CGameObject(x, y)
 	isOnPlatform = false;
 	gearUpState = 0;
 
+	rightTail = new CMarioTail();
+	leftTail = new CMarioTail();
+
+	rightTail->SetPosition(x, y + 8);
+	leftTail->SetPosition(x, y + 8);
+
+	CGame::GetInstance()->GetCurrentScene()->AddObject(rightTail, OBJECT_TYPE_ATTACK);
+	CGame::GetInstance()->GetCurrentScene()->AddObject(leftTail, OBJECT_TYPE_ATTACK);
+
+
 }
 
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
@@ -78,6 +89,40 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	TimeChecking();
 
 	CCollision::GetInstance()->Process(this, dt, coObjects);
+
+	float rightTail_vx = vx;
+	float leftTail_vx = vx;
+
+	if (state == MARIO_STATE_WHIP) {
+		rightTail_vx = MARIO_RUNNING_SPEED;
+		leftTail_vx = -MARIO_RUNNING_SPEED;
+
+		float rightTail_x, rightTail_y;
+		rightTail->GetPosition(rightTail_x, rightTail_y);
+
+		if(abs(x - rightTail_x) > 12) rightTail->SetPosition(x, y + 8);
+		
+		float leftTail_x, leftTail_y;
+		leftTail->GetPosition(leftTail_x, leftTail_y);
+
+		if (abs(x - leftTail_x) > 12) leftTail->SetPosition(x, y + 8);
+
+		CCollision::GetInstance()->Process(rightTail, dt, coObjects);
+		CCollision::GetInstance()->Process(leftTail, dt, coObjects);
+
+	}
+	else {
+		rightTail->SetPosition(x, y + 8);
+		leftTail->SetPosition(x, y + 8);
+	}
+
+	rightTail->SetSpeed(rightTail_vx, vy);
+	leftTail->SetSpeed(leftTail_vx, vy);
+
+	if (y > 300) {
+		SetLevel(MARIO_LEVEL_SMALL);
+		TakingDamage();
+	}
 }
 
 void CMario::MovingBehavior(DWORD dt) {
@@ -412,9 +457,9 @@ void CMario::OnCollisionWithBrick(LPCOLLISIONEVENT e)
 {
 	CBrick* brick = dynamic_cast<CBrick*>(e->obj);
 
-	if (e->ny < 0) return;
-	
-	if(e->ny > 0) brick->Breaking();
+	if (e->ny <= 0) return;
+
+	brick->Breaking();
 }
 
 void CMario::TakingDamage() {

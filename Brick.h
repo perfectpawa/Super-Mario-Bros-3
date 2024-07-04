@@ -19,5 +19,5 @@ public:
 	virtual void Render();
 	void GetBoundingBox(float& l, float& t, float& r, float& b);
 	bool IsBreakable() { return type == TYPE_BREAKABLE; }
-	virtual void Breaking();
+	virtual void Breaking(bool canTakeButton = true);
 };

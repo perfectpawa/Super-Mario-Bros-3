@@ -20,11 +20,14 @@ protected:
 	vector<LPGAMEOBJECT> terrainObjs;
 	vector<LPGAMEOBJECT> frontTerrainObjs;
 	vector<LPGAMEOBJECT> detectObjs;
+	vector<LPGAMEOBJECT> attackObjs;
 
 	vector<LPGAMEOBJECT> brickCoins;
 	vector<LPGAMEOBJECT> coinBricks;
 
 	vector<LPEFFECTOBJECT> effectObjs;
+
+	vector<LPGAMEOBJECT> barrierObjs;
 
 	bool isOnOverworldMap = false;
 	LPOWGAMEOBJECT OW_player;

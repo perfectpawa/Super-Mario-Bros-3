@@ -15,6 +15,6 @@ protected:
 public:
 	CBrickCoin(float x, float y, int type);
 	virtual void Render();
-	virtual void Breaking();
+	virtual void Breaking(bool canTakeButton = true);
 	int GetType() { return type; }
 };

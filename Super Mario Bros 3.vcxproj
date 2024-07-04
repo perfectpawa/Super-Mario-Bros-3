@@ -134,6 +134,7 @@
     <ClCompile Include="Brick.cpp" />
     <ClCompile Include="BrickCoin.cpp" />
     <ClCompile Include="Button.cpp" />
+    <ClCompile Include="CardBlock.cpp" />
     <ClCompile Include="CharacterIconUI.cpp" />
     <ClCompile Include="Coin.cpp" />
     <ClCompile Include="CoinEffect.cpp" />
@@ -151,6 +152,7 @@
     <ClCompile Include="Leaf.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Mario.cpp" />
+    <ClCompile Include="MarioTail.cpp" />
     <ClCompile Include="Mushroom.cpp" />
     <ClCompile Include="NumberUI.cpp" />
     <ClCompile Include="OverworldKeyHandler.cpp" />
@@ -188,6 +190,7 @@
     <ClInclude Include="Brick.h" />
     <ClInclude Include="BrickCoin.h" />
     <ClInclude Include="Button.h" />
+    <ClInclude Include="CardBlock.h" />
     <ClInclude Include="CharacterIconUI.h" />
     <ClInclude Include="Coin.h" />
     <ClInclude Include="CoinEffect.h" />
@@ -203,6 +206,7 @@
     <ClInclude Include="HUD.h" />
     <ClInclude Include="IconUI.h" />
     <ClInclude Include="LevelKeyHandler.h" />
+    <ClInclude Include="MarioTail.h" />
     <ClInclude Include="NumberUI.h" />
     <ClInclude Include="OverworldKeyHandler.h" />
     <ClInclude Include="OW_GameObject.h" />

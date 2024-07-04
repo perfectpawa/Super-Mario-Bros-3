@@ -291,6 +291,12 @@
     <ClCompile Include="Mario.cpp">
       <Filter>Source Files\Object\GameObject\Mario</Filter>
     </ClCompile>
+    <ClCompile Include="MarioTail.cpp">
+      <Filter>Source Files\Object\GameObject\Mario</Filter>
+    </ClCompile>
+    <ClCompile Include="CardBlock.cpp">
+      <Filter>Source Files\Object\GameObject\Misc</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AssetIDs.h">
@@ -460,6 +466,12 @@
     </ClInclude>
     <ClInclude Include="Mario.h">
       <Filter>Header Files\Object\GameObject\Mario</Filter>
+    </ClInclude>
+    <ClInclude Include="MarioTail.h">
+      <Filter>Header Files\Object\GameObject\Mario</Filter>
+    </ClInclude>
+    <ClInclude Include="CardBlock.h">
+      <Filter>Header Files\Object\GameObject\Misc</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

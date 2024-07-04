@@ -3,6 +3,7 @@
 #include "Animations.h"
 
 #include "Koopas.h"
+#include "MarioTail.h"
 
 #include "Portal.h"
 
@@ -132,6 +133,9 @@ class CMario : public CGameObject
 	CKoopas* koopasPickedUp = nullptr;
 
 	CPortal* portalCanUse = nullptr;
+
+	CMarioTail* rightTail = nullptr;
+	CMarioTail* leftTail = nullptr;
 
 	int freezeId = -1;
 

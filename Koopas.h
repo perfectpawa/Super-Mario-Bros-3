@@ -54,7 +54,9 @@ protected:
 
 	virtual void OnCollisionWith(LPCOLLISIONEVENT e);
 	virtual void OnCollisionWithGoomba(LPCOLLISIONEVENT e);
+	virtual void OnCollisionWithKoopas(LPCOLLISIONEVENT e);
 	virtual void OnCollisionWithQuestionBlock(LPCOLLISIONEVENT e);
+	virtual void OnCollisionWithBrick(LPCOLLISIONEVENT e);
 
 	void FallChecking(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	

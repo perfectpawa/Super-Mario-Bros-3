@@ -210,6 +210,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	}
 	case OBJECT_TYPE_SPAWN_CHECK: {
 		enemyObj = new CSpawnCheck();
+		enemyObj->SetPosition(x, y);
 		enemyObjs.push_back(enemyObj);
 		break;
 	}
@@ -380,6 +381,10 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		backgroundObjs.push_back(backgroundObj);
 		break;
 
+	}
+	case OBJECT_TYPE_BARRIER: {
+		terrainObj = new CPlatform(x, y, 16, 16, 20, -1, 0, 0, 0, 1);
+		barrierObjs.push_back(terrainObj);
 	}
 
 	default:
@@ -635,6 +640,11 @@ void CPlayScene::Unload()
 		delete backgroundObjs[i];
 	backgroundObjs.clear();
 
+	//unload attackObjs
+	for (int i = 0; i < attackObjs.size(); i++)
+		delete attackObjs[i];
+	attackObjs.clear();
+
 	player = NULL;
 
 	DebugOut(L"[INFO] Scene %d unloaded! \n", id);
@@ -681,8 +691,16 @@ void CPlayScene::Update(DWORD dt)
 	// skip the rest if scene was already unloaded (Mario::Update might trigger PlayScene::Unload)
 	if (player == NULL) return;
 
+	//create a pcoObjects vector that include coObjects and barrierObjs
+	vector<LPGAMEOBJECT> pcoObjects;
+	for (int i = 0; i < coObjects.size(); i++)
+		pcoObjects.push_back(coObjects[i]);
+
+	for (int i = 0; i < barrierObjs.size(); i++)
+		pcoObjects.push_back(barrierObjs[i]);
+
 	// Update player
-	player->Update(dt, &coObjects);
+	player->Update(dt, &pcoObjects);
 
 	//update detect objects, coObjects of dectect only include player
 	vector<LPGAMEOBJECT> detectCoObjects;
@@ -697,6 +715,11 @@ void CPlayScene::Update(DWORD dt)
 			break;
 		}
 		enemyObjs[i]->Update(dt, &coObjects);
+	}
+
+	//update attackObjs
+	for (int i = 0; i < attackObjs.size(); i++) {
+		attackObjs[i]->Update(dt, &coObjects);
 	}
 
 	//update itemObjs
@@ -757,9 +780,16 @@ void CPlayScene::Render()
 		RenderOnFreeze();
 	}
 
+
+
 	//render backgroundObjs
 	for (int i = 0; i < backgroundObjs.size(); i++) {
 		backgroundObjs[i]->Render();
+	}
+
+	//render Bariers
+	for (int i = 0; i < barrierObjs.size(); i++) {
+		barrierObjs[i]->Render();
 	}
 
 	//render terrainObjs
@@ -789,13 +819,17 @@ void CPlayScene::Render()
 	for (int i = 0; i < detectObjs.size(); i++)
 		detectObjs[i]->Render();
 
-	
 
 	//render player
 	if(isFreeze)
 		player->RenderOnFreeze();
 	else
 		player->Render();
+
+
+	//render attackObjs
+	for (int i = 0; i < attackObjs.size(); i++)
+		attackObjs[i]->Render();
 
 	//render frontTerrainObjs
 	for (int i = 0; i < frontTerrainObjs.size(); i++)
@@ -904,6 +938,27 @@ void CPlayScene::Clear()
 	}
 	effectObjs.clear();
 
+	//clear attackObjs
+	for (it = attackObjs.begin(); it != attackObjs.end(); it++)
+	{
+		delete (*it);
+	}
+	attackObjs.clear();
+
+	//clear barrierObjs
+	for (it = barrierObjs.begin(); it != barrierObjs.end(); it++)
+	{
+		delete (*it);
+	}
+	barrierObjs.clear();
+
+	vector<CBackgroundObject*>::iterator it_bg;
+	//clear backgroundObjs
+	for (it_bg = backgroundObjs.begin(); it_bg != backgroundObjs.end(); it_bg++)
+	{
+		delete (*it_bg);
+	}
+	backgroundObjs.clear();
 }
 
 void CPlayScene::PurgeDeletedObjects()
@@ -1022,6 +1077,34 @@ void CPlayScene::PurgeDeletedObjects()
 		std::remove_if(effectObjs.begin(), effectObjs.end(), CPlayScene::IsEffectObjectDeleted),
 		effectObjs.end());
 
+	//check in attackObjs
+	for (it = attackObjs.begin(); it != attackObjs.end(); it++)
+	{
+		LPGAMEOBJECT o = *it;
+		if (o->IsDeleted())
+		{
+			delete o;
+			*it = NULL;
+		}
+	}
+	attackObjs.erase(
+		std::remove_if(attackObjs.begin(), attackObjs.end(), CPlayScene::IsGameObjectDeleted),
+		attackObjs.end());
+
+	//check in barrierObjs
+	for (it = barrierObjs.begin(); it != barrierObjs.end(); it++)
+	{
+		LPGAMEOBJECT o = *it;
+		if (o->IsDeleted())
+		{
+			delete o;
+			*it = NULL;
+		}
+	}
+	barrierObjs.erase(
+		std::remove_if(barrierObjs.begin(), barrierObjs.end(), CPlayScene::IsGameObjectDeleted),
+		barrierObjs.end());
+
 	// NOTE: remove_if will swap all deleted items to the end of the vector
 	// then simply trim the vector, this is much more efficient than deleting individual items
 }
@@ -1071,10 +1154,13 @@ void CPlayScene::AddObject(LPGAMEOBJECT obj, int type)
 		itemObjs.push_back(obj);
 		break;
 	case OBJECT_TYPE_ATTACK:
-		enemyObjs.push_back(obj);
+		detectObjs.push_back(obj);
 		break;
 	case OBJECT_TYPE_PORTAL:
 		terrainObjs.push_back(obj);
+		break;
+	case OBJECT_TYPE_MARIO_ATTACK:
+		attackObjs.push_back(obj);
 		break;
 	}
 }

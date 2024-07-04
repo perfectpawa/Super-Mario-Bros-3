@@ -54,6 +54,13 @@ void CKoopas::OnCollisionWith(LPCOLLISIONEVENT e)
 	if (dynamic_cast<CQuestionBlock*>(e->obj))
 		OnCollisionWithQuestionBlock(e);
 
+	if (dynamic_cast<CKoopas*>(e->obj))
+		OnCollisionWithKoopas(e);
+
+	if(dynamic_cast<CBrick*>(e->obj))
+		OnCollisionWithBrick(e);
+
+
 	if (!e->obj->IsBlocking()) return;
 	if (dynamic_cast<CKoopas*>(e->obj)) return;
 	if (dynamic_cast<CFallCheckingObject*>(e->obj)) return;
@@ -64,13 +71,6 @@ void CKoopas::OnCollisionWith(LPCOLLISIONEVENT e)
 	}
 	else if (e->nx != 0)
 	{
-		if (state == KOOPAS_STATE_SLIDE)
-		{
-			CBrick* brick = dynamic_cast<CBrick*>(e->obj);
-			if (brick) {
-					brick->Breaking();
-			}
-		}
 		vx = -vx;
 	}
 }
@@ -82,7 +82,18 @@ void CKoopas::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 
 	if (goomba->GetState() != GOOMBA_STATE_DIE)
 	{
-		goomba->SetState(GOOMBA_STATE_DIE);
+		goomba->TakeDamage();
+	}
+}
+
+void CKoopas::OnCollisionWithKoopas(LPCOLLISIONEVENT e)
+{
+	if (state != KOOPAS_STATE_SLIDE) return;
+	CKoopas* koopas = dynamic_cast<CKoopas*>(e->obj);
+
+	if (koopas->GetState() != KOOPAS_STATE_SLIDE)
+	{
+		koopas->TakeDamage();
 	}
 }
 
@@ -97,6 +108,16 @@ void CKoopas::OnCollisionWithQuestionBlock(LPCOLLISIONEVENT e)
 		questionBlock->SetState(QBLOCK_STATE_BOUND_UP);
 		questionBlock->GetReward();
 	}
+}
+
+void CKoopas::OnCollisionWithBrick(LPCOLLISIONEVENT e)
+{
+	if (state != KOOPAS_STATE_SLIDE) return;
+	if (e->ny != 0) return;
+	CBrick* brick = dynamic_cast<CBrick*>(e->obj);
+
+	brick->Breaking();
+
 }
 
 void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
