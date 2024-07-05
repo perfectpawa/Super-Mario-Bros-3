@@ -127,7 +127,7 @@ void CParaGoomba::Render()
 	{
 		rotate = 180;
 		//change rotate in degree to radian
-		rotate = rotate * 3.14 / 180;
+		rotate = rotate * 3.14f / 180;
 	}
 
 	CAnimations::GetInstance()->Get(aniId)->Render(x, y, rotate);

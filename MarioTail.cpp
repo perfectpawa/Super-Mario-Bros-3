@@ -68,7 +68,7 @@ void CMarioTail::OnCollisionWith(LPCOLLISIONEVENT e)
 	if(dynamic_cast<CBrick*>(e->obj))
 	{
 		CBrick* brick = dynamic_cast<CBrick*>(e->obj);
-		brick->Breaking();
+		brick->Breaking(true);
 	}
 
 }

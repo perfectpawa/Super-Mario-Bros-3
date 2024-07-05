@@ -2,6 +2,7 @@
 #include "Sprites.h"
 #include "Textures.h"
 #include "AssetIDs.h"
+#include "Mario.h"
 
 CTube::CTube(float x, float y, int length, BOOLEAN isUpsideDown, int type)
 	: CGameObject(x, y)
@@ -9,6 +10,15 @@ CTube::CTube(float x, float y, int length, BOOLEAN isUpsideDown, int type)
 	this->length = length;
 	this->isUpsideDown = isUpsideDown;
 	this->type = type;
+}
+
+void CTube::RenderInViewport(int spriteId, float x, float y)
+{
+	CMario* player = dynamic_cast<CMario*>(CGame::GetInstance()->GetCurrentScene()->GetPlayer());
+
+	if (player->isInMarioViewPort(x)) {
+		CSprites::GetInstance()->Get(spriteId)->Draw(x, y);
+	}
 }
 
 void CTube::Render()
@@ -19,8 +29,8 @@ void CTube::Render()
 	int rightSpriteId = ID_SPRITE_TUBE_BODY_RIGHT + type * 100;
 
 	for (int i = 0; i < length - 1; i++) {
-		CSprites::GetInstance()->Get(leftSpriteId)->Draw(xx, yy);
-		CSprites::GetInstance()->Get(rightSpriteId)->Draw(xx + 16, yy);
+		RenderInViewport(leftSpriteId, xx, yy);
+		RenderInViewport(rightSpriteId, xx + 16, yy);
 		if(isUpsideDown)
 			yy += 16;
 		else
@@ -31,8 +41,8 @@ void CTube::Render()
 	rightSpriteId = ID_SPRITE_TUBE_MOUTH_RIGHT + type * 100;
 	
 
-	CSprites::GetInstance()->Get(leftSpriteId)->Draw(xx, yy);
-	CSprites::GetInstance()->Get(rightSpriteId)->Draw(xx + 16, yy);
+	RenderInViewport(leftSpriteId, xx, yy);
+	RenderInViewport(rightSpriteId, xx + 16, yy);
 
 	//RenderBoundingBox();
 

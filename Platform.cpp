@@ -4,6 +4,7 @@
 #include "Sprites.h"
 
 #include "Textures.h"
+#include "Mario.h"
 
 void CPlatform::RenderBoundingBox()
 {
@@ -28,6 +29,17 @@ void CPlatform::RenderBoundingBox()
 	CGame::GetInstance()->Draw(xx - cx, y - cy, bbox, nullptr, BBOX_ALPHA, rect.right - 1, rect.bottom - 1);
 }
 
+void CPlatform::RenderInViewport(int spriteId, float x, float y)
+{
+	CMario* player = dynamic_cast<CMario*>(CGame::GetInstance()->GetCurrentScene()->GetPlayer());
+
+	if (player->isInMarioViewPort(x)) {
+		CSprites::GetInstance()->Get(spriteId)->Draw(x, y);
+	}
+
+
+}
+
 void CPlatform::Render()
 {
 	//RenderBoundingBox();
@@ -37,7 +49,7 @@ void CPlatform::Render()
 
 	if(length == 1)
 	{
-		CSprites::GetInstance()->Get(this->spriteIdBegin)->Draw(x, y);
+		RenderInViewport(this->spriteIdBegin,x, y);
 		return;
 	}
 
@@ -46,29 +58,29 @@ void CPlatform::Render()
 		float yy = y;
 		CSprites* s = CSprites::GetInstance();
 
-		s->Get(this->spriteIdBegin)->Draw(x, yy);
+		RenderInViewport(this->spriteIdBegin, x, yy);
 		yy += this->cellHeight;
 		for (int i = 1; i < this->length - 1; i++)
 		{
-			s->Get(this->spriteIdMiddle)->Draw(x, yy);
+			RenderInViewport(this->spriteIdMiddle, x, yy);
 			yy += this->cellHeight;
 		}
 		if (length > 1)
-			s->Get(this->spriteIdEnd)->Draw(x, yy);
+			RenderInViewport(this->spriteIdEnd, x, yy);
 	}
 	else {
 		float xx = x; 
 		CSprites * s = CSprites::GetInstance();
 
-		s->Get(this->spriteIdBegin)->Draw(xx, y);
+		RenderInViewport(this->spriteIdBegin, xx, y);
 		xx += this->cellWidth;
 		for (int i = 1; i < this->length - 1; i++)
 		{
-			s->Get(this->spriteIdMiddle)->Draw(xx, y);
+			RenderInViewport(this->spriteIdMiddle, xx, y);
 			xx += this->cellWidth;
 		}
 		if (length>1)
-			s->Get(this->spriteIdEnd)->Draw(xx, y);
+			RenderInViewport(this->spriteIdEnd, xx, y);
 
 	}
 

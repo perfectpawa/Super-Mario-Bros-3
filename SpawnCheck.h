@@ -2,7 +2,7 @@
 #include "GameObject.h"
 
 #define SPAWN_CHECK_BBOX_WIDTH 20
-#define SPAWN_CHECK_BBOX_HEIGHT 500
+#define SPAWN_CHECK_BBOX_HEIGHT 550
 class CSpawnCheck : public CGameObject
 {
 protected:

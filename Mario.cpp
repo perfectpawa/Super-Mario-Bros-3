@@ -427,7 +427,13 @@ void CMario:: OnCollisionWithSpawnCheck(LPCOLLISIONEVENT e)
 void CMario::OnCollisionWithMushroom(LPCOLLISIONEVENT e)
 {
 	CMushroom* mushroom = dynamic_cast<CMushroom*>(e->obj);
-	if (level == MARIO_LEVEL_SMALL)
+
+	if (mushroom->GetIs1Up()) {
+		CEffectObject* effect = new CScoreEffect(x, y, 9999);
+		CGame::GetInstance()->GetCurrentScene()->AddEffect(effect);
+	}
+
+	else if (level == MARIO_LEVEL_SMALL)
 	{
 		level = MARIO_LEVEL_BIG;
 

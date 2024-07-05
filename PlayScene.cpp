@@ -461,13 +461,12 @@ void CPlayScene::_ParseSection_OW_OBJECTS(string line) {
 		break;
 	}
 	case OW_OBJ_TYPE_PATH: {
-		bool prePortal = atoi(tokens[3].c_str());
+		int prePortal = atoi(tokens[3].c_str());
 		bool isVertical = (atoi(tokens[4].c_str()) == 1);
 		bool haveCoin = (atoi(tokens[5].c_str()) == 1);
 		bool haveTurn = (atoi(tokens[6].c_str()) == 1);
 
-		bool isGoIn = false;
-		if(prePortal < overworld_current_level) isGoIn = true;
+		bool isGoIn = prePortal < overworld_current_level;
 
 		COWPath* path = new COWPath(x, y, isGoIn, isVertical, haveCoin, haveTurn);
 		OW_pathObjs.push_back(path);

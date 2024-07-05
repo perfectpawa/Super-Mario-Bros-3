@@ -82,8 +82,8 @@ void CBackgroundObject::RenderBushSmall()
 {
 	RenderInViewport(ID_SPRITE_BACKGROUND_BUSH_TOP_LEFT, x, y);
 	RenderInViewport(ID_SPRITE_BACKGROUND_BUSH_BOT_LEFT, x + 16, y);
-	RenderInViewport(ID_SPRITE_BACKGROUND_BUSH_MID_RIGHT, x + 16 * 2, y);
-	RenderInViewport(ID_SPRITE_BACKGROUND_BUSH_TOP_LEFT, x + 16 * 3, y);
+	RenderInViewport(ID_SPRITE_BACKGROUND_BUSH_CENTER, x + 16 * 2, y);
+	RenderInViewport(ID_SPRITE_BACKGROUND_BUSH_MID_RIGHT, x + 16 * 3, y);
 
 
 	RenderInViewport(ID_SPRITE_BACKGROUND_BUSH_MID_LEFT, x + 16, y - 16);

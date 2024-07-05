@@ -1,10 +1,10 @@
 mario_level	1
 level	1
-score	99
-life	4
+score	199
+life	2
 coin	2
 card_slot_1	1
 card_slot_2	2
 card_slot_3	0
-overworld_x	16.000000
-overworld_y	32.000000
+overworld_x	48.000000
+overworld_y	0.000000

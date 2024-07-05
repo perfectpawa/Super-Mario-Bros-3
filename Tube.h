@@ -17,4 +17,7 @@ public:
 	void Render();
 	void GetBoundingBox(float& l, float& t, float& r, float& b);
 	void RenderBoundingBox();
+
+	void RenderInViewport(int spriteId, float x, float y);
+
 };

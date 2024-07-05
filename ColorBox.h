@@ -43,6 +43,9 @@ public:
 		if (nx == 0 && ny == -1) return 1;
 		else return 0;
 	}
+
+	void RenderInViewport(int spriteId, float x, float y);
+
 	
 };
 

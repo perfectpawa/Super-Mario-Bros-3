@@ -3,6 +3,16 @@
 #include "Sprite.h"
 #include "Sprites.h"
 #include "Textures.h"
+#include "Mario.h"
+
+void CColorBox::RenderInViewport(int spriteId, float x, float y) {
+	CMario* player = dynamic_cast<CMario*>(CGame::GetInstance()->GetCurrentScene()->GetPlayer());
+
+	if (player->isInMarioViewPort(x)) {
+		CSprites::GetInstance()->Get(spriteId)->Draw(x, y);
+	}
+}
+
 
 void CColorBox::Render()
 {
@@ -11,47 +21,45 @@ void CColorBox::Render()
 	float xx = x - cellWidth_div_2;
 	float yy = y - cellHeight_div_2;
 
-	CSprites* s = CSprites::GetInstance();
-
 	// Top
-	s->Get(this->spriteIdTopLeft)->Draw(xx, yy);
+	RenderInViewport(this->spriteIdTopLeft, xx, yy);
 	xx += this->cellWidth;
 	for (int i = 1; i < this->width - 1; i++)
 	{
-		s->Get(this->spriteIdTopMiddle)->Draw(xx, yy);
+		RenderInViewport(this->spriteIdTopMiddle, xx, yy);
 		xx += this->cellWidth;
 	}
 	if (width > 1)
-		s->Get(this->spriteIdTopRight)->Draw(xx, yy);
+		RenderInViewport(this->spriteIdTopRight, xx, yy);
 
 	// Middle have height - 2 rows
 	for (int i = 1; i < this->height - 1; i++)
 	{
 		xx = x - cellWidth_div_2;
 		yy += this->cellHeight;
-		s->Get(this->spriteIdMiddleLeft)->Draw(xx, yy);
+		RenderInViewport(this->spriteIdMiddleLeft, xx, yy);
 		xx += this->cellWidth;
 		for (int j = 1; j < this->width - 1; j++)
 		{
-			s->Get(this->spriteIdMiddleMiddle)->Draw(xx, yy);
+			RenderInViewport(this->spriteIdMiddleMiddle, xx, yy);
 			xx += this->cellWidth;
 		}
 		if (width > 1)
-			s->Get(this->spriteIdMiddleRight)->Draw(xx, yy);
+			RenderInViewport(this->spriteIdMiddleRight, xx, yy);
 	}
 
 	// Bottom
 	xx = x - cellWidth_div_2;
 	yy += this->cellHeight;
-	s->Get(this->spriteIdBottomLeft)->Draw(xx, yy);
+	RenderInViewport(this->spriteIdBottomLeft, xx, yy);
 	xx += this->cellWidth;
 	for (int i = 1; i < this->width - 1; i++)
 	{
-		s->Get(this->spriteIdBottomMiddle)->Draw(xx, yy);
+		RenderInViewport(this->spriteIdBottomMiddle, xx, yy);
 		xx += this->cellWidth;
 	}
 	if (width > 1)
-		s->Get(this->spriteIdBottomRight)->Draw(xx, yy);
+		RenderInViewport(this->spriteIdBottomRight, xx, yy);
 
 	//RenderBoundingBox();
 }

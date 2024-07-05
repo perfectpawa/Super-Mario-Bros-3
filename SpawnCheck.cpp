@@ -10,5 +10,5 @@ void CSpawnCheck::GetBoundingBox(float& left, float& top, float& right, float& b
 
 void CSpawnCheck::Render()
 {
-	//RenderBoundingBox();
+	RenderBoundingBox();
 }

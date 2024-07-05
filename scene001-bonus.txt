@@ -8,6 +8,7 @@ mario_on_freeze.txt
 brick.txt
 coin.txt
 tube.txt
+effect.txt
 #
 [UI]
 [SETTINGS]

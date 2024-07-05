@@ -39,6 +39,8 @@ public:
 	void RenderBoundingBox();
 	int IsDirectionColliable(float nx, float ny);
 
+	void RenderInViewport(int spriteId, float x, float y);
+
 };
 
 typedef CPlatform* LPPLATFORM;
