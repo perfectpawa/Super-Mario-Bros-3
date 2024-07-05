@@ -277,7 +277,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 				isDirectionColliable, isVertical
 			);
 		}
-		terrainObjs.push_back(terrainObj);
+		platformObjs.push_back(terrainObj);
 		break;
 	}
 	case OBJECT_TYPE_COLOR_BOX: {
@@ -294,7 +294,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 			color_id
 		);
 
-		terrainObjs.push_back(terrainObj);
+		platformObjs.push_back(terrainObj);
 		break;
 
 	}
@@ -308,7 +308,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		}
 
 		frontTerrainObj = new CTube(x, y, length, isUpsideDown, type);
-		frontTerrainObjs.push_back(frontTerrainObj);
+		tubeObjs.push_back(frontTerrainObj);
 		break;
 	}
 	case OBJECT_TYPE_GROUND: {
@@ -324,7 +324,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 			0, 0
 		);
 
-		terrainObjs.push_back(groundObj);
+		platformObjs.push_back(groundObj);
 
 		if (height >= 2) {
 			groundObj = new CPlatform(
@@ -334,7 +334,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 				0, 0
 			);
 
-			terrainObjs.push_back(groundObj);
+			platformObjs.push_back(groundObj);
 		}
 
 		if (height >= 3) {
@@ -347,7 +347,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 				);
 			}
 
-			terrainObjs.push_back(groundObj);
+			platformObjs.push_back(groundObj);
 		}
 
 		break;
@@ -718,6 +718,10 @@ void CPlayScene::Update(DWORD dt)
 		coObjects.push_back(brickCoins[i]);
 	for (int i = 0; i < coinBricks.size(); i++)
 		coObjects.push_back(coinBricks[i]);
+	for (int i = 0; i < platformObjs.size(); i++)
+		coObjects.push_back(platformObjs[i]);
+	for (int i = 0; i < tubeObjs.size(); i++)
+		coObjects.push_back(tubeObjs[i]);
 
 	// skip the rest if scene was already unloaded (Mario::Update might trigger PlayScene::Unload)
 	if (player == NULL) return;
@@ -827,7 +831,10 @@ void CPlayScene::Render()
 		RenderOnFreeze();
 	}
 
-
+	//render platformObjs
+	for (int i = 0; i < platformObjs.size(); i++) {
+		platformObjs[i]->Render();
+	}
 
 	//render backgroundObjs
 	for (int i = 0; i < backgroundObjs.size(); i++) {
@@ -841,12 +848,21 @@ void CPlayScene::Render()
 
 	//render terrainObjs
 	for (int i = 0; i < terrainObjs.size(); i++) {
-		terrainObjs[i]->Render();
+
+		float x, y;
+		terrainObjs[i]->GetPosition(x, y);
+
+		if(InPlayerViewPort(x))
+			terrainObjs[i]->Render();
 	}
 
 	//render brickCoins
 	for (int i = 0; i < brickCoins.size(); i++) {
-		brickCoins[i]->Render();
+		float x, y;
+		brickCoins[i]->GetPosition(x, y);
+
+		if (InPlayerViewPort(x))
+			brickCoins[i]->Render();
 	}
 
 	//render coinBricks
@@ -855,12 +871,22 @@ void CPlayScene::Render()
 	}
 
 	//render itemObjs
-	for (int i = 0; i < itemObjs.size(); i++)
-		itemObjs[i]->Render();
+	for (int i = 0; i < itemObjs.size(); i++) {
+		float x, y;
+		itemObjs[i]->GetPosition(x, y);
+
+		if (InPlayerViewPort(x))
+			itemObjs[i]->Render();
+	}
 
 	//render enemyObjs
-	for (int i = 0; i < enemyObjs.size(); i++)
-		enemyObjs[i]->Render();
+	for (int i = 0; i < enemyObjs.size(); i++) {
+		float x, y;
+		enemyObjs[i]->GetPosition(x, y);
+
+		if (InPlayerViewPort(x))
+			enemyObjs[i]->Render();
+	}
 
 	//render detectObjs
 	for (int i = 0; i < detectObjs.size(); i++)
@@ -879,9 +905,17 @@ void CPlayScene::Render()
 		attackObjs[i]->Render();
 
 	//render frontTerrainObjs
-	for (int i = 0; i < frontTerrainObjs.size(); i++)
-		frontTerrainObjs[i]->Render();
+	for (int i = 0; i < frontTerrainObjs.size(); i++) {
+		float x, y;
+		frontTerrainObjs[i]->GetPosition(x, y);
 
+		if (InPlayerViewPort(x))
+			frontTerrainObjs[i]->Render();
+	}
+
+	//render tubeobjects
+	for (int i = 0; i < tubeObjs.size(); i++)
+		tubeObjs[i]->Render();
 
 	//render hud
 	if (mainHUD != NULL) mainHUD->Render();
@@ -935,6 +969,10 @@ void CPlayScene::Clear()
 	ClearGameObject(detectObjs);
 	ClearGameObject(attackObjs);
 	ClearGameObject(barrierObjs);
+	ClearGameObject(platformObjs);
+	ClearGameObject(tubeObjs);
+
+
 
 	ClearEffectObject(effectObjs);
 
@@ -982,6 +1020,8 @@ void CPlayScene::PurgeDeletedObjects()
 	PurgeDeletedGameObjects(detectObjs);
 	PurgeDeletedGameObjects(attackObjs);
 	PurgeDeletedGameObjects(barrierObjs);
+	PurgeDeletedGameObjects(platformObjs);
+	PurgeDeletedGameObjects(tubeObjs);
 
 	PurgeDeletedEffectObjects(effectObjs);
 
@@ -1183,6 +1223,15 @@ void CPlayScene::FreezeScene(int freezeTime) {
 void CPlayScene::SetDefaultPos(float x, float y) {
 	this->player->SetPosition(x, y);
 	CamPosFollowPlayer();
+}
+
+bool CPlayScene::InPlayerViewPort(float x) {
+
+	float player_x, player_y;
+	player->GetPosition(player_x, player_y);
+
+	if (x < player_x - VIEWPORT_WIDTH / 2 || x > player_x + VIEWPORT_WIDTH / 2) return false;
+	return true;
 }
 
 #pragma endregion

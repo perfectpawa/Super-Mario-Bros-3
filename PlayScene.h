@@ -9,6 +9,8 @@
 #include "EffectObject.h"
 #include "HUD.h"
 
+#define VIEWPORT_WIDTH 528
+
 class CPlayScene : public CScene
 {
 protected:
@@ -21,6 +23,10 @@ protected:
 	vector<LPGAMEOBJECT> frontTerrainObjs;
 	vector<LPGAMEOBJECT> detectObjs;
 	vector<LPGAMEOBJECT> attackObjs;
+
+	vector<LPGAMEOBJECT> platformObjs;
+	vector<LPGAMEOBJECT> tubeObjs;
+
 
 	vector<LPGAMEOBJECT> brickCoins;
 	vector<LPGAMEOBJECT> coinBricks;
@@ -106,6 +112,8 @@ public:
 	virtual void UpdateUIPosFixedCam(float cx, float cy);
 	virtual void UpdateUITimeLimit(DWORD dt);
 	virtual void UpdateUIPower();
+
+	bool InPlayerViewPort(float x);
 
 	LPGAMEOBJECT GetPlayer() { return player; }
 	LPOWGAMEOBJECT GetOWPlayer() { return OW_player; }

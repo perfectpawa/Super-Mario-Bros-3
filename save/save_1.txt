@@ -1,7 +1,7 @@
 mario_level	1
 level	1
 score	199
-life	2
+life	-1
 coin	2
 card_slot_1	1
 card_slot_2	2
