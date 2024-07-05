@@ -17,6 +17,7 @@
 
 #define REWARD_COIN 0
 #define REWARD_POWERUP 1
+#define REWARD_1UP 2
 
 #define QBLOCK_BOUND_SPEED 0.1f
 
@@ -39,5 +40,6 @@ public:
 	void SetState(int state);
 	void SpawnMusroom();
 	void SpawnLeaf();
+	void Spawn1Up();
 	void SpawnCoinEffect();
 };

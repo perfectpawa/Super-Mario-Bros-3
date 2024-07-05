@@ -556,6 +556,8 @@ void CGame::SwitchScene()
 	}
 
 	if (haveDefaultState) {
+		DebugOut(L"[INFO] Set default state\n");
+
 		CGameObject* player = s->GetPlayer();
 		s->FreezeScene(freezeTime);
 		player->SetState(defaultState);

@@ -1,7 +1,8 @@
 #pragma once
 #include "EffectObject.h"
+#include "ScoreEffect.h"
 
-#define COIN_EFFECT_SPEED 0.3f
+#define COIN_EFFECT_SPEED 0.2f
 
 class CCoinEffect : public CEffectObject {
 protected:

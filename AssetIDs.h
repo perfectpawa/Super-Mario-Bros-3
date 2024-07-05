@@ -52,6 +52,7 @@
 #pragma endregion
 
 
+
 #pragma region ENEMIES
 #pragma region GOOMBA 
 #define ID_ANI_GOOMBA_WALKING 200000
@@ -432,3 +433,8 @@
 #pragma endregion
 
 
+#pragma region Effect
+
+#define ID_SPRITE_EFFECT_POINT 999990000
+
+#pragma endregion

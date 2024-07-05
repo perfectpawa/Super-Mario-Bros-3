@@ -1,5 +1,8 @@
 #pragma once
 #include "Collision.h"
+#include "Animations.h"
+#include "Sprites.h"
+#include "AssetIDs.h"
 
 class CEffectObject {
 protected:

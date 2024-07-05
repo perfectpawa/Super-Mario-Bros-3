@@ -173,6 +173,7 @@
     <ClCompile Include="LevelKeyHandler.cpp" />
     <ClCompile Include="SaveFile.cpp" />
     <ClCompile Include="Scene.cpp" />
+    <ClCompile Include="ScoreEffect.cpp" />
     <ClCompile Include="SpawnCheck.cpp" />
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="Sprites.cpp" />
@@ -221,6 +222,7 @@
     <ClInclude Include="PlantFire.h" />
     <ClInclude Include="PlayScene.h" />
     <ClInclude Include="SaveFile.h" />
+    <ClInclude Include="ScoreEffect.h" />
     <ClInclude Include="Tube.h" />
     <ClInclude Include="UI.txt" />
     <ClInclude Include="KeyEventHandler.h" />
@@ -248,6 +250,7 @@
     <Text Include="cloud.txt" />
     <Text Include="coin.txt" />
     <Text Include="color_box.txt" />
+    <Text Include="effect.txt" />
     <Text Include="goomba.txt" />
     <Text Include="ground.txt" />
     <Text Include="button.txt" />

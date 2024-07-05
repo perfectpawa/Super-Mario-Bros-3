@@ -72,7 +72,7 @@ class CGame
 
 	bool haveDefaultState = false;
 	int defaultState = 0;
-	float freezeTime = 0.0f;
+	int freezeTime = 0;
 
 	int current_save_file_id;
 
@@ -140,7 +140,7 @@ public:
 
 	void InitDefaulePos(float start_x, float start_y) { this->start_x = start_x; this->start_y = start_y; haveDefaultPos = true; }
 	void InitDefauleTimeLimit(float defaultTimeLimit) { this->defaultTimeLimit = defaultTimeLimit; havedefaultTimeLimit = true; }
-	void InitDefauleState(int defaultState, float freezeTime) { this->defaultState = defaultState; this->freezeTime = freezeTime; haveDefaultState = true; }
+	void InitDefauleState(int defaultState, int freezeTime) { this->defaultState = defaultState; this->freezeTime = freezeTime; haveDefaultState = true; }
 
 	void LoadSaveFile();
 

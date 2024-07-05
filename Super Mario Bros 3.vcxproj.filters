@@ -139,6 +139,9 @@
     <Filter Include="Source Files\Object\GameObject\Item">
       <UniqueIdentifier>{01c5f93a-0fd3-48fc-8cf5-3810e9654ded}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\Effect">
+      <UniqueIdentifier>{a83471f7-c0ed-4315-bdca-e6f7c5b094dd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameObject.cpp">
@@ -296,6 +299,9 @@
     </ClCompile>
     <ClCompile Include="SaveFile.cpp">
       <Filter>Source Files\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="ScoreEffect.cpp">
+      <Filter>Source Files\Object\EffectObject</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -473,6 +479,9 @@
     <ClInclude Include="CardBlock.h">
       <Filter>Header Files\Object\GameObject\Misc</Filter>
     </ClInclude>
+    <ClInclude Include="ScoreEffect.h">
+      <Filter>Header Files\Object\EffectObject</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="main-settings.txt">
@@ -561,6 +570,9 @@
     </Text>
     <Text Include="card_block.txt">
       <Filter>Resource Files\Misc</Filter>
+    </Text>
+    <Text Include="effect.txt">
+      <Filter>Resource Files\Effect</Filter>
     </Text>
   </ItemGroup>
   <ItemGroup>

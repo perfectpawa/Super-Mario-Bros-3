@@ -1,13 +1,11 @@
 #include "CoinEffect.h"
-#include "AssetIDs.h"
-#include "Animations.h"
 
 
 CCoinEffect::CCoinEffect(float x, float y) : CEffectObject(x, y)
 {
 	vy = -COIN_EFFECT_SPEED;
-	maxPosy = y - 16 * 4;
-	minPosy = y - 16 * 2;
+	maxPosy = y - 16 * 3;
+	minPosy = y - 16;
 }
 
 void CCoinEffect::Render()
@@ -27,6 +25,9 @@ void CCoinEffect::Update(DWORD dt)
 	}
 	if (vy > 0 && y >= minPosy)
 	{
+		CEffectObject* effect = new CScoreEffect(x, y, 100);
+
+		CGame::GetInstance()->GetCurrentScene()->AddEffect(effect);
 		this->Delete();
 		return;
 	}

@@ -46,6 +46,13 @@ void CQuestionBlock::Render()
 	if (state == QBLOCK_STATE_IDLE)
 		aniId = ID_ANI_QUESTION_BLOCK;
 
+	if (reward_type == REWARD_1UP) {
+		int aniId = ID_ANI_BRICK_BREAKABLE_HIT;
+
+		if (state == QBLOCK_STATE_IDLE)
+			aniId = ID_ANI_BRICK_BREAKABLE;
+	}
+
 	CAnimations* animations = CAnimations::GetInstance();
 	animations->Get(aniId)->Render(x, y);
 	//RenderBoundingBox();
@@ -84,8 +91,10 @@ void CQuestionBlock::GetReward()
 	case REWARD_COIN:
 		SpawnCoinEffect();
 		break;
+	case REWARD_1UP:
+		Spawn1Up();
+		break;
 	case REWARD_POWERUP:
-
 		int level;
 		CGameObject* playerObj = CGame::GetInstance()->GetCurrentScene()->GetPlayer();
 		CMario* player = dynamic_cast<CMario*>(playerObj);
@@ -102,8 +111,8 @@ void CQuestionBlock::GetReward()
 		{
 			SpawnLeaf();
 		}
-
 		break;
+
 	}
 }
 
@@ -121,4 +130,9 @@ void CQuestionBlock::SpawnLeaf()
 {
 	CLeaf* leaf = new CLeaf(x, y - 16);
 	CGame::GetInstance()->GetCurrentScene()->AddObject(leaf, OBJECT_TYPE_LEAF);
+}
+void CQuestionBlock::Spawn1Up()
+{
+	CMushroom* mushroom = new CMushroom(x, y, true);
+	CGame::GetInstance()->GetCurrentScene()->AddObject(mushroom, OBJECT_TYPE_MUSHROOM);
 }

@@ -30,7 +30,7 @@ void CPlatform::RenderBoundingBox()
 
 void CPlatform::Render()
 {
-	RenderBoundingBox();
+	//RenderBoundingBox();
 
 	if (length <= 0) return; 
 	if (spriteIdBegin == -1) return;

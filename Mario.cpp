@@ -13,6 +13,8 @@
 #include "Mushroom.h"
 #include "Leaf.h"
 #include "Coin.h"
+#include "ScoreEffect.h"
+
 
 #include "QuestionBlock.h"
 #include "Button.h"
@@ -58,6 +60,7 @@ CMario::CMario(float x, float y) : CGameObject(x, y)
 	gear_start = -1;
 	flying_start = -1;
 	switch_delay_start = -1;
+	die_start = -1;
 
 	isOnPlatform = false;
 	gearUpState = 0;
@@ -122,7 +125,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	rightTail->SetSpeed(rightTail_vx, vy);
 	leftTail->SetSpeed(leftTail_vx, vy);
 
-	if (y > 300) {
+	if (y > MARIO_MAX_Y) {
 		SetLevel(MARIO_LEVEL_SMALL);
 		TakingDamage();
 	}
@@ -381,7 +384,14 @@ void CMario::OnCollisionWithFireBall(LPCOLLISIONEVENT e)
 
 void CMario::OnCollisionWithCoin(LPCOLLISIONEVENT e)
 {
+	float x, y;
+	e->obj->GetPosition(x, y);
+
+	CEffectObject* scoreEffect = new CScoreEffect(x, y, 100);
+	CGame::GetInstance()->GetCurrentScene()->AddEffect(scoreEffect);
+
 	e->obj->Delete();
+	
 	SaveFile::GetInstance()->AddCoin(1);
 }
 
@@ -505,6 +515,7 @@ void CMario::TakingDamage() {
 			DebugOut(L">>> Mario DIE >>> \n");
 			freezeId = ID_ANI_MARIO_DIE;
 			freezeTime = 10000;
+			die_start = GetTickCount64();
 			SetState(MARIO_STATE_DIE);
 		}
 
@@ -826,6 +837,11 @@ void CMario::UpdateOnFreeze(DWORD dt) {
 	if (state == MARIO_STATE_DIE) {
 		vy = min(vy + ay * dt, maxVy);
 		y += vy * dt;
+
+
+		if (GetTickCount64() - die_start > MARIO_DIE_TIME) {
+			CGame::GetInstance()->InitiateSwitchScene(1);
+		}
 	}
 
 	if (state == MARIO_STATE_IN_TUBE || state == MARIO_STATE_OUT_TUBE) {
@@ -864,7 +880,7 @@ void CMario::StartSwitchingScene() {
 
 	SetState(first_state);
 
-	float freezeTime = 500;
+	int freezeTime = 500;
 	if (first_state == MARIO_STATE_OUT_TUBE) freezeTime = 500;
 
 	CGame::GetInstance()->InitDefauleState(first_state, freezeTime);

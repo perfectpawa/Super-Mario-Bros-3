@@ -20,6 +20,8 @@ protected:
 
 	float start_y;
 
+	bool is_1Up = false;
+
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 
 	virtual int IsCollidable() { return 1; };
@@ -28,8 +30,10 @@ protected:
 
 	virtual void OnCollisionWith(LPCOLLISIONEVENT e);
 public:
-	CMushroom(float x, float y) ;
+	CMushroom(float x, float y, bool is1Up = false) ;
 	virtual void SetState(int state);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	virtual void Render();
+
+	bool GetIs1Up() { return is_1Up; }
 };

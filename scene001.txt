@@ -9,6 +9,7 @@ goomba.txt
 koopas.txt
 plant.txt
 
+effect.txt
 reward.txt
 coin.txt
 button.txt
@@ -32,7 +33,7 @@ background_color	156	252	240
 cam_limit	8	2824	32	-16	64	
 [OBJECTS]
 # MARIO
-0	2272	-160
+0	16	-160
 
 # CARD BLOCK
 699	2720	96
@@ -58,7 +59,7 @@ cam_limit	8	2824	32	-16	64
 
 601	720	128	0
 
-601	1472	-96	1
+601	1472	-96	2
 
 601	1488	144	1
 
@@ -196,13 +197,13 @@ cam_limit	8	2824	32	-16	64
 
 ##### ENEMIES #####
 #PLANT
-40	376	144	3	1	1
+40	376	148	3	1	1
 
 #GOOMBA
 20	224	160	0
 
 #SPAWNCHECK
-#9999	376	96
+9999	376	96
 
 #GOOMBA
 20	528	176	0
@@ -211,7 +212,7 @@ cam_limit	8	2824	32	-16	64
 30	576	136	1
 
 #SPAWNCHECK
-#9999	624	96
+9999	624	96
 
 #GOOMBA
 20	832	160	0
@@ -223,7 +224,7 @@ cam_limit	8	2824	32	-16	64
 20	994	144	1
 
 #SPAWNCHECK
-#9999	1168	96
+9999	1168	96
 
 #KOOPAS
 30	1336	72	3
@@ -238,7 +239,7 @@ cam_limit	8	2824	32	-16	64
 30	1488	168	2
 
 #SPAWNCHECK
-#9999	1680	96
+9999	1680	96
 
 #PLANT
 40	1824	160	2	2

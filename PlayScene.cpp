@@ -609,6 +609,8 @@ void CPlayScene::LoadUI()
 
 void CPlayScene::Unload()
 {
+	isFreeze = false;
+
 	//unload enemyObjs
 	for (int i = 0; i < enemyObjs.size(); i++)
 		delete enemyObjs[i];

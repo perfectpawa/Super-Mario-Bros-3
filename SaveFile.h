@@ -26,6 +26,7 @@ public:
 
 	void SetScore(int score) { this->score = score; }
 	int GetScore() { return score; }
+	void AddScore(int score) { this->score += score; }
 
 	void SetLife(int life) { this->life = life; }
 	int GetLife() { return life; }

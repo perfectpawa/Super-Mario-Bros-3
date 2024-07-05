@@ -1,4 +1,5 @@
 #pragma once
+#include "Mario.h"
 
 #define TYPE_CLOUD		0
 #define TYPE_GRASS		1
@@ -18,9 +19,11 @@ protected:
 	float y;
 	int type;
 	int length;
+	CMario* player;
 public:
 	CBackgroundObject(float x, float y, int type, int length = 1);
 	void Render();
+	void RenderInViewport(int spriteId, float x, float y);
 	void RenderCloud();
 	void RenderGrass();
 	void RenderBushSmall();

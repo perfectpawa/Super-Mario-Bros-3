@@ -9,10 +9,13 @@ CBackgroundObject::CBackgroundObject(float x, float y, int type, int length)
 	this->y = y;
 	this->type = type;
 	this->length = length;
+	this->player = dynamic_cast<CMario*>(CGame::GetInstance()->GetCurrentScene()->GetPlayer());
 }
 
 void CBackgroundObject::Render()
 {
+
+
 	switch (type)
 	{
 	case TYPE_CLOUD:
@@ -48,146 +51,156 @@ void CBackgroundObject::Render()
 	}
 }
 
+void CBackgroundObject::RenderInViewport(int spriteId, float x, float y)
+{
+	if(player->isInMarioViewPort(x))
+		CSprites::GetInstance()->Get(spriteId)->Draw(x, y);
+
+
+}
+
 void CBackgroundObject::RenderCloud()
 {
-	CSprites::GetInstance()->Get(ID_SPRITE_BACKGROUND_CLOUD_LEFT)->Draw(x, y);
+	RenderInViewport(ID_SPRITE_BACKGROUND_CLOUD_LEFT, x, y);
+
 	float xx = x + 8;
 	for (int i = 1; i <= length; i++) {
-		CSprites::GetInstance()->Get(ID_SPRITE_BACKGROUND_CLOUD_CENTER_LEFT)->Draw(xx, y);
+		RenderInViewport(ID_SPRITE_BACKGROUND_CLOUD_CENTER_LEFT, xx, y);
 		xx += 8;
-		CSprites::GetInstance()->Get(ID_SPRITE_BACKGROUND_CLOUD_CENTER_RIGHT)->Draw(xx, y);
+		RenderInViewport(ID_SPRITE_BACKGROUND_CLOUD_CENTER_RIGHT, xx, y);
 		xx += 8;
 	}
-	CSprites::GetInstance()->Get(ID_SPRITE_BACKGROUND_CLOUD_RIGHT)->Draw(xx, y);
+	RenderInViewport(ID_SPRITE_BACKGROUND_CLOUD_RIGHT, xx, y);
 }
 
 void CBackgroundObject::RenderGrass()
 {
-	CSprites::GetInstance()->Get(ID_SPRITE_BACKGROUND_GRASS)->Draw(x, y);
+	RenderInViewport(ID_SPRITE_BACKGROUND_GRASS, x, y);
 }
 
 void CBackgroundObject::RenderBushSmall()
 {
-	CSprites::GetInstance()->Get(ID_SPRITE_BACKGROUND_BUSH_TOP_LEFT)->Draw(x, y);
-	CSprites::GetInstance()->Get(ID_SPRITE_BACKGROUND_BUSH_BOT_LEFT)->Draw(x + 16, y);
-	CSprites::GetInstance()->Get(ID_SPRITE_BACKGROUND_BUSH_CENTER)->Draw(x + 16 * 2, y); 
-	CSprites::GetInstance()->Get(ID_SPRITE_BACKGROUND_BUSH_MID_RIGHT)->Draw(x + 16 * 3, y);
+	RenderInViewport(ID_SPRITE_BACKGROUND_BUSH_TOP_LEFT, x, y);
+	RenderInViewport(ID_SPRITE_BACKGROUND_BUSH_BOT_LEFT, x + 16, y);
+	RenderInViewport(ID_SPRITE_BACKGROUND_BUSH_MID_RIGHT, x + 16 * 2, y);
+	RenderInViewport(ID_SPRITE_BACKGROUND_BUSH_TOP_LEFT, x + 16 * 3, y);
 
-	CSprites::GetInstance()->Get(ID_SPRITE_BACKGROUND_BUSH_MID_LEFT)->Draw(x + 16, y - 16);
-	CSprites::GetInstance()->Get(ID_SPRITE_BACKGROUND_BUSH_BOT_RIGHT)->Draw(x + 16 * 2, y - 16);
-	CSprites::GetInstance()->Get(ID_SPRITE_BACKGROUND_BUSH_TOP_RIGHT)->Draw(x + 16 * 3, y - 16);
 
-	CSprites::GetInstance()->Get(ID_SPRITE_BACKGROUND_BUSH_TOP_LEFT)->Draw(x + 16, y - 16 * 2);
-	CSprites::GetInstance()->Get(ID_SPRITE_BACKGROUND_BUSH_TOP_RIGHT)->Draw(x + 16 * 2, y - 16 * 2);
+	RenderInViewport(ID_SPRITE_BACKGROUND_BUSH_MID_LEFT, x + 16, y - 16);
+	RenderInViewport(ID_SPRITE_BACKGROUND_BUSH_BOT_RIGHT, x + 16 * 2, y - 16);
+	RenderInViewport(ID_SPRITE_BACKGROUND_BUSH_TOP_RIGHT, x + 16 * 3, y - 16);
+
+	RenderInViewport(ID_SPRITE_BACKGROUND_BUSH_TOP_LEFT, x + 16, y - 16 * 2);
+	RenderInViewport(ID_SPRITE_BACKGROUND_BUSH_TOP_RIGHT, x + 16 * 2, y - 16 * 2);
 }
 
 void CBackgroundObject::RenderBushBig1()
 {
-	CSprites::GetInstance()->Get(ID_SPRITE_BACKGROUND_BUSH_MID_LEFT)->Draw(x, y);
-	CSprites::GetInstance()->Get(ID_SPRITE_BACKGROUND_BUSH_CENTER)->Draw(x + 16, y);
-	CSprites::GetInstance()->Get(ID_SPRITE_BACKGROUND_BUSH_CENTER)->Draw(x + 16 * 2, y);
-	CSprites::GetInstance()->Get(ID_SPRITE_BACKGROUND_BUSH_CENTER)->Draw(x + 16 * 3, y);
-	CSprites::GetInstance()->Get(ID_SPRITE_BACKGROUND_BUSH_BOT_RIGHT)->Draw(x + 16 * 4, y);
-	CSprites::GetInstance()->Get(ID_SPRITE_BACKGROUND_BUSH_BOT_LEFT)->Draw(x + 16 * 5, y);
-	CSprites::GetInstance()->Get(ID_SPRITE_BACKGROUND_BUSH_CENTER)->Draw(x + 16 * 6, y);
-	CSprites::GetInstance()->Get(ID_SPRITE_BACKGROUND_BUSH_MID_RIGHT)->Draw(x + 16 * 7, y);
+	RenderInViewport(ID_SPRITE_BACKGROUND_BUSH_MID_LEFT, x, y);
+	RenderInViewport(ID_SPRITE_BACKGROUND_BUSH_CENTER, x + 16, y);
+	RenderInViewport(ID_SPRITE_BACKGROUND_BUSH_CENTER, x + 16 * 2, y);
+	RenderInViewport(ID_SPRITE_BACKGROUND_BUSH_CENTER, x + 16 * 3, y);
+	RenderInViewport(ID_SPRITE_BACKGROUND_BUSH_BOT_RIGHT, x + 16 * 4, y);
+	RenderInViewport(ID_SPRITE_BACKGROUND_BUSH_BOT_LEFT, x + 16 * 5, y);
+	RenderInViewport(ID_SPRITE_BACKGROUND_BUSH_CENTER, x + 16 * 6, y);
+	RenderInViewport(ID_SPRITE_BACKGROUND_BUSH_MID_RIGHT, x + 16 * 7, y);
 
-	CSprites::GetInstance()->Get(ID_SPRITE_BACKGROUND_BUSH_MID_LEFT)->Draw(x, y - 16);
-	CSprites::GetInstance()->Get(ID_SPRITE_BACKGROUND_BUSH_BOT_RIGHT)->Draw(x + 16, y - 16);
-	CSprites::GetInstance()->Get(ID_SPRITE_BACKGROUND_BUSH_BOT_LEFT)->Draw(x + 16 * 2, y - 16);
-	CSprites::GetInstance()->Get(ID_SPRITE_BACKGROUND_BUSH_CENTER)->Draw(x + 16 * 3, y - 16);
-	CSprites::GetInstance()->Get(ID_SPRITE_BACKGROUND_BUSH_MID_RIGHT)->Draw(x + 16 * 4, y - 16);
-	CSprites::GetInstance()->Get(ID_SPRITE_BACKGROUND_BUSH_MID_LEFT)->Draw(x + 16 * 5, y - 16);
-	CSprites::GetInstance()->Get(ID_SPRITE_BACKGROUND_BUSH_BOT_RIGHT)->Draw(x + 16 * 6, y - 16);
-	CSprites::GetInstance()->Get(ID_SPRITE_BACKGROUND_BUSH_TOP_RIGHT)->Draw(x + 16 * 7, y - 16);
+	RenderInViewport(ID_SPRITE_BACKGROUND_BUSH_MID_LEFT, x, y - 16);
+	RenderInViewport(ID_SPRITE_BACKGROUND_BUSH_BOT_RIGHT, x + 16, y - 16);
+	RenderInViewport(ID_SPRITE_BACKGROUND_BUSH_BOT_LEFT, x + 16 * 2, y - 16);
+	RenderInViewport(ID_SPRITE_BACKGROUND_BUSH_CENTER, x + 16 * 3, y - 16);
+	RenderInViewport(ID_SPRITE_BACKGROUND_BUSH_MID_RIGHT, x + 16 * 4, y - 16);
+	RenderInViewport(ID_SPRITE_BACKGROUND_BUSH_MID_LEFT, x + 16 * 5, y - 16);
+	RenderInViewport(ID_SPRITE_BACKGROUND_BUSH_BOT_RIGHT, x + 16 * 6, y - 16);
+	RenderInViewport(ID_SPRITE_BACKGROUND_BUSH_TOP_RIGHT, x + 16 * 7, y - 16);
 
-	CSprites::GetInstance()->Get(ID_SPRITE_BACKGROUND_BUSH_TOP_LEFT)->Draw(x, y - 16 * 2);
-	CSprites::GetInstance()->Get(ID_SPRITE_BACKGROUND_BUSH_BOT_LEFT)->Draw(x + 16, y - 16 * 2);
-	CSprites::GetInstance()->Get(ID_SPRITE_BACKGROUND_BUSH_MID_RIGHT)->Draw(x + 16 * 2, y - 16 * 2);
-	CSprites::GetInstance()->Get(ID_SPRITE_BACKGROUND_BUSH_TOP_LEFT)->Draw(x + 16 * 3, y - 16 * 2);
-	CSprites::GetInstance()->Get(ID_SPRITE_BACKGROUND_BUSH_TOP_RIGHT)->Draw(x + 16 * 4, y - 16 * 2);
-	CSprites::GetInstance()->Get(ID_SPRITE_BACKGROUND_BUSH_TOP_LEFT)->Draw(x + 16 * 5, y - 16 * 2);
-	CSprites::GetInstance()->Get(ID_SPRITE_BACKGROUND_BUSH_TOP_RIGHT)->Draw(x + 16 * 6, y - 16 * 2);
+	RenderInViewport(ID_SPRITE_BACKGROUND_BUSH_TOP_LEFT, x, y - 16 * 2);
+	RenderInViewport(ID_SPRITE_BACKGROUND_BUSH_BOT_LEFT, x + 16, y - 16 * 2);
+	RenderInViewport(ID_SPRITE_BACKGROUND_BUSH_MID_RIGHT, x + 16 * 2, y - 16 * 2);
+	RenderInViewport(ID_SPRITE_BACKGROUND_BUSH_TOP_LEFT, x + 16 * 3, y - 16 * 2);
+	RenderInViewport(ID_SPRITE_BACKGROUND_BUSH_TOP_RIGHT, x + 16 * 4, y - 16 * 2);
+	RenderInViewport(ID_SPRITE_BACKGROUND_BUSH_TOP_LEFT, x + 16 * 5, y - 16 * 2);
+	RenderInViewport(ID_SPRITE_BACKGROUND_BUSH_TOP_RIGHT, x + 16 * 6, y - 16 * 2);
 
-	CSprites::GetInstance()->Get(ID_SPRITE_BACKGROUND_BUSH_TOP_LEFT)->Draw(x + 16, y - 16 * 3);
-	CSprites::GetInstance()->Get(ID_SPRITE_BACKGROUND_BUSH_TOP_RIGHT)->Draw(x + 16 * 2, y - 16 * 3);
+	RenderInViewport(ID_SPRITE_BACKGROUND_BUSH_TOP_LEFT, x + 16, y - 16 * 3);
+	RenderInViewport(ID_SPRITE_BACKGROUND_BUSH_TOP_RIGHT, x + 16 * 2, y - 16 * 3);
 
 
 }
 
 void CBackgroundObject::RenderBushBig2() {
-	CSprites::GetInstance()->Get(ID_SPRITE_BACKGROUND_BUSH_TOP_LEFT)->Draw(x, y);
-	CSprites::GetInstance()->Get(ID_SPRITE_BACKGROUND_BUSH_BOT_LEFT)->Draw(x + 16, y);
-	CSprites::GetInstance()->Get(ID_SPRITE_BACKGROUND_BUSH_CENTER)->Draw(x + 16 * 2, y);
-	CSprites::GetInstance()->Get(ID_SPRITE_BACKGROUND_BUSH_CENTER)->Draw(x + 16 * 3, y);
-	CSprites::GetInstance()->Get(ID_SPRITE_BACKGROUND_BUSH_CENTER)->Draw(x + 16 * 4, y);
-	CSprites::GetInstance()->Get(ID_SPRITE_BACKGROUND_BUSH_CENTER)->Draw(x + 16 * 5, y);
-	CSprites::GetInstance()->Get(ID_SPRITE_BACKGROUND_BUSH_CENTER)->Draw(x + 16 * 6, y);
-	CSprites::GetInstance()->Get(ID_SPRITE_BACKGROUND_BUSH_MID_RIGHT)->Draw(x + 16 * 7, y);
+	RenderInViewport(ID_SPRITE_BACKGROUND_BUSH_TOP_LEFT, x, y);
+	RenderInViewport(ID_SPRITE_BACKGROUND_BUSH_BOT_LEFT, x + 16, y);
+	RenderInViewport(ID_SPRITE_BACKGROUND_BUSH_CENTER, x + 16 * 2, y);
+	RenderInViewport(ID_SPRITE_BACKGROUND_BUSH_CENTER, x + 16 * 3, y);
+	RenderInViewport(ID_SPRITE_BACKGROUND_BUSH_CENTER, x + 16 * 4, y);
+	RenderInViewport(ID_SPRITE_BACKGROUND_BUSH_CENTER, x + 16 * 5, y);
+	RenderInViewport(ID_SPRITE_BACKGROUND_BUSH_CENTER, x + 16 * 6, y);
+	RenderInViewport(ID_SPRITE_BACKGROUND_BUSH_MID_RIGHT, x + 16 * 7, y);
 
-	CSprites::GetInstance()->Get(ID_SPRITE_BACKGROUND_BUSH_MID_LEFT)->Draw(x + 16, y - 16);
-	CSprites::GetInstance()->Get(ID_SPRITE_BACKGROUND_BUSH_BOT_RIGHT)->Draw(x + 16 * 2, y - 16);
-	CSprites::GetInstance()->Get(ID_SPRITE_BACKGROUND_BUSH_BOT_LEFT)->Draw(x + 16 * 3, y - 16);
-	CSprites::GetInstance()->Get(ID_SPRITE_BACKGROUND_BUSH_BOT_RIGHT)->Draw(x + 16 * 4, y - 16);
-	CSprites::GetInstance()->Get(ID_SPRITE_BACKGROUND_BUSH_BOT_LEFT)->Draw(x + 16 * 5, y - 16);
-	CSprites::GetInstance()->Get(ID_SPRITE_BACKGROUND_BUSH_CENTER)->Draw(x + 16 * 6, y - 16);
-	CSprites::GetInstance()->Get(ID_SPRITE_BACKGROUND_BUSH_MID_RIGHT)->Draw(x + 16 * 7, y - 16);
+	RenderInViewport(ID_SPRITE_BACKGROUND_BUSH_MID_LEFT, x + 16, y - 16);
+	RenderInViewport(ID_SPRITE_BACKGROUND_BUSH_BOT_RIGHT, x + 16 * 2, y - 16);
+	RenderInViewport(ID_SPRITE_BACKGROUND_BUSH_BOT_LEFT, x + 16 * 3, y - 16);
+	RenderInViewport(ID_SPRITE_BACKGROUND_BUSH_BOT_RIGHT, x + 16 * 4, y - 16);
+	RenderInViewport(ID_SPRITE_BACKGROUND_BUSH_BOT_LEFT, x + 16 * 5, y - 16);
+	RenderInViewport(ID_SPRITE_BACKGROUND_BUSH_CENTER, x + 16 * 6, y - 16);
+	RenderInViewport(ID_SPRITE_BACKGROUND_BUSH_MID_RIGHT, x + 16 * 7, y - 16);
 
-	CSprites::GetInstance()->Get(ID_SPRITE_BACKGROUND_BUSH_TOP_LEFT)->Draw(x + 16, y - 16 * 2);
-	CSprites::GetInstance()->Get(ID_SPRITE_BACKGROUND_BUSH_TOP_RIGHT)->Draw(x + 16 * 2, y - 16 * 2);
-	CSprites::GetInstance()->Get(ID_SPRITE_BACKGROUND_BUSH_TOP_LEFT)->Draw(x + 16 * 3, y - 16 * 2);
-	CSprites::GetInstance()->Get(ID_SPRITE_BACKGROUND_BUSH_BOT_LEFT)->Draw(x + 16 * 4, y - 16 * 2);
-	CSprites::GetInstance()->Get(ID_SPRITE_BACKGROUND_BUSH_MID_RIGHT)->Draw(x + 16 * 5, y - 16 * 2);
-	CSprites::GetInstance()->Get(ID_SPRITE_BACKGROUND_BUSH_TOP_LEFT)->Draw(x + 16 * 6, y - 16 * 2);
-	CSprites::GetInstance()->Get(ID_SPRITE_BACKGROUND_BUSH_TOP_RIGHT)->Draw(x + 16 * 7, y - 16 * 2);
+	RenderInViewport(ID_SPRITE_BACKGROUND_BUSH_TOP_LEFT, x + 16, y - 16 * 2);
+	RenderInViewport(ID_SPRITE_BACKGROUND_BUSH_TOP_RIGHT, x + 16 * 2, y - 16 * 2);
+	RenderInViewport(ID_SPRITE_BACKGROUND_BUSH_TOP_LEFT, x + 16 * 3, y - 16 * 2);
+	RenderInViewport(ID_SPRITE_BACKGROUND_BUSH_BOT_LEFT, x + 16 * 4, y - 16 * 2);
+	RenderInViewport(ID_SPRITE_BACKGROUND_BUSH_MID_RIGHT, x + 16 * 5, y - 16 * 2);
+	RenderInViewport(ID_SPRITE_BACKGROUND_BUSH_TOP_LEFT, x + 16 * 6, y - 16 * 2);
+	RenderInViewport(ID_SPRITE_BACKGROUND_BUSH_TOP_RIGHT, x + 16 * 7, y - 16 * 2);
 
-	CSprites::GetInstance()->Get(ID_SPRITE_BACKGROUND_BUSH_TOP_LEFT)->Draw(x + 16 * 4, y - 16 * 3);
-	CSprites::GetInstance()->Get(ID_SPRITE_BACKGROUND_BUSH_TOP_RIGHT)->Draw(x + 16 * 5, y - 16 * 3);
+	RenderInViewport(ID_SPRITE_BACKGROUND_BUSH_TOP_LEFT, x + 16 * 4, y - 16 * 3);
+	RenderInViewport(ID_SPRITE_BACKGROUND_BUSH_TOP_RIGHT, x + 16 * 5, y - 16 * 3);
 
 }
 
 void CBackgroundObject::RenderBushTall() {
-	CSprites::GetInstance()->Get(ID_SPRITE_BACKGROUND_BUSH_MID_LEFT)->Draw(x, y);
-	CSprites::GetInstance()->Get(ID_SPRITE_BACKGROUND_BUSH_CENTER)->Draw(x + 16, y);
-	CSprites::GetInstance()->Get(ID_SPRITE_BACKGROUND_BUSH_CENTER)->Draw(x + 16 * 2, y);
-	CSprites::GetInstance()->Get(ID_SPRITE_BACKGROUND_BUSH_CENTER)->Draw(x + 16 * 3, y);
-	CSprites::GetInstance()->Get(ID_SPRITE_BACKGROUND_BUSH_CENTER)->Draw(x + 16 * 4, y);
-	CSprites::GetInstance()->Get(ID_SPRITE_BACKGROUND_BUSH_MID_RIGHT)->Draw(x + 16 * 5, y);
+	RenderInViewport(ID_SPRITE_BACKGROUND_BUSH_MID_LEFT, x, y);
+	RenderInViewport(ID_SPRITE_BACKGROUND_BUSH_CENTER, x + 16, y);
+	RenderInViewport(ID_SPRITE_BACKGROUND_BUSH_CENTER, x + 16 * 2, y);
+	RenderInViewport(ID_SPRITE_BACKGROUND_BUSH_CENTER, x + 16 * 3, y);
+	RenderInViewport(ID_SPRITE_BACKGROUND_BUSH_CENTER, x + 16 * 4, y);
+	RenderInViewport(ID_SPRITE_BACKGROUND_BUSH_MID_RIGHT, x + 16 * 5, y);
 
-	CSprites::GetInstance()->Get(ID_SPRITE_BACKGROUND_BUSH_MID_LEFT)->Draw(x, y - 16);
-	CSprites::GetInstance()->Get(ID_SPRITE_BACKGROUND_BUSH_CENTER)->Draw(x + 16, y - 16);
-	CSprites::GetInstance()->Get(ID_SPRITE_BACKGROUND_BUSH_CENTER)->Draw(x + 16 * 2, y - 16);
-	CSprites::GetInstance()->Get(ID_SPRITE_BACKGROUND_BUSH_CENTER)->Draw(x + 16 * 3, y - 16);
-	CSprites::GetInstance()->Get(ID_SPRITE_BACKGROUND_BUSH_BOT_RIGHT)->Draw(x + 16 * 4, y - 16);
-	CSprites::GetInstance()->Get(ID_SPRITE_BACKGROUND_BUSH_TOP_RIGHT)->Draw(x + 16 * 5, y - 16);
+	RenderInViewport(ID_SPRITE_BACKGROUND_BUSH_MID_LEFT, x, y - 16);
+	RenderInViewport(ID_SPRITE_BACKGROUND_BUSH_CENTER, x + 16, y - 16);
+	RenderInViewport(ID_SPRITE_BACKGROUND_BUSH_CENTER, x + 16 * 2, y - 16);
+	RenderInViewport(ID_SPRITE_BACKGROUND_BUSH_CENTER, x + 16 * 3, y - 16);
+	RenderInViewport(ID_SPRITE_BACKGROUND_BUSH_BOT_RIGHT, x + 16 * 4, y - 16);
+	RenderInViewport(ID_SPRITE_BACKGROUND_BUSH_TOP_RIGHT, x + 16 * 5, y - 16);
 
-	CSprites::GetInstance()->Get(ID_SPRITE_BACKGROUND_BUSH_MID_LEFT)->Draw(x, y - 16 * 2);
-	CSprites::GetInstance()->Get(ID_SPRITE_BACKGROUND_BUSH_CENTER)->Draw(x + 16, y - 16 * 2);
-	CSprites::GetInstance()->Get(ID_SPRITE_BACKGROUND_BUSH_CENTER)->Draw(x + 16 * 2, y - 16 * 2);
-	CSprites::GetInstance()->Get(ID_SPRITE_BACKGROUND_BUSH_CENTER)->Draw(x + 16 * 3, y - 16 * 2);
-	CSprites::GetInstance()->Get(ID_SPRITE_BACKGROUND_BUSH_MID_RIGHT)->Draw(x + 16 * 4, y - 16 * 2);
+	RenderInViewport(ID_SPRITE_BACKGROUND_BUSH_MID_LEFT, x, y - 16 * 2);
+	RenderInViewport(ID_SPRITE_BACKGROUND_BUSH_CENTER, x + 16, y - 16 * 2);
+	RenderInViewport(ID_SPRITE_BACKGROUND_BUSH_CENTER, x + 16 * 2, y - 16 * 2);
+	RenderInViewport(ID_SPRITE_BACKGROUND_BUSH_CENTER, x + 16 * 3, y - 16 * 2);
+	RenderInViewport(ID_SPRITE_BACKGROUND_BUSH_MID_RIGHT, x + 16 * 4, y - 16 * 2);
 
-	CSprites::GetInstance()->Get(ID_SPRITE_BACKGROUND_BUSH_TOP_LEFT)->Draw(x, y - 16 * 3);
-	CSprites::GetInstance()->Get(ID_SPRITE_BACKGROUND_BUSH_BOT_LEFT)->Draw(x + 16, y - 16 * 3);
-	CSprites::GetInstance()->Get(ID_SPRITE_BACKGROUND_BUSH_CENTER)->Draw(x + 16 * 2, y - 16 * 3);
-	CSprites::GetInstance()->Get(ID_SPRITE_BACKGROUND_BUSH_CENTER)->Draw(x + 16 * 3, y - 16 * 3);
-	CSprites::GetInstance()->Get(ID_SPRITE_BACKGROUND_BUSH_MID_RIGHT)->Draw(x + 16 * 4, y - 16 * 3);
+	RenderInViewport(ID_SPRITE_BACKGROUND_BUSH_TOP_LEFT, x, y - 16 * 3);
+	RenderInViewport(ID_SPRITE_BACKGROUND_BUSH_BOT_LEFT, x + 16, y - 16 * 3);
+	RenderInViewport(ID_SPRITE_BACKGROUND_BUSH_CENTER, x + 16 * 2, y - 16 * 3);
+	RenderInViewport(ID_SPRITE_BACKGROUND_BUSH_CENTER, x + 16 * 3, y - 16 * 3);
+	RenderInViewport(ID_SPRITE_BACKGROUND_BUSH_MID_RIGHT, x + 16 * 4, y - 16 * 3);
 
-	CSprites::GetInstance()->Get(ID_SPRITE_BACKGROUND_BUSH_TOP_LEFT)->Draw(x + 16, y - 16 * 4);
-	CSprites::GetInstance()->Get(ID_SPRITE_BACKGROUND_BUSH_BOT_LEFT)->Draw(x + 16 * 2, y - 16 * 4);
-	CSprites::GetInstance()->Get(ID_SPRITE_BACKGROUND_BUSH_CENTER)->Draw(x + 16 * 3, y - 16 * 4);
-	CSprites::GetInstance()->Get(ID_SPRITE_BACKGROUND_BUSH_MID_RIGHT)->Draw(x + 16 * 4, y - 16 * 4);
+	RenderInViewport(ID_SPRITE_BACKGROUND_BUSH_TOP_LEFT, x + 16, y - 16 * 4);
+	RenderInViewport(ID_SPRITE_BACKGROUND_BUSH_BOT_LEFT, x + 16 * 2, y - 16 * 4);
+	RenderInViewport(ID_SPRITE_BACKGROUND_BUSH_CENTER, x + 16 * 3, y - 16 * 4);
+	RenderInViewport(ID_SPRITE_BACKGROUND_BUSH_MID_RIGHT, x + 16 * 4, y - 16 * 4);
 
-	CSprites::GetInstance()->Get(ID_SPRITE_BACKGROUND_BUSH_MID_LEFT)->Draw(x + 16 * 2, y - 16 * 5); 
-	CSprites::GetInstance()->Get(ID_SPRITE_BACKGROUND_BUSH_CENTER)->Draw(x + 16 * 3, y - 16 * 5);
-	CSprites::GetInstance()->Get(ID_SPRITE_BACKGROUND_BUSH_MID_RIGHT)->Draw(x + 16 * 4, y - 16 * 5); 
+	RenderInViewport(ID_SPRITE_BACKGROUND_BUSH_MID_LEFT, x + 16 * 2, y - 16 * 5); 
+	RenderInViewport(ID_SPRITE_BACKGROUND_BUSH_CENTER, x + 16 * 3, y - 16 * 5);
+	RenderInViewport(ID_SPRITE_BACKGROUND_BUSH_MID_RIGHT, x + 16 * 4, y - 16 * 5); 
 
-	CSprites::GetInstance()->Get(ID_SPRITE_BACKGROUND_BUSH_MID_LEFT)->Draw(x + 16 * 2, y - 16 * 6);
-	CSprites::GetInstance()->Get(ID_SPRITE_BACKGROUND_BUSH_BOT_RIGHT)->Draw(x + 16 * 3, y - 16 * 6);
-	CSprites::GetInstance()->Get(ID_SPRITE_BACKGROUND_BUSH_TOP_RIGHT)->Draw(x + 16 * 4, y - 16 * 6);
+	RenderInViewport(ID_SPRITE_BACKGROUND_BUSH_MID_LEFT, x + 16 * 2, y - 16 * 6);
+	RenderInViewport(ID_SPRITE_BACKGROUND_BUSH_BOT_RIGHT, x + 16 * 3, y - 16 * 6);
+	RenderInViewport(ID_SPRITE_BACKGROUND_BUSH_TOP_RIGHT, x + 16 * 4, y - 16 * 6);
 
-	CSprites::GetInstance()->Get(ID_SPRITE_BACKGROUND_BUSH_TOP_LEFT)->Draw(x + 16 * 2, y - 16 * 7);
-	CSprites::GetInstance()->Get(ID_SPRITE_BACKGROUND_BUSH_TOP_RIGHT)->Draw(x + 16 * 3, y - 16 * 7);
+	RenderInViewport(ID_SPRITE_BACKGROUND_BUSH_TOP_LEFT, x + 16 * 2, y - 16 * 7);
+	RenderInViewport(ID_SPRITE_BACKGROUND_BUSH_TOP_RIGHT, x + 16 * 3, y - 16 * 7);
 
 
 
@@ -197,49 +210,49 @@ void CBackgroundObject::RenderBlackBackground() {
 	for (int i = 0; i < length; i++)
 	{
 		for (int j = 0; j < 26; j++) {
-			CSprites::GetInstance()->Get(ID_SPRITE_BLACK_BACKGROUND)->Draw(x + 16 * i, y - 16 * j);
+			RenderInViewport(ID_SPRITE_BLACK_BACKGROUND, x + 16 * i, y - 16 * j);
 		}
 	}
 }
 
 void CBackgroundObject::RenderBlackBackgroundBoundary() {
 	for (int i = 0; i <length; i++) {
-		CSprites::GetInstance()->Get(ID_SPRITE_BLACK_BACKGROUND_BOUNDARY)->Draw(x, y - 16 * i);
+		RenderInViewport(ID_SPRITE_BLACK_BACKGROUND_BOUNDARY, x, y - 16 * i);
 	}
 }
 
 void CBackgroundObject::RenderBlackBushSmall() {
-	CSprites::GetInstance()->Get(ID_SPRITE_BACKGROUND_BLACK_BUSH_TOP_LEFT)->Draw(x, y);
-	CSprites::GetInstance()->Get(ID_SPRITE_BACKGROUND_BLACK_BUSH_BOT_LEFT)->Draw(x + 16, y);
-	CSprites::GetInstance()->Get(ID_SPRITE_BACKGROUND_BLACK_BUSH_MID_RIGHT)->Draw(x + 16 * 2, y);
+	RenderInViewport(ID_SPRITE_BACKGROUND_BLACK_BUSH_TOP_LEFT, x, y);
+	RenderInViewport(ID_SPRITE_BACKGROUND_BLACK_BUSH_BOT_LEFT, x + 16, y);
+	RenderInViewport(ID_SPRITE_BACKGROUND_BLACK_BUSH_MID_RIGHT, x + 16 * 2, y);
 
-	CSprites::GetInstance()->Get(ID_SPRITE_BACKGROUND_BLACK_BUSH_MID_LEFT)->Draw(x + 16, y - 16);
-	CSprites::GetInstance()->Get(ID_SPRITE_BACKGROUND_BLACK_BUSH_MID_RIGHT)->Draw(x + 16 * 2, y - 16);
+	RenderInViewport(ID_SPRITE_BACKGROUND_BLACK_BUSH_MID_LEFT, x + 16, y - 16);
+	RenderInViewport(ID_SPRITE_BACKGROUND_BLACK_BUSH_MID_RIGHT, x + 16 * 2, y - 16);
 
-	CSprites::GetInstance()->Get(ID_SPRITE_BACKGROUND_BLACK_BUSH_TOP_LEFT)->Draw(x + 16, y - 16 * 2);
-	CSprites::GetInstance()->Get(ID_SPRITE_BACKGROUND_BLACK_BUSH_TOP_RIGHT)->Draw(x + 16 * 2, y - 16 * 2);
+	RenderInViewport(ID_SPRITE_BACKGROUND_BLACK_BUSH_TOP_LEFT, x + 16, y - 16 * 2);
+	RenderInViewport(ID_SPRITE_BACKGROUND_BLACK_BUSH_TOP_RIGHT, x + 16 * 2, y - 16 * 2);
 }
 
 void CBackgroundObject::RenderBlackBushMedium() {
-	CSprites::GetInstance()->Get(ID_SPRITE_BACKGROUND_BLACK_BUSH_TOP_LEFT)->Draw(x, y);
-	CSprites::GetInstance()->Get(ID_SPRITE_BACKGROUND_BLACK_BUSH_BOT_LEFT)->Draw(x + 16, y);
-	CSprites::GetInstance()->Get(ID_SPRITE_BACKGROUND_BLACK_BUSH_MID_RIGHT)->Draw(x + 16 * 4, y);
+	RenderInViewport(ID_SPRITE_BACKGROUND_BLACK_BUSH_TOP_LEFT, x, y);
+	RenderInViewport(ID_SPRITE_BACKGROUND_BLACK_BUSH_BOT_LEFT, x + 16, y);
+	RenderInViewport(ID_SPRITE_BACKGROUND_BLACK_BUSH_MID_RIGHT, x + 16 * 4, y);
 
-	CSprites::GetInstance()->Get(ID_SPRITE_BACKGROUND_BLACK_BUSH_MID_LEFT)->Draw(x + 16, y - 16);
-	CSprites::GetInstance()->Get(ID_SPRITE_BACKGROUND_BLACK_BUSH_BOT_RIGHT)->Draw(x + 16 * 3, y - 16);
-	CSprites::GetInstance()->Get(ID_SPRITE_BACKGROUND_BLACK_BUSH_TOP_RIGHT)->Draw(x + 16 * 4, y - 16);
+	RenderInViewport(ID_SPRITE_BACKGROUND_BLACK_BUSH_MID_LEFT, x + 16, y - 16);
+	RenderInViewport(ID_SPRITE_BACKGROUND_BLACK_BUSH_BOT_RIGHT, x + 16 * 3, y - 16);
+	RenderInViewport(ID_SPRITE_BACKGROUND_BLACK_BUSH_TOP_RIGHT, x + 16 * 4, y - 16);
 
-	CSprites::GetInstance()->Get(ID_SPRITE_BACKGROUND_BLACK_BUSH_MID_LEFT)->Draw(x + 16, y - 16 * 2);
-	CSprites::GetInstance()->Get(ID_SPRITE_BACKGROUND_BLACK_BUSH_MID_RIGHT)->Draw(x + 16 * 3, y - 16 * 2);
+	RenderInViewport(ID_SPRITE_BACKGROUND_BLACK_BUSH_MID_LEFT, x + 16, y - 16 * 2);
+	RenderInViewport(ID_SPRITE_BACKGROUND_BLACK_BUSH_MID_RIGHT, x + 16 * 3, y - 16 * 2);
 
-	CSprites::GetInstance()->Get(ID_SPRITE_BACKGROUND_BLACK_BUSH_MID_LEFT)->Draw(x + 16, y - 16 * 3);
-	CSprites::GetInstance()->Get(ID_SPRITE_BACKGROUND_BLACK_BUSH_BOT_RIGHT)->Draw(x + 16 * 2, y - 16 * 3);
-	CSprites::GetInstance()->Get(ID_SPRITE_BACKGROUND_BLACK_BUSH_TOP_RIGHT)->Draw(x + 16 * 3, y - 16 * 3);
+	RenderInViewport(ID_SPRITE_BACKGROUND_BLACK_BUSH_MID_LEFT, x + 16, y - 16 * 3);
+	RenderInViewport(ID_SPRITE_BACKGROUND_BLACK_BUSH_BOT_RIGHT, x + 16 * 2, y - 16 * 3);
+	RenderInViewport(ID_SPRITE_BACKGROUND_BLACK_BUSH_TOP_RIGHT, x + 16 * 3, y - 16 * 3);
 
-	CSprites::GetInstance()->Get(ID_SPRITE_BACKGROUND_BLACK_BUSH_MID_LEFT)->Draw(x + 16, y - 16 * 4);
-	CSprites::GetInstance()->Get(ID_SPRITE_BACKGROUND_BLACK_BUSH_MID_RIGHT)->Draw(x + 16 * 2, y - 16 * 4);
+	RenderInViewport(ID_SPRITE_BACKGROUND_BLACK_BUSH_MID_LEFT, x + 16, y - 16 * 4);
+	RenderInViewport(ID_SPRITE_BACKGROUND_BLACK_BUSH_MID_RIGHT, x + 16 * 2, y - 16 * 4);
 
-	CSprites::GetInstance()->Get(ID_SPRITE_BACKGROUND_BLACK_BUSH_TOP_LEFT)->Draw(x + 16, y - 16 * 5);
-	CSprites::GetInstance()->Get(ID_SPRITE_BACKGROUND_BLACK_BUSH_TOP_RIGHT)->Draw(x + 16 * 2, y - 16 * 5);
+	RenderInViewport(ID_SPRITE_BACKGROUND_BLACK_BUSH_TOP_LEFT, x + 16, y - 16 * 5);
+	RenderInViewport(ID_SPRITE_BACKGROUND_BLACK_BUSH_TOP_RIGHT, x + 16 * 2, y - 16 * 5);
 
 }
