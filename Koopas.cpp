@@ -219,7 +219,7 @@ void CKoopas::Render()
 	if(isUpSideDown)
 	{
 		rotate = 180;
-		rotate = rotate * 3.14 / 180;
+		rotate = rotate * 3.14f / 180;
 	}
 
 	CAnimations::GetInstance()->Get(aniId)->Render(x, y, rotate);
