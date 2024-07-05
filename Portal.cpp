@@ -5,37 +5,19 @@
 #include "debug.h"
 
 CPortal::CPortal(float x, float y, float width, float height, 
-				bool isMainPortal, int scene_id, int keyCode, 
-				int dir_x, int dir_y,
+				int scene_id, int keyCode, 
 				bool haveStartPos, float start_x, float start_y
 ) : CGameObject(x, y)
 {
 	this->width = width;
 	this->height = height;
 
-	this->isMainPortal = isMainPortal;
 	this->scene_id = scene_id;
 	this->keyCode = keyCode;
 
 	this->haveStartPos = haveStartPos;
 	this->start_x = start_x;
 	this->start_y = start_y;
-
-	this->dir_x = dir_x;
-	this->dir_y = dir_y;
-
-	if (isMainPortal) {
-		CPortal* leftPseudoPortal = new CPortal(x - width * 2.5f, y, width / 2, height * 2, false);
-		CPortal* rightPseudoPortal = new CPortal(x + width * 2.5f, y, width / 2, height * 2, false);
-		CPortal* topPseudoPortal = new CPortal(x, y - height * 2.5f, width * 2, height / 2, false);
-		CPortal* bottomPseudoPortal = new CPortal(x, y + height * 2.5f, width * 2, height / 2, false);
-
-		CGame::GetInstance()->GetCurrentScene()->AddObject(leftPseudoPortal, OBJECT_TYPE_PORTAL);
-		CGame::GetInstance()->GetCurrentScene()->AddObject(rightPseudoPortal, OBJECT_TYPE_PORTAL);
-		CGame::GetInstance()->GetCurrentScene()->AddObject(topPseudoPortal, OBJECT_TYPE_PORTAL);
-		CGame::GetInstance()->GetCurrentScene()->AddObject(bottomPseudoPortal, OBJECT_TYPE_PORTAL);
-	}
-
 }
 
 void CPortal::RenderBoundingBox()
@@ -61,7 +43,7 @@ void CPortal::RenderBoundingBox()
 
 void CPortal::Render()
 {
-	//RenderBoundingBox();
+	RenderBoundingBox();
 }
 
 void CPortal::GetBoundingBox(float &l, float &t, float &r, float &b)

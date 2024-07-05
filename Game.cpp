@@ -555,6 +555,13 @@ void CGame::SwitchScene()
 		havedefaultTimeLimit = false;
 	}
 
+	if (haveDefaultState) {
+		CGameObject* player = s->GetPlayer();
+		s->FreezeScene(freezeTime);
+		player->SetState(defaultState);
+		haveDefaultState = false;
+	}
+
 	this->SetKeyHandler(s->GetKeyEventHandler());
 }
 

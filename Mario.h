@@ -25,7 +25,7 @@
 #define MARIO_QUICK_JUMP_SPEED_Y	0.25f
 #define MARIO_JUMP_SPEED_Y			0.55f
 #define MARIO_JUMP_RUN_SPEED_Y		0.65f
-#define MARIO_FLY_SPEED_Y		0.4f
+#define MARIO_FLY_SPEED_Y		0.3f
 
 #define MARIO_WHIP_RANGE 12.0f
 
@@ -68,6 +68,10 @@
 #define MARIO_STATE_WHIP			900
 #define MARIO_STATE_FLOAT			901
 #define MARIO_STATE_FLY				902
+
+#define MARIO_STATE_IN_TUBE				1000
+#define MARIO_STATE_OUT_TUBE			1001
+
 
 #pragma endregion
 
@@ -133,6 +137,8 @@ class CMario : public CGameObject
 	CKoopas* koopasPickedUp = nullptr;
 
 	CPortal* portalCanUse = nullptr;
+	int portalDirectionX = 0;
+	int portalDirectionY = 0;
 
 	CMarioTail* rightTail = nullptr;
 	CMarioTail* leftTail = nullptr;

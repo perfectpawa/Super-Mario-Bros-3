@@ -160,6 +160,9 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		player = new CMario(x, y);
 
 		DebugOut(L"[INFO] Player object has been created!\n");
+
+		CamPosFollowPlayer();
+
 		break;
 	}
 	case OBJECT_TYPE_GOOMBA: {
@@ -351,23 +354,20 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	}
 	case OBJECT_TYPE_PORTAL:
 	{
-		// id	x	y	width	height	scene_id	keyCode	dir_x	dir_y	start_x	start_y	
+		// id	x	y	width	height	scene_id	keyCode	start_x	start_y	
 		float width = (float)atof(tokens[3].c_str());
 		float height = (float)atof(tokens[4].c_str());
 
 		int scene_id = atoi(tokens[5].c_str());
 		int keyCode = atoi(tokens[6].c_str());
 
-		int dir_x = atoi(tokens[7].c_str());
-		int dir_y = atoi(tokens[8].c_str());
-
-		if (tokens.size() == 11) {
-			float start_x = (float)atof(tokens[9].c_str());
-			float start_y = (float)atof(tokens[10].c_str());
-			terrainObj = new CPortal(x, y, width, height, true, scene_id, keyCode, dir_x, dir_y, true, start_x, start_y);
+		if (tokens.size() == 9) {
+			float start_x = (float)atof(tokens[7].c_str());
+			float start_y = (float)atof(tokens[8].c_str());
+			terrainObj = new CPortal(x, y, width, height, scene_id, keyCode, true, start_x, start_y);
 		}
 		else {
-			terrainObj = new CPortal(x, y, width, height, true, scene_id, keyCode, dir_x, dir_y);
+			terrainObj = new CPortal(x, y, width, height, scene_id, keyCode);
 		}
 		terrainObjs.push_back(terrainObj);
 
@@ -552,7 +552,6 @@ void CPlayScene::Load()
 	f.close();
 
 	DebugOut(L"[INFO] Done loading scene  %s\n", sceneFilePath);
-
 }
 
 void CPlayScene::LoadAssets(LPCWSTR assetFile)
@@ -788,6 +787,7 @@ void CPlayScene::UpdateOnFreeze(DWORD dt) {
 #pragma endregion
 
 #pragma region Render
+
 void CPlayScene::Render()
 {
 	if (isOnOverworldMap) {
@@ -1154,6 +1154,7 @@ void CPlayScene::FreezeScene(int freezeTime) {
 
 void CPlayScene::SetDefaultPos(float x, float y) {
 	this->player->SetPosition(x, y);
+	CamPosFollowPlayer();
 }
 
 #pragma endregion

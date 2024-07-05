@@ -81,7 +81,6 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	MovingBehavior(dt);
 	JumpingBehavior();
 
-	if (koopasPickedUp != NULL) PickUpBehavior();
 
 	if (level == MARIO_LEVEL_RACOON) RacoonBehavior();
 	wantFloat = false;
@@ -91,6 +90,8 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	TimeChecking();
 
 	CCollision::GetInstance()->Process(this, dt, coObjects);
+	
+	if (koopasPickedUp != NULL) PickUpBehavior();
 
 	float rightTail_vx = vx;
 	float leftTail_vx = vx;
@@ -273,6 +274,8 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		vx = 0;
 	}
 
+	portalCanUse = NULL;
+
 	if (dynamic_cast<CGoomba*>(e->obj))
 		OnCollisionWithGoomba(e);
 	else if (dynamic_cast<CKoopas*>(e->obj))
@@ -385,13 +388,17 @@ void CMario::OnCollisionWithCoin(LPCOLLISIONEVENT e)
 void CMario::OnCollisionWithPortal(LPCOLLISIONEVENT e)
 {
 	CPortal* portal = dynamic_cast<CPortal*>(e->obj);
-	if (portal->IsMainPortal())
+	portalCanUse = portal;
+
+	//check coli direction
+	if (e->nx != 0)
 	{
-		portalCanUse = portal;
+		portalDirectionX = (e->nx > 0) ? -1 : 1;
 	}
-	else
+
+	if (e->ny != 0)
 	{
-		portalCanUse = nullptr;
+		portalDirectionY = (e->ny > 0) ? -1 : 1;
 	}
 }
 
@@ -821,11 +828,10 @@ void CMario::UpdateOnFreeze(DWORD dt) {
 		y += vy * dt;
 	}
 
-	if (switch_delay_start != -1) {
-		int dir_x, dir_y;
-		portalCanUse->GetDirection(dir_x, dir_y);
-		x += 0.05f * dir_x * dt;
-		y += 0.05f * dir_y * dt;
+	if (state == MARIO_STATE_IN_TUBE || state == MARIO_STATE_OUT_TUBE) {
+		int dir = 1;
+		if (state == MARIO_STATE_OUT_TUBE) dir = -1;
+		y += 0.05f * dt * dir;
 	}
 
 	if (switch_delay_start != -1 && GetTickCount64() - switch_delay_start >= 500) {
@@ -836,6 +842,11 @@ void CMario::UpdateOnFreeze(DWORD dt) {
 }
 
 void CMario::RenderOnFreeze() {
+
+	if (state == MARIO_STATE_IN_TUBE || state == MARIO_STATE_OUT_TUBE) {
+		freezeId = ID_ANI_MARIO_SMALL_STRAIGHT + (level - 1) * 100;
+	}
+
 	CAnimations::GetInstance()->Get(freezeId)->Render(x, y);
 }
 
@@ -848,7 +859,13 @@ void CMario::StartSwitchingScene() {
 
 	CGame::GetInstance()->InitDefauleTimeLimit(time);
 
-	freezeId = ID_ANI_MARIO_SMALL_STRAIGHT;
-	if(level == MARIO_LEVEL_BIG) freezeId += 100;
-	if(level == MARIO_LEVEL_RACOON) freezeId += 200;
+	int first_state = MARIO_STATE_IN_TUBE;
+	if(portalDirectionY < 0) first_state = MARIO_STATE_OUT_TUBE;
+
+	SetState(first_state);
+
+	float freezeTime = 500;
+	if (first_state == MARIO_STATE_OUT_TUBE) freezeTime = 500;
+
+	CGame::GetInstance()->InitDefauleState(first_state, freezeTime);
 }

@@ -56,6 +56,9 @@ protected:
 	ULONGLONG freezeTime = -1;
 	ULONGLONG freeze_start = -1;
 
+	
+	bool firstRender = false;
+
 
 	void _ParseSection_SPRITES(string line);
 	void _ParseSection_ANIMATIONS(string line);
