@@ -74,6 +74,10 @@ class CGame
 	int defaultState = 0;
 	int freezeTime = 0;
 
+	bool haveEndPointToGo = false;
+	float end_x = 0.0f;
+	float end_y = 0.0f;
+
 	int current_save_file_id;
 
 	D3DXCOLOR bgColor = D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.0f);
@@ -141,6 +145,7 @@ public:
 	void InitDefaulePos(float start_x, float start_y) { this->start_x = start_x; this->start_y = start_y; haveDefaultPos = true; }
 	void InitDefauleTimeLimit(float defaultTimeLimit) { this->defaultTimeLimit = defaultTimeLimit; havedefaultTimeLimit = true; }
 	void InitDefauleState(int defaultState, int freezeTime) { this->defaultState = defaultState; this->freezeTime = freezeTime; haveDefaultState = true; }
+	void InitEndPointToGo(float end_x, float end_y) { this->end_x = end_x; this->end_y = end_y; haveEndPointToGo = true; }
 
 	void LoadSaveFile();
 

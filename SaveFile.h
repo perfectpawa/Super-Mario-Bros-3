@@ -52,6 +52,9 @@ public:
 
 	void SetCard(int card);
 
+	void SetOverworldPosition(float x, float y) { this->overworld_x = x; this->overworld_y = y; }
+	void GetOverworldPosition(float& x, float& y) { x = overworld_x; y = overworld_y; }
+
 
 };
 

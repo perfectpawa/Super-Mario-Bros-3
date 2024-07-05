@@ -99,11 +99,11 @@ void SaveFile::Load(int save_file_id)
 		}
 		else if (tokens[0] == "overworld_x")
 		{
-			overworld_x = atoi(tokens[1].c_str());
+			overworld_x = (float)atof(tokens[1].c_str());
 		}
 		else if (tokens[0] == "overworld_y")
 		{
-			overworld_y = atoi(tokens[1].c_str());
+			overworld_y = (float)atof(tokens[1].c_str());
 		}
 
 

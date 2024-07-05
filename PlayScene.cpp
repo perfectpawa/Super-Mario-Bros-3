@@ -446,6 +446,9 @@ void CPlayScene::_ParseSection_OW_OBJECTS(string line) {
 			DebugOut(L"[ERROR] MARIO object was created before!\n");
 			return;
 		}
+
+		SaveFile::GetInstance()->GetOverworldPosition(x, y);
+
 		OW_player = new COWMario(x, y, true);
 
 		DebugOut(L"[INFO] Player object has been created!\n");

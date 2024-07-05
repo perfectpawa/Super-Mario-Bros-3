@@ -7,6 +7,7 @@
 #include "Texture.h"
 #include "Animations.h"
 #include "PlayScene.h"
+#include "OW_Mario.h"
 
 CGame * CGame::__instance = NULL;
 
@@ -562,6 +563,15 @@ void CGame::SwitchScene()
 		s->FreezeScene(freezeTime);
 		player->SetState(defaultState);
 		haveDefaultState = false;
+	}
+
+	if (haveEndPointToGo) {
+		s->FreezeScene(500);
+
+		COWGameObject* player = s->GetOWPlayer();
+		COWMario* mario = dynamic_cast<COWMario*>(player);
+		mario->SetTravelPoint(end_x, end_y);
+		haveEndPointToGo = false;
 	}
 
 	this->SetKeyHandler(s->GetKeyEventHandler());

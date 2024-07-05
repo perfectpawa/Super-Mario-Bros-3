@@ -16,6 +16,7 @@ protected:
 	int moveVertical;
 	
 	bool isMoving;
+	bool isTravel;
 
 	bool wantMove;
 
@@ -31,6 +32,8 @@ public:
 
 	void MoveHorizontal(int direction) { moveHorizontal = direction; moveVertical = 0; wantMove = true; }
 	void MoveVertical(int direction) { moveVertical = direction; moveHorizontal = 0; wantMove = true; }
+
+	void SetTravelPoint(float x, float y) { end_x = x; end_y = y; isTravel = true; }
 
 	void GetInLevel();
 };

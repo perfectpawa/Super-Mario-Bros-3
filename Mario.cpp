@@ -846,6 +846,7 @@ void CMario::UpdateOnFreeze(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 
 		if (GetTickCount64() - die_start > MARIO_DIE_TIME) {
 			CGame::GetInstance()->InitiateSwitchScene(1);
+			CGame::GetInstance()->InitEndPointToGo(16, 32);
 			SaveFile::GetInstance()->SetMarioLevel(MARIO_LEVEL_SMALL);
 			SaveFile::GetInstance()->AddLife(-1);
 			SaveFile::GetInstance()->Save();

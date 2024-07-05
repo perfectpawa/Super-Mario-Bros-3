@@ -12,6 +12,7 @@ COWMario::COWMario(float x, float y, bool canGoIn) : COWGameObject(x, y, canGoIn
 	
 	isMoving = false;
 	wantMove = false;
+	isTravel = false;
 
 	moveHorizontal = 0;
 	moveVertical = 0;
@@ -23,6 +24,29 @@ COWMario::COWMario(float x, float y, bool canGoIn) : COWGameObject(x, y, canGoIn
 
 void COWMario::Update(DWORD dt, vector<COWGameObject*>* coObjects)
 {
+	if(isTravel)
+	{
+		//check dir beween start and end
+		float dir_x = end_x - start_x;
+		float dir_y = end_y - start_y;
+		//normalize dir
+		float len = sqrt(dir_x * dir_x + dir_y * dir_y);
+		dir_x /= len;
+		dir_y /= len;
+
+		x += dir_x * MOVE_SPEED * dt;
+		y += dir_y * MOVE_SPEED * dt;
+
+		if(round(x) == round(end_x) && round(y) == round(end_y))
+		{
+			x = end_x;
+			y = end_y;
+			isTravel = false;
+		}
+
+		return;
+	}
+
 	if(isMoving)
 	{
 		Moving(dt);
@@ -134,6 +158,8 @@ void COWMario::GetInLevel()
 {
 	if (isMoving) return;
 	if (portalId == -1) return;
+
+	SaveFile::GetInstance()->SetOverworldPosition(x, y);
 
 	CGame::GetInstance()->InitiateSwitchScene(portalId);
 
