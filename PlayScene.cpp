@@ -458,12 +458,19 @@ void CPlayScene::_ParseSection_OW_OBJECTS(string line) {
 		break;
 	}
 	case OW_OBJ_TYPE_PATH: {
-		bool isGoIn = (atoi(tokens[3].c_str()) == 1);
+		bool prePortal = atoi(tokens[3].c_str());
 		bool isVertical = (atoi(tokens[4].c_str()) == 1);
 		bool haveCoin = (atoi(tokens[5].c_str()) == 1);
 		bool haveTurn = (atoi(tokens[6].c_str()) == 1);
+
+		bool isGoIn = false;
+		if(prePortal < overworld_current_level) isGoIn = true;
+
 		COWPath* path = new COWPath(x, y, isGoIn, isVertical, haveCoin, haveTurn);
 		OW_pathObjs.push_back(path);
+
+
+
 		break;
 	}
 	case OW_OBJ_TYPE_TERRAIN: {
@@ -480,8 +487,11 @@ void CPlayScene::_ParseSection_OW_OBJECTS(string line) {
 		break;
 	}
 	case OW_OBJ_TYPE_PORTAL: {
-		bool isGoIn = (atoi(tokens[3].c_str()) == 1);
-		int portalId = atoi(tokens[4].c_str());
+		int portalId = atoi(tokens[3].c_str());
+
+		bool isGoIn = false;
+		if(portalId <= overworld_current_level) isGoIn = true;
+
 		COWPortal* portal = new COWPortal(x, y, isGoIn, portalId);
 		OW_portalObjs.push_back(portal);
 		break;
@@ -520,6 +530,9 @@ void CPlayScene::Load()
 			isOnOverworldMap = true;
 			CGame::GetInstance()->SetCamPos(-16, -16);
 			key_handler = new COverworldKeyHandler(this);
+
+			overworld_current_level = SaveFile::GetInstance()->GetLevel();
+			DebugOut(L"[INFO] Overworld current level: %d\n", overworld_current_level);
 			continue;
 		};
 		if (line == "[ASSETS]") { section = SCENE_SECTION_ASSETS; continue; };

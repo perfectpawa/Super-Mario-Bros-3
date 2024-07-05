@@ -11,11 +11,14 @@ class SaveFile {
 	int card_slot_1;
 	int card_slot_2;
 	int card_slot_3;
+
+	float overworld_x;
+	float overworld_y;
 public:
 	SaveFile();
 	~SaveFile();
 	static SaveFile* GetInstance();
-	void Save(int save_file_id);
+	void Save(int save_file_id = -1);
 	void Load(int save_file_id);
 
 	void SetMarioLevel(int mario_level) { this->mario_level = mario_level; }
@@ -23,6 +26,7 @@ public:
 
 	void SetLevel(int level) { this->level = level; }
 	int GetLevel() { return level; }
+	void AddLevel(int level) { this->level += level; }
 
 	void SetScore(int score) { this->score = score; }
 	int GetScore() { return score; }
@@ -30,6 +34,7 @@ public:
 
 	void SetLife(int life) { this->life = life; }
 	int GetLife() { return life; }
+	void AddLife(int life) { this->life += life; }
 
 	void SetCoin(int coin) { this->coin = coin; }
 	void AddCoin(int coin) { this->coin += coin; }

@@ -37,6 +37,8 @@ protected:
 	vector<LPOWGAMEOBJECT> OW_portalObjs;
 	vector<LPOWGAMEOBJECT> OW_pointObjs;
 
+	int overworld_current_level = 0;
+
 	vector<CBackgroundObject*> backgroundObjs;
 
 	CHUD* mainHUD;

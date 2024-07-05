@@ -846,6 +846,9 @@ void CMario::UpdateOnFreeze(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 
 		if (GetTickCount64() - die_start > MARIO_DIE_TIME) {
 			CGame::GetInstance()->InitiateSwitchScene(1);
+			SaveFile::GetInstance()->SetMarioLevel(MARIO_LEVEL_SMALL);
+			SaveFile::GetInstance()->AddLife(-1);
+			SaveFile::GetInstance()->Save();
 		}
 	}
 
@@ -866,6 +869,9 @@ void CMario::UpdateOnFreeze(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 
 		if (GetTickCount64() - clear_level_start > MARIO_CLEAR_LEVEL_TIME) {
 			CGame::GetInstance()->InitiateSwitchScene(1);
+
+			SaveFile::GetInstance()->AddLevel(1);
+			SaveFile::GetInstance()->Save();
 		}
 	}
 
