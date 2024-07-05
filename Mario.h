@@ -31,7 +31,7 @@
 
 #define MARIO_MAX_Y 300.0f
 
-#define MARIO_VIEW_PORT	240
+#define MARIO_VIEW_PORT	528
 
 #define MARIO_UNTOUCHABLE_TIME 2500
 #define MARIO_KICK_TIME 100
@@ -39,6 +39,8 @@
 #define MARIO_FLOAT_TIME 300
 
 #define MARIO_DIE_TIME 3000
+
+#define MARIO_CLEAR_LEVEL_TIME 3000
 
 
 #define MARIO_GEAR_UP_TIME 200
@@ -79,6 +81,8 @@
 #define MARIO_STATE_IN_TUBE				1000
 #define MARIO_STATE_OUT_TUBE			1001
 
+#define MARIO_STATE_COMPLETE_LEVEL		9999
+
 
 #pragma endregion
 
@@ -99,6 +103,8 @@
 
 #define MARIO_RACOON_BBOX_WIDTH  18
 
+
+class CCardBlock;
 
 
 class CMario : public CGameObject
@@ -138,6 +144,7 @@ class CMario : public CGameObject
 
 	ULONGLONG switch_delay_start;
 	ULONGLONG die_start;
+	ULONGLONG clear_level_start = -1;
 
 	BOOLEAN isOnPlatform;
 	
@@ -150,6 +157,8 @@ class CMario : public CGameObject
 
 	CMarioTail* rightTail = nullptr;
 	CMarioTail* leftTail = nullptr;
+
+	CCardBlock* cardBlock = nullptr;
 
 	int freezeId = -1;
 
@@ -195,7 +204,7 @@ public:
 	void SetState(int state);
 	void GetState(int& s) { s = this->state; }
 
-	void UpdateOnFreeze(DWORD dt);
+	void UpdateOnFreeze(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	void RenderOnFreeze();
 
 	int IsCollidable()
@@ -241,6 +250,8 @@ public:
 	CPortal* GetPortalCanUse() { return portalCanUse; }
 
 	void StartSwitchingScene();
+
+	void TakeCard();
 
 	bool isInMarioViewPort(float x) {
 		return (abs(x - this->x) < MARIO_VIEW_PORT / 2);

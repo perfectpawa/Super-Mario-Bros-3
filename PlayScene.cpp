@@ -783,7 +783,18 @@ void CPlayScene::Update_OW(DWORD dt) {
 }
 
 void CPlayScene::UpdateOnFreeze(DWORD dt) {
-	player->UpdateOnFreeze(dt);
+	vector<LPGAMEOBJECT> coObjects;
+
+	//push back all objects in terrainObjs to coObjects
+	for (int i = 0; i < terrainObjs.size(); i++)
+		coObjects.push_back(terrainObjs[i]);
+
+	CMario* mario = dynamic_cast<CMario*>(player);
+
+	mario->UpdateOnFreeze(dt, &coObjects);
+
+	CamPosFollowPlayer();
+	UpdateUIPosFixedCam();
 }
 
 #pragma endregion

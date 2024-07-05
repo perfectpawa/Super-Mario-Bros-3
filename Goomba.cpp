@@ -1,4 +1,5 @@
 #include "Goomba.h"
+#include "ScoreEffect.h"
 
 CGoomba::CGoomba(float x, float y):CGameObject(x, y)
 {
@@ -71,7 +72,14 @@ void CGoomba::Render()
 		aniId = ID_ANI_GOOMBA_DIE;
 	}
 
-	CAnimations::GetInstance()->Get(aniId)->Render(x,y);
+	float rotate = 0;
+	if (isKnockOut) {
+		rotate = 180;
+		//change rotate in degree to radian
+		rotate = rotate * 3.14 / 180;
+	}
+
+	CAnimations::GetInstance()->Get(aniId)->Render(x,y, rotate);
 	//RenderBoundingBox();
 }
 
@@ -90,11 +98,26 @@ void CGoomba::SetState(int state)
 		case GOOMBA_STATE_WALKING: 
 			vx = -GOOMBA_WALKING_SPEED;
 			break;
+		case GOOMBA_STATE_KNOCKOUT:
+			die_start = GetTickCount64();
+			ay = GOOMBA_GRAVITY;
+			vy -= GOOMBA_GRAVITY * 200;
+			vx = 0;
+			isKnockOut = true;
+			break;
 	}
 }
 
 
-void CGoomba::TakeDamage()
+void CGoomba::TakeDamage(bool isKnockOut)
 {
-	SetState(GOOMBA_STATE_DIE);
+	if (isKnockOut) {
+		SetState(GOOMBA_STATE_KNOCKOUT);
+	}
+	else {
+		SetState(GOOMBA_STATE_DIE);
+	}
+
+	CEffectObject* effect = new CScoreEffect(x, y, 100);
+	CGame::GetInstance()->GetCurrentScene()->AddEffect(effect);
 }

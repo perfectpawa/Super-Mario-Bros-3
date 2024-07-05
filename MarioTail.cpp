@@ -5,6 +5,7 @@
 #include "Koopas.h"
 #include "Brick.h"
 #include "BrickCoin.h"
+#include "CollisionEffect.h"
 
 #include "debug.h"
 
@@ -25,17 +26,37 @@ void CMarioTail::OnCollisionWith(LPCOLLISIONEVENT e)
 	if(dynamic_cast<CGoomba*>(e->obj))
 	{
 		CGoomba* goomba = dynamic_cast<CGoomba*>(e->obj);
-		goomba->TakeDamage();
+
+		if (goomba->GetState() == GOOMBA_STATE_WALKING) {
+			goomba->TakeDamage(true);
+			float x, y;
+			goomba->GetPosition(x, y);
+			CEffectObject* effect = new CCollisionEffect(x, y);
+			CGame::GetInstance()->GetCurrentScene()->AddEffect(effect);
+		}
 	}
 	else if(dynamic_cast<CParaGoomba*>(e->obj))
 	{
 		CParaGoomba* goomba = dynamic_cast<CParaGoomba*>(e->obj);
-		goomba->TakeDamage();
+
+		if (goomba->GetState() != GOOMBA_STATE_DIE &&
+			goomba->GetState() != GOOMBA_STATE_KNOCKOUT
+			) {
+			goomba->TakeDamage(true);
+			float x, y;
+			goomba->GetPosition(x, y);
+			CEffectObject* effect = new CCollisionEffect(x, y);
+			CGame::GetInstance()->GetCurrentScene()->AddEffect(effect);
+		}
 	}
 	if(dynamic_cast<CKoopas*>(e->obj))
 	{
 		CKoopas* koopas = dynamic_cast<CKoopas*>(e->obj);
-		koopas->TakeDamage();
+		koopas->KnockUp();
+		float x, y;
+		koopas->GetPosition(x, y);
+		CEffectObject* effect = new CCollisionEffect(x, y);
+		CGame::GetInstance()->GetCurrentScene()->AddEffect(effect);
 	}
 
 	if(dynamic_cast<CBrickCoin*>(e->obj))

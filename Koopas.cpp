@@ -3,6 +3,8 @@
 #include "FallCheckingObject.h"
 #include "QuestionBlock.h"
 #include "Brick.h"
+#include "ScoreEffect.h"
+#include "CollisionEffect.h"
 
 CKoopas::CKoopas(float x, float y, int type) :CGameObject(x, y)
 {
@@ -82,7 +84,11 @@ void CKoopas::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 
 	if (goomba->GetState() != GOOMBA_STATE_DIE)
 	{
-		goomba->TakeDamage();
+		goomba->TakeDamage(true);
+		float x, y;
+		goomba->GetPosition(x, y);
+		CEffectObject* effect = new CCollisionEffect(x, y);
+		CGame::GetInstance()->GetCurrentScene()->AddEffect(effect);
 	}
 }
 
@@ -93,7 +99,7 @@ void CKoopas::OnCollisionWithKoopas(LPCOLLISIONEVENT e)
 
 	if (koopas->GetState() != KOOPAS_STATE_SLIDE)
 	{
-		koopas->TakeDamage();
+		koopas->KnockDown();
 	}
 }
 
@@ -122,6 +128,18 @@ void CKoopas::OnCollisionWithBrick(LPCOLLISIONEVENT e)
 
 void CKoopas::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
+	if (die_start != -1 && GetTickCount64() - die_start > KOOPAS_DIE_TIMEOUT)
+	{
+		this->Delete();
+	}
+
+	if (isKnockDown) {
+		vy += ay * dt;
+		x += vx * dt;
+		y += vy * dt;
+		return;
+	}
+
 	if (type == KOOPAS_TYPE_WING) {
 		if(vy == 0)
 			vy = -KOOPAS_JUMP_SPEED;
@@ -197,7 +215,14 @@ void CKoopas::Render()
 			aniId = ID_ANI_WING_GREEN_KOOPAS_FLIP_WALKING;
 	}
 
-	CAnimations::GetInstance()->Get(aniId)->Render(x, y);
+	float rotate = 0;
+	if(isUpSideDown)
+	{
+		rotate = 180;
+		rotate = rotate * 3.14 / 180;
+	}
+
+	CAnimations::GetInstance()->Get(aniId)->Render(x, y, rotate);
 	//RenderBoundingBox();
 
 	fallCheckingObject->Render();
@@ -236,6 +261,8 @@ void CKoopas::SetState(int state)
 		hide_start = -1;
 		restore_start = -1;
 
+		isUpSideDown = false;
+
 		fallCheckingObject->SetPosition(x - 16, y);
 		
 		float fallCheckingObject_vx, fallCheckingObject_vy;
@@ -248,7 +275,7 @@ void CKoopas::SetState(int state)
 	}
 }
 
-void CKoopas::TakeDamage(bool canTakeDown)
+void CKoopas::TakeDamage()
 {
 	if (type == KOOPAS_TYPE_WING) {
 		this->SetType(KOOPAS_TYPE_GREEN);
@@ -261,4 +288,33 @@ void CKoopas::TakeDamage(bool canTakeDown)
 	{
 		this->SetState(KOOPAS_STATE_HIDE);
 	}
+}
+
+void CKoopas::KnockUp() {
+	if (type == KOOPAS_TYPE_WING) {
+		this->SetType(KOOPAS_TYPE_GREEN);
+		return;
+	}
+
+	this->SetState(KOOPAS_STATE_HIDE);
+	isUpSideDown = true;
+	vy -= KOOPAS_KNOCK_UP_SPEED;
+}
+
+void CKoopas::KnockDown() {
+	isKnockDown = true;
+	isUpSideDown = true;
+
+	if (type == KOOPAS_TYPE_WING) this->SetType(KOOPAS_TYPE_GREEN);
+
+	SetState(KOOPAS_STATE_HIDE);
+
+	vy -= KOOPAS_KNOCK_UP_SPEED / 2;
+	die_start = GetTickCount64();
+
+	CEffectObject* effect = new CScoreEffect(x, y, 100);
+	CGame::GetInstance()->GetCurrentScene()->AddEffect(effect);
+
+	effect = new CCollisionEffect(x, y);
+	CGame::GetInstance()->GetCurrentScene()->AddEffect(effect);
 }

@@ -139,6 +139,7 @@
     <ClCompile Include="Coin.cpp" />
     <ClCompile Include="CoinEffect.cpp" />
     <ClCompile Include="Collision.cpp" />
+    <ClCompile Include="CollisionEffect.cpp" />
     <ClCompile Include="ColorBox.cpp" />
     <ClCompile Include="debug.cpp" />
     <ClCompile Include="FallCheckingObject.cpp" />
@@ -196,6 +197,7 @@
     <ClInclude Include="Coin.h" />
     <ClInclude Include="CoinEffect.h" />
     <ClInclude Include="Collision.h" />
+    <ClInclude Include="CollisionEffect.h" />
     <ClInclude Include="ColorBox.h" />
     <ClInclude Include="debug.h" />
     <ClInclude Include="EffectObject.h" />

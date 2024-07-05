@@ -8,12 +8,14 @@
 #define KOOPAS_SLIDE_SPEED 0.15f
 #define KOOPAS_JUMP_SPEED 0.28f
 
+#define KOOPAS_KNOCK_UP_SPEED 0.3f
+
 
 #define KOOPAS_BBOX_WIDTH 14
 #define KOOPAS_BBOX_HEIGHT 24
 #define KOOPAS_BBOX_HEIGHT_HIDE 10
 
-#define KOOPAS_DIE_TIMEOUT 500
+#define KOOPAS_DIE_TIMEOUT 1000
 #define KOOPAS_HIDE_TIMEOUT 4000
 #define KOOPAS_REVIVE_TIMEOUT 1000
 
@@ -22,6 +24,9 @@
 #define KOOPAS_STATE_REVIVE 300
 #define KOOPAS_STATE_SLIDE 400
 #define KOOPAS_STATE_DIE 500
+#define KOOPAS_STATE_KNOCK_DOWN 600
+#define KOOPAS_STATE_KNOCK_UP 700
+
 
 #define KOOPAS_TYPE_ORANGE 1
 #define KOOPAS_TYPE_GREEN 2
@@ -40,7 +45,11 @@ protected:
 
 	bool isPickedUp = false;
 
-	ULONGLONG die_start;
+	bool isUpSideDown = false;
+
+	bool isKnockDown = false;
+
+	ULONGLONG die_start = -1;
 	ULONGLONG hide_start;
 	ULONGLONG restore_start;
 
@@ -48,7 +57,10 @@ protected:
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	virtual void Render();
 
-	virtual int IsCollidable() { return 1; };
+	virtual int IsCollidable() {
+		if (isKnockDown) return 0;
+		return 1;
+	};
 	virtual int IsBlocking() { return 0; }
 	virtual void OnNoCollision(DWORD dt);
 
@@ -70,5 +82,7 @@ public:
 	void GetType(int& type) { type = this->type; }
 	void SetType(int type) { this->type = type; }
 
-	virtual void TakeDamage(bool canTakeDown = false);
+	virtual void TakeDamage();
+	virtual void KnockDown();
+	virtual void KnockUp();
 };

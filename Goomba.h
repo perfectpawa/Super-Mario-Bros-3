@@ -14,6 +14,7 @@
 
 #define GOOMBA_STATE_WALKING 100
 #define GOOMBA_STATE_DIE 200
+#define GOOMBA_STATE_KNOCKOUT 300
 
 class CGoomba : public CGameObject
 {
@@ -21,13 +22,18 @@ protected:
 	float ax;				
 	float ay; 
 
+	bool isKnockOut = false;
+
 	ULONGLONG die_start;
 
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects);
 	virtual void Render();
 
-	virtual int IsCollidable() { return 1; };
+	virtual int IsCollidable() { 
+		if(state == GOOMBA_STATE_WALKING) return 1;
+		return 0;
+	};
 	virtual int IsBlocking() { return 0; }
 	virtual void OnNoCollision(DWORD dt);
 
@@ -36,5 +42,5 @@ protected:
 public: 	
 	CGoomba(float x, float y);
 	virtual void SetState(int state);
-	virtual void TakeDamage();
+	virtual void TakeDamage(bool isKnockOut = false);
 };

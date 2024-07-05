@@ -13,8 +13,8 @@
 #define PARA_GOOMBA_WALK_TIMEOUT 1000
 
 
-#define GOOMBA_STATE_HOPPING 300
-#define GOOMBA_STATE_FLYING 400
+#define GOOMBA_STATE_HOPPING 900
+#define GOOMBA_STATE_FLYING 800
 
 
 class CParaGoomba : public CGoomba
@@ -36,7 +36,12 @@ protected:
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	virtual void Render();
 
-	virtual int IsCollidable() { return 1; };
+	virtual int IsCollidable() {
+		if (state == GOOMBA_STATE_KNOCKOUT) return 0;
+		if (state == GOOMBA_STATE_DIE) return 0;
+
+		return 1;
+	};
 	virtual int IsBlocking() { return 0; }
 	virtual void OnNoCollision(DWORD dt);
 
@@ -47,5 +52,5 @@ public:
 	virtual void SetState(int state);
 	bool IsHaveWing() const { return haveWing; }
 	void BreakWing() { haveWing = false; }
-	virtual void TakeDamage();
+	virtual void TakeDamage(bool isKnockOut = false);
 };

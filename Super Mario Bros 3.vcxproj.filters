@@ -297,10 +297,13 @@
     <ClCompile Include="CardBlock.cpp">
       <Filter>Source Files\Object\GameObject\Misc</Filter>
     </ClCompile>
-    <ClCompile Include="SaveFile.cpp">
-      <Filter>Source Files\Scene</Filter>
-    </ClCompile>
     <ClCompile Include="ScoreEffect.cpp">
+      <Filter>Source Files\Object\EffectObject</Filter>
+    </ClCompile>
+    <ClCompile Include="SaveFile.cpp">
+      <Filter>Source Files\SaveFile</Filter>
+    </ClCompile>
+    <ClCompile Include="CollisionEffect.cpp">
       <Filter>Source Files\Object\EffectObject</Filter>
     </ClCompile>
   </ItemGroup>
@@ -480,6 +483,9 @@
       <Filter>Header Files\Object\GameObject\Misc</Filter>
     </ClInclude>
     <ClInclude Include="ScoreEffect.h">
+      <Filter>Header Files\Object\EffectObject</Filter>
+    </ClInclude>
+    <ClInclude Include="CollisionEffect.h">
       <Filter>Header Files\Object\EffectObject</Filter>
     </ClInclude>
   </ItemGroup>

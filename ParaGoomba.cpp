@@ -59,6 +59,8 @@ void CParaGoomba::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		return;
 	}
 
+	if (state == GOOMBA_STATE_DIE) return;
+
 	if (haveWing) {
 		if (state == GOOMBA_STATE_WALKING)
 		{
@@ -119,7 +121,16 @@ void CParaGoomba::Render()
 		aniId = ID_ANI_PARA_GOOMBA_DIE;
 	}
 
-	CAnimations::GetInstance()->Get(aniId)->Render(x, y);
+	float rotate = 0;
+
+	if(isKnockOut)
+	{
+		rotate = 180;
+		//change rotate in degree to radian
+		rotate = rotate * 3.14 / 180;
+	}
+
+	CAnimations::GetInstance()->Get(aniId)->Render(x, y, rotate);
 	//RenderBoundingBox();
 }
 
@@ -135,6 +146,14 @@ void CParaGoomba::SetState(int state)
 		vy = 0;
 		ay = 0;
 		break;
+	case GOOMBA_STATE_KNOCKOUT:
+		die_start = GetTickCount64();
+		ay = GOOMBA_GRAVITY;
+		vy -= GOOMBA_GRAVITY * 200;
+		vx = 0;
+		isKnockOut = true;
+		haveWing = false;
+		break;
 	case GOOMBA_STATE_WALKING:
 		vx = -GOOMBA_WALKING_SPEED;
 		vy = 0;
@@ -149,12 +168,17 @@ void CParaGoomba::SetState(int state)
 	}
 }
 
-void CParaGoomba::TakeDamage()
+void CParaGoomba::TakeDamage(bool isKnockOut)
 {
+	if (isKnockOut) {
+		SetState(GOOMBA_STATE_KNOCKOUT);
+		return;
+	}
+
 	if (haveWing) {
 		BreakWing();
 	}else
 	{
-		CGoomba::TakeDamage();
+		CGoomba::TakeDamage(isKnockOut);
 	}
 }

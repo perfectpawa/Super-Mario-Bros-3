@@ -310,6 +310,10 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 {
 	CGoomba* goomba = dynamic_cast<CGoomba*>(e->obj);
+
+	if (goomba->GetState() == GOOMBA_STATE_DIE) return;
+	if(goomba->GetState() == GOOMBA_STATE_KNOCKOUT) return;
+
 	if (e->ny < 0)
 	{
 		if (dynamic_cast<CParaGoomba*>(goomba))
@@ -469,8 +473,9 @@ void CMario::OnCollisionWithQuestionBlock(LPCOLLISIONEVENT e) {
 }
 
 void CMario::OnCollisionWithCardBlock(LPCOLLISIONEVENT e) {
-	CCardBlock* cardBlock = dynamic_cast<CCardBlock*>(e->obj);
+	cardBlock = dynamic_cast<CCardBlock*>(e->obj);
 	cardBlock->Hit();
+	TakeCard();
 }
 
 void CMario::OnCollisionWithButton(LPCOLLISIONEVENT e)
@@ -833,7 +838,7 @@ void CMario::SetLevel(int l)
 }
 
 
-void CMario::UpdateOnFreeze(DWORD dt) {
+void CMario::UpdateOnFreeze(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 	if (state == MARIO_STATE_DIE) {
 		vy = min(vy + ay * dt, maxVy);
 		y += vy * dt;
@@ -850,6 +855,20 @@ void CMario::UpdateOnFreeze(DWORD dt) {
 		y += 0.05f * dt * dir;
 	}
 
+	if (state == MARIO_STATE_COMPLETE_LEVEL) {
+		vy = MARIO_MAX_FALL_SPEED;
+		vx = MARIO_WALKING_SPEED;
+
+		if (y > MARIO_MAX_Y) vx = vy = 0;
+
+		cardBlock->Update(dt, NULL);
+		CCollision::GetInstance()->Process(this, dt, coObjects);
+
+		if (GetTickCount64() - clear_level_start > MARIO_CLEAR_LEVEL_TIME) {
+			CGame::GetInstance()->InitiateSwitchScene(1);
+		}
+	}
+
 	if (switch_delay_start != -1 && GetTickCount64() - switch_delay_start >= 500) {
 		portalCanUse->SwitchScene();
 		switch_delay_start = -1;
@@ -861,6 +880,11 @@ void CMario::RenderOnFreeze() {
 
 	if (state == MARIO_STATE_IN_TUBE || state == MARIO_STATE_OUT_TUBE) {
 		freezeId = ID_ANI_MARIO_SMALL_STRAIGHT + (level - 1) * 100;
+	}
+
+	if (state == MARIO_STATE_COMPLETE_LEVEL) {
+		freezeId = ID_ANI_MARIO_SMALL_WALK_RIGHT;
+		if (vy != 0) freezeId = ID_ANI_MARIO_SMALL_JUMP_WALK_RIGHT;
 	}
 
 	CAnimations::GetInstance()->Get(freezeId)->Render(x, y);
@@ -884,4 +908,11 @@ void CMario::StartSwitchingScene() {
 	if (first_state == MARIO_STATE_OUT_TUBE) freezeTime = 500;
 
 	CGame::GetInstance()->InitDefauleState(first_state, freezeTime);
+}
+
+void CMario::TakeCard() {
+	state = MARIO_STATE_COMPLETE_LEVEL;
+	lookingRight = true;
+	clear_level_start = GetTickCount64();
+	CGame::GetInstance()->GetCurrentScene()->FreezeScene(MARIO_CLEAR_LEVEL_TIME + 1000);
 }
