@@ -582,7 +582,7 @@ void CGame::SwitchScene()
 
 		COWGameObject* player = s->GetOWPlayer();
 		COWMario* mario = dynamic_cast<COWMario*>(player);
-		mario->SetTravelPoint(end_x, end_y);
+		mario->SetTravelPoint(save_point_x, save_point_y);
 		haveEndPointToGo = false;
 	}
 

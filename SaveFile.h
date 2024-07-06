@@ -1,19 +1,39 @@
 #pragma once
+#include <iostream>
+#include <fstream>
+#include <Windows.h>
+
+#include "Game.h"
+
+#include "debug.h"
+#include "Utils.h"
+
+using namespace std;
+
+#define SECTION_UNKNOWN -1
+#define SECTION_PLAYER 1
+#define SECTION_CARD 2
+#define SECTION_OVERWORLD 3
 
 class SaveFile {
 	static SaveFile* __instance;
 	int save_file_id;
+
 	int mario_level;
-	int level;
-	int score;
 	int life;
 	int coin;
+	int score;
+
 	int card_slot_1;
 	int card_slot_2;
 	int card_slot_3;
 
-	float overworld_x;
-	float overworld_y;
+	int world;
+	float save_point_x;
+	float save_point_y;
+	float last_stand_x;
+	float last_stand_y;
+
 public:
 	SaveFile();
 	~SaveFile();
@@ -21,12 +41,16 @@ public:
 	void Save(int save_file_id = -1);
 	void Load(int save_file_id);
 
+	void LoadPlayer(string line);
+	void LoadCard(string line);
+	void LoadWorld(string line);
+
 	void SetMarioLevel(int mario_level) { this->mario_level = mario_level; }
 	int GetMarioLevel() { return mario_level; }
 
-	void SetLevel(int level) { this->level = level; }
-	int GetLevel() { return level; }
-	void AddLevel(int level) { this->level += level; }
+	void SetWorld(int world) { this->world = world; }
+	int GetWorld() { return world; }
+	void AddWorld(int world) { this->world += world; }
 
 	void SetScore(int score) { this->score = score; }
 	int GetScore() { return score; }
@@ -52,8 +76,11 @@ public:
 
 	void SetCard(int card);
 
-	void SetOverworldPosition(float x, float y) { this->overworld_x = x; this->overworld_y = y; }
-	void GetOverworldPosition(float& x, float& y) { x = overworld_x; y = overworld_y; }
+	void SetSavePoint(float x, float y) { save_point_x = x; save_point_y = y; }
+	void GetSavePoint(float& x, float& y) { x = save_point_x; y = save_point_y; }
+
+	void SetLastStand(float x, float y) { last_stand_x = x; last_stand_y = y; }
+	void GetLastStand(float& x, float& y) { x = last_stand_x; y = last_stand_y; }
 
 
 };

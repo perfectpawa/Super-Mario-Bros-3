@@ -30,7 +30,7 @@ void CPlayOverworldScene::_ParseSection_OBJECTS(string line) {
 			return;
 		}
 
-		SaveFile::GetInstance()->GetOverworldPosition(x, y);
+		SaveFile::GetInstance()->GetLastStand(x, y);
 
 		player = new COWMario(x, y, true);
 
@@ -49,7 +49,7 @@ void CPlayOverworldScene::_ParseSection_OBJECTS(string line) {
 		bool haveCoin = (atoi(tokens[5].c_str()) == 1);
 		bool haveTurn = (atoi(tokens[6].c_str()) == 1);
 
-		bool isGoIn = prePortal < overworld_current_level;
+		bool isGoIn = true;
 
 		COWPath* path = new COWPath(x, y, isGoIn, isVertical, haveCoin, haveTurn);
 		pathObjs.push_back(path);
@@ -74,8 +74,7 @@ void CPlayOverworldScene::_ParseSection_OBJECTS(string line) {
 	case OW_OBJ_TYPE_PORTAL: {
 		int portalId = atoi(tokens[3].c_str());
 
-		bool isGoIn = false;
-		if (portalId <= overworld_current_level) isGoIn = true;
+		bool isGoIn = true;
 
 		COWPortal* portal = new COWPortal(x, y, isGoIn, portalId);
 		portalObjs.push_back(portal);
@@ -104,9 +103,6 @@ void CPlayOverworldScene::Load()
 
 	CGame::GetInstance()->SetCamPos(-16, -16);
 	key_handler = new COverworldKeyHandler(this);
-
-	overworld_current_level = SaveFile::GetInstance()->GetLevel();
-	DebugOut(L"[INFO] Overworld current level: %d\n", overworld_current_level);
 
 	char str[MAX_SCENE_LINE];
 	while (f.getline(str, MAX_SCENE_LINE))

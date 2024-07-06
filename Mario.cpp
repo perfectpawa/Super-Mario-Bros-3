@@ -850,7 +850,11 @@ void CMario::UpdateOnFreeze(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 
 		if (GetTickCount64() - die_start > MARIO_DIE_TIME) {
 			CGame::GetInstance()->InitiateSwitchScene(1);
-			CGame::GetInstance()->InitEndPointToGo(16, 32);
+
+			float saveX, saveY;
+			SaveFile::GetInstance()->GetSavePoint(saveX, saveY);
+			CGame::GetInstance()->InitSavePointToGo(saveX, saveY);
+
 			SaveFile::GetInstance()->SetMarioLevel(MARIO_LEVEL_SMALL);
 			SaveFile::GetInstance()->AddLife(-1);
 			SaveFile::GetInstance()->Save();
@@ -860,7 +864,7 @@ void CMario::UpdateOnFreeze(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 	if (state == MARIO_STATE_IN_TUBE || state == MARIO_STATE_OUT_TUBE) {
 		int dir = 1;
 		if (state == MARIO_STATE_OUT_TUBE) dir = -1;
-		y += 0.05f * dt * dir;
+		y += 0.04f * dt * dir;
 	}
 
 	if (state == MARIO_STATE_COMPLETE_LEVEL) {
@@ -875,7 +879,6 @@ void CMario::UpdateOnFreeze(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 		if (GetTickCount64() - clear_level_start > MARIO_CLEAR_LEVEL_TIME) {
 			CGame::GetInstance()->InitiateSwitchScene(1);
 
-			SaveFile::GetInstance()->AddLevel(1);
 			SaveFile::GetInstance()->Save();
 		}
 	}
@@ -894,15 +897,15 @@ void CMario::RenderOnFreeze() {
 	}
 
 	if (state == MARIO_STATE_COMPLETE_LEVEL) {
-		freezeId = ID_ANI_MARIO_SMALL_WALK_RIGHT;
-		if (vy != 0) freezeId = ID_ANI_MARIO_SMALL_JUMP_WALK_RIGHT;
+		freezeId = ID_ANI_MARIO_SMALL_WALK_RIGHT + (level - 1) * 10000;
+		if (vy != 0) freezeId = ID_ANI_MARIO_SMALL_JUMP_WALK_RIGHT + (level - 1) * 10000;
 	}
 
 	CAnimations::GetInstance()->Get(freezeId)->Render(x, y);
 }
 
 void CMario::StartSwitchingScene() {
-	CGame::GetInstance()->GetCurrentScene()->FreezeScene(1100);
+	CGame::GetInstance()->GetCurrentScene()->FreezeScene(600);
 	switch_delay_start = GetTickCount64();
 
 

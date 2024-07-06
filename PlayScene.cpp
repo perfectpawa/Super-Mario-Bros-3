@@ -452,6 +452,12 @@ void CPlayScene::Unload()
 void CPlayScene::Update(DWORD dt)
 {
 	CScene::Update(dt);
+	
+	if (isFreeze) {
+		UpdateOnFreeze(dt);
+		return;
+	}
+
 
 	vector<LPGAMEOBJECT> coObjects;
 	//push back all objects in enemyObjs and terrainObjs to coObjects
@@ -531,8 +537,8 @@ void CPlayScene::UpdateOnFreeze(DWORD dt) {
 	vector<LPGAMEOBJECT> coObjects;
 
 	//push back all objects in terrainObjs to coObjects
-	for (int i = 0; i < terrainObjs.size(); i++)
-		coObjects.push_back(terrainObjs[i]);
+	for (int i = 0; i < platformObjs.size(); i++)
+		coObjects.push_back(platformObjs[i]);
 
 	CMario* mario = dynamic_cast<CMario*>(player);
 
@@ -649,7 +655,7 @@ void CPlayScene::Render()
 }
 
 void CPlayScene::RenderOnFreeze() {
-
+	dynamic_cast<CMario*>(player)->RenderOnFreeze();
 }
 
 #pragma endregion

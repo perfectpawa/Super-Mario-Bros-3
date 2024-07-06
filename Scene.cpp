@@ -63,7 +63,7 @@ void CScene::LoadUI() {
 	mainHUD->SetCoin(saveFile->GetCoin());
 	mainHUD->SetScore(saveFile->GetScore());
 	mainHUD->SetLife(saveFile->GetLife());
-	mainHUD->SetLevel(saveFile->GetLevel());
+	mainHUD->SetWorld(saveFile->GetWorld());
 
 	mainHUD->SetFirstCard(saveFile->GetCardSlot1());
 	mainHUD->SetSecondCard(saveFile->GetCardSlot2());
@@ -77,7 +77,7 @@ void CScene::UpdateUI(DWORD dt) {
 	mainHUD->SetCoin(saveFile->GetCoin());
 	mainHUD->SetScore(saveFile->GetScore());
 	mainHUD->SetLife(saveFile->GetLife());
-	mainHUD->SetLevel(saveFile->GetLevel());
+	mainHUD->SetWorld(saveFile->GetWorld());
 
 	mainHUD->SetFirstCard(saveFile->GetCardSlot1());
 	mainHUD->SetSecondCard(saveFile->GetCardSlot2());

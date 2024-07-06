@@ -6,7 +6,7 @@ CHUD::CHUD(float x, float y) : CUIObject(x, y)
 	life = 4;
 	coin = 0;
 	score = 0;
-	level = 1;
+	world = 1;
 	time = 000;
 	power = 0;
 
@@ -16,7 +16,7 @@ CHUD::CHUD(float x, float y) : CUIObject(x, y)
 	secondCard = 0;
 	thirdCard = 0;
 
-	levelUI = new CNumberUI(x - 35, y - 4, level, 1);
+	worldUI = new CNumberUI(x - 35, y - 4, world, 1);
 	coinUI = new CNumberUI(x + 68, y - 4, coin, 2);
 	scoreUI = new CNumberUI(x + 28, y + 4, score, 7);
 	lifeUI = new CNumberUI(x - 35, y + 4, life, 2);
@@ -58,7 +58,7 @@ void CHUD::RenderCardHUD()
 
 void CHUD::RenderNumberInfoHUD()
 {
-	levelUI->Render();
+	worldUI->Render();
 	coinUI->Render();
 	scoreUI->Render();
 	lifeUI->Render();
@@ -96,7 +96,7 @@ void CHUD::RenderPowerInfoHUD()
 void CHUD::SetPosition(float x, float y)
 {
 	CUIObject::SetPosition(x, y);
-	levelUI->SetPosition(x - 35, y - 4);
+	worldUI->SetPosition(x - 35, y - 4);
 	coinUI->SetPosition(x + 68, y - 4);
 	scoreUI->SetPosition(x + 28, y + 4);
 	lifeUI->SetPosition(x - 35, y + 4);
@@ -141,24 +141,31 @@ void CHUD::SetLife(int life)
 	lifeUI->SetNumber(life);
 }
 
-void CHUD::SetLevel(int level)
+void CHUD::SetWorld(int world)
 {
-	if (level < 0) level = 0;
-	this->level = level;
-	levelUI->SetNumber(level);
+	if (world < 0) world = 0;
+	this->world = world;
+	worldUI->SetNumber(world);
+
 }
 
 void CHUD::SetFirstCard(int firstCard)
 {
+	if(firstCard < 0) firstCard = 0;
+	if(firstCard > 3) firstCard = 3;
 	this->firstCard = firstCard;
 }
 
 void CHUD::SetSecondCard(int secondCard)
 {
+	if (secondCard < 0) secondCard = 0;
+	if (secondCard > 3) secondCard = 3;
 	this->secondCard = secondCard;
 }
 
 void CHUD::SetThirdCard(int thirdCard)
 {
+	if (thirdCard < 0) thirdCard = 0;
+	if (thirdCard > 3) thirdCard = 3;
 	this->thirdCard = thirdCard;
 }

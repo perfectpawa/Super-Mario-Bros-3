@@ -21,8 +21,6 @@ protected:
 	vector<LPOWGAMEOBJECT> portalObjs;
 	vector<LPOWGAMEOBJECT> pointObjs;
 
-	int overworld_current_level = 0;
-
 	void _ParseSection_OBJECTS(string line);
 
 public:

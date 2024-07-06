@@ -10,7 +10,7 @@ class CHUD : public CUIObject
 {
 protected:
 	//hud info
-	int level;
+	int world;
 	int coin;
 	int score;
 	int life;
@@ -25,7 +25,7 @@ protected:
 	//icon info
 	int characterIconType;
 
-	CNumberUI *levelUI;
+	CNumberUI * worldUI;
 	CNumberUI *coinUI;
 	CNumberUI* scoreUI;
 	CNumberUI* lifeUI;
@@ -53,7 +53,7 @@ public:
 	void RenderIconInfoHUD();
 	void RenderPowerInfoHUD();
 
-	void SetLevel(int level);
+	void SetWorld(int world);
 	void SetCoin(int coin);
 	void SetScore(int score);
 	void SetLife(int life);

@@ -159,7 +159,7 @@ void COWMario::GetInLevel()
 	if (isMoving) return;
 	if (portalId == -1) return;
 
-	SaveFile::GetInstance()->SetOverworldPosition(x, y);
+	SaveFile::GetInstance()->SetLastStand(x, y);
 
 	CGame::GetInstance()->InitiateSwitchScene(portalId);
 
