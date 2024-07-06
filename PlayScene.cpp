@@ -765,9 +765,9 @@ void CPlayScene::Update(DWORD dt)
 	for (int i = 0; i < effectObjs.size(); i++)
 		effectObjs[i]->Update(dt);
 
-	//update terrainObjs
-	for (int i = 0; i < terrainObjs.size(); i++)
-		terrainObjs[i]->Update(dt, &coObjects);
+	//update frontterrainObjs
+	for (int i = 0; i < frontTerrainObjs.size(); i++)
+		frontTerrainObjs[i]->Update(dt, &coObjects);
 
 	CamPosFollowPlayer();
 
@@ -921,8 +921,10 @@ void CPlayScene::Render()
 	if (mainHUD != NULL) mainHUD->Render();
 
 	//render effectObjs
-	for (int i = 0; i < effectObjs.size(); i++)
-		effectObjs[i]->Render();
+	if (!isFreeze) {
+		for (int i = 0; i < effectObjs.size(); i++)
+			effectObjs[i]->Render();
+	}
 }
 
 void CPlayScene::Render_OW() {

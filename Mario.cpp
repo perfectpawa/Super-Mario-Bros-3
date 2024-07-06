@@ -438,6 +438,8 @@ void CMario::OnCollisionWithMushroom(LPCOLLISIONEVENT e)
 		level = MARIO_LEVEL_BIG;
 
 		SaveFile::GetInstance()->SetMarioLevel(level);
+		CEffectObject* effect = new CScoreEffect(x - 8, y, 1000);
+		CGame::GetInstance()->GetCurrentScene()->AddEffect(effect);
 
 		y -= (float)(MARIO_BIG_BBOX_HEIGHT - MARIO_SMALL_BBOX_HEIGHT) / 2;
 
@@ -445,7 +447,6 @@ void CMario::OnCollisionWithMushroom(LPCOLLISIONEVENT e)
 		isMovingLeft = isMovingRight = false;
 		freezeId = ID_ANI_MARIO_SMALL_TO_BIG_RIGHT;
 		if (!lookingRight) freezeId += 10;
-
 	}
 
 	mushroom->Delete();
@@ -471,10 +472,6 @@ void CMario::OnCollisionWithQuestionBlock(LPCOLLISIONEVENT e) {
 	CQuestionBlock* questionBlock = dynamic_cast<CQuestionBlock*>(e->obj);
 	if (questionBlock->GetState() == QBLOCK_STATE_IDLE) {
 		questionBlock->SetState(QBLOCK_STATE_BOUND_UP);
-		if (questionBlock->GetRewardType() == REWARD_COIN) {
-			SaveFile::GetInstance()->AddCoin(1);
-		}
-		questionBlock->GetReward();
 	}
 }
 

@@ -6,6 +6,7 @@
 #include "Brick.h"
 #include "BrickCoin.h"
 #include "CollisionEffect.h"
+#include "QuestionBlock.h"
 
 #include "debug.h"
 
@@ -69,6 +70,14 @@ void CMarioTail::OnCollisionWith(LPCOLLISIONEVENT e)
 	{
 		CBrick* brick = dynamic_cast<CBrick*>(e->obj);
 		brick->Breaking(true);
+	}
+
+	if(dynamic_cast<CQuestionBlock*>(e->obj))
+	{
+		CQuestionBlock* questionBlock = dynamic_cast<CQuestionBlock*>(e->obj);
+		if (questionBlock->GetState() == QBLOCK_STATE_IDLE) {
+			questionBlock->SetState(QBLOCK_STATE_BOUND_UP);
+		}
 	}
 
 }
