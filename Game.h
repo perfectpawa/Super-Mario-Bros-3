@@ -14,6 +14,7 @@ using namespace std;
 #include "KeyEventHandler.h"
 #include "Scene.h"
 #include "SaveFile.h"
+#include "LoadVisual.h"
 
 
 #define MAX_FRAME_RATE 100

@@ -306,6 +306,9 @@
     <ClCompile Include="CollisionEffect.cpp">
       <Filter>Source Files\Object\EffectObject</Filter>
     </ClCompile>
+    <ClCompile Include="LoadVisual.cpp">
+      <Filter>Source Files\Visual</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AssetIDs.h">
@@ -487,6 +490,9 @@
     </ClInclude>
     <ClInclude Include="CollisionEffect.h">
       <Filter>Header Files\Object\EffectObject</Filter>
+    </ClInclude>
+    <ClInclude Include="LoadVisual.h">
+      <Filter>Header Files\Visual</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

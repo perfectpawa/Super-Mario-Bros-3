@@ -67,16 +67,9 @@ protected:
 	
 	bool firstRender = false;
 
-
-	void _ParseSection_SPRITES(string line);
-	void _ParseSection_ANIMATIONS(string line);
-
-	void _ParseSection_ASSETS(string line);
 	void _ParseSection_OBJECTS(string line);
 	void _ParseSection_SETTINGS(string line);
 	void _ParseSection_OW_OBJECTS(string line);
-
-	void LoadAssets(LPCWSTR assetFile);
 
 	virtual void AddObject(LPGAMEOBJECT obj, int type);
 	virtual void AddEffect(LPEFFECTOBJECT obj);

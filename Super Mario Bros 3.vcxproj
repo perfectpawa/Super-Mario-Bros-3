@@ -151,6 +151,7 @@
     <ClCompile Include="IconUI.cpp" />
     <ClCompile Include="Koopas.cpp" />
     <ClCompile Include="Leaf.cpp" />
+    <ClCompile Include="LoadVisual.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Mario.cpp" />
     <ClCompile Include="MarioTail.cpp" />
@@ -209,6 +210,7 @@
     <ClInclude Include="HUD.h" />
     <ClInclude Include="IconUI.h" />
     <ClInclude Include="LevelKeyHandler.h" />
+    <ClInclude Include="LoadVisual.h" />
     <ClInclude Include="MarioTail.h" />
     <ClInclude Include="NumberUI.h" />
     <ClInclude Include="OverworldKeyHandler.h" />
