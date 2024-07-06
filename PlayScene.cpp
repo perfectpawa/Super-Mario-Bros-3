@@ -1,4 +1,3 @@
-#pragma region Include
 #include <iostream>
 #include <fstream>
 #include "AssetIDs.h"
@@ -11,7 +10,6 @@
 #include "LevelKeyHandler.h"
 #include "OverworldKeyHandler.h"
 
-#pragma region include GameObject
 #include "Portal.h"
 #include "Coin.h"
 #include "Brick.h"
@@ -36,35 +34,12 @@
 
 #include "SpawnCheck.h"
 
-#include "OW_Mario.h"
-#include "OW_Path.h"
-#include "OW_Terrain.h"
-#include "OW_Portal.h"
-#include "OW_Point.h"
-#include "SaveFile.h"
-
-#pragma endregion
-#pragma endregion
-
 using namespace std;
-
-#define SCENE_SECTION_UNKNOWN -1
-#define SCENE_SECTION_ASSETS	1
-#define SCENE_SECTION_OBJECTS	2
-#define SCENE_SECTION_SETTINGS	3
-
-#define ASSETS_SECTION_UNKNOWN -1
-#define ASSETS_SECTION_SPRITES 1
-#define ASSETS_SECTION_ANIMATIONS 2
-
-#define MAX_SCENE_LINE 1024
 
 CPlayScene::CPlayScene(int id, LPCWSTR filePath) :
 	CScene(id, filePath)
 {
 	player = NULL;
-	OW_player = NULL;
-	OW_mapHolder = NULL;
 	mainHUD = NULL;
 	key_handler = new CLevelKeyHandler(this);
 }
@@ -349,111 +324,6 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	}
 }
 
-void CPlayScene::_ParseSection_SETTINGS(string line) {
-	vector<string> tokens = split(line);
-	DebugOut(L"--> %s\n", ToWSTR(line).c_str());
-
-	if (tokens[0] == "time") {
-		if(timeLimit == -1) timeLimit = (float)atof(tokens[1].c_str());
-	}
-
-	if (tokens[0] == "background_color") {
-		float r = (float)atof(tokens[1].c_str());
-		float g = (float)atof(tokens[2].c_str());
-		float b = (float)atof(tokens[3].c_str());
-		CGame::GetInstance()->SetBackgroundColor(D3DXCOLOR(r / 255.0f, g / 255.0f, b / 255.0f, 0.0f));
-	}
-
-	if (tokens[0] == "cam_limit") {
-		if(tokens.size() > 1) camLimitLeft = (float)atof(tokens[1].c_str());
-		if (tokens.size() > 2) camLimitRight = (float)atof(tokens[2].c_str());
-		if (tokens.size() > 3) camLimitBottom = (float)atof(tokens[3].c_str());
-		if (tokens.size() > 4) camLimitTop = (float)atof(tokens[4].c_str());
-		if (tokens.size() > 5) camVerticalFreeZone = (float)atof(tokens[5].c_str());
-	}
-}
-
-void CPlayScene::_ParseSection_OW_OBJECTS(string line) {
-	vector<string> tokens = split(line);
-
-	// skip invalid lines - an object set must have at least id, x, y
-	if (tokens.size() < 2) return;
-
-	int object_type = atoi(tokens[0].c_str());
-	float x = (float)atof(tokens[1].c_str());
-	float y = (float)atof(tokens[2].c_str());
-
-
-	switch (object_type) {
-	case OW_OBJ_TYPE_MARIO: {
-		if (OW_player != NULL)
-		{
-			DebugOut(L"[ERROR] MARIO object was created before!\n");
-			return;
-		}
-
-		SaveFile::GetInstance()->GetOverworldPosition(x, y);
-
-		OW_player = new COWMario(x, y, true);
-
-		DebugOut(L"[INFO] Player object has been created!\n");
-		break;
-	}
-	case OW_OBJ_TYPE_MAP_HOLDER: {
-		int width = atoi(tokens[3].c_str());
-		int height = atoi(tokens[4].c_str());
-		OW_mapHolder = new COWMapHolder(x, y, width, height);
-		break;
-	}
-	case OW_OBJ_TYPE_PATH: {
-		int prePortal = atoi(tokens[3].c_str());
-		bool isVertical = (atoi(tokens[4].c_str()) == 1);
-		bool haveCoin = (atoi(tokens[5].c_str()) == 1);
-		bool haveTurn = (atoi(tokens[6].c_str()) == 1);
-
-		bool isGoIn = prePortal < overworld_current_level;
-
-		COWPath* path = new COWPath(x, y, isGoIn, isVertical, haveCoin, haveTurn);
-		OW_pathObjs.push_back(path);
-
-
-
-		break;
-	}
-	case OW_OBJ_TYPE_TERRAIN: {
-		bool isGoIn = (atoi(tokens[3].c_str()) == 1);
-		int type = atoi(tokens[4].c_str());
-
-		int sub_type = 0;
-		if (tokens.size() > 5) {
-			sub_type = atoi(tokens[5].c_str());
-		}
-
-		COWTerrain* terrain = new COWTerrain(x, y, isGoIn, type, sub_type);
-		OW_terrainObjs.push_back(terrain);
-		break;
-	}
-	case OW_OBJ_TYPE_PORTAL: {
-		int portalId = atoi(tokens[3].c_str());
-
-		bool isGoIn = false;
-		if(portalId <= overworld_current_level) isGoIn = true;
-
-		COWPortal* portal = new COWPortal(x, y, isGoIn, portalId);
-		OW_portalObjs.push_back(portal);
-		break;
-	}
-	case OW_OBJ_TYPE_POINT: {
-		bool isGoIn = (atoi(tokens[3].c_str()) == 1);
-		int type = atoi(tokens[4].c_str());
-		COWPoint* point = new COWPoint(x, y, isGoIn, type);
-		OW_pointObjs.push_back(point);
-		break;
-	}
-	}
-
-}
-
 #pragma endregion
 
 #pragma region Load
@@ -473,15 +343,6 @@ void CPlayScene::Load()
 		string line(str);
 
 		if (line[0] == '#') continue;	// skip comment lines	
-		if (line == "[OVERWORLD]") {
-			isOnOverworldMap = true;
-			CGame::GetInstance()->SetCamPos(-16, -16);
-			key_handler = new COverworldKeyHandler(this);
-
-			overworld_current_level = SaveFile::GetInstance()->GetLevel();
-			DebugOut(L"[INFO] Overworld current level: %d\n", overworld_current_level);
-			continue;
-		};
 		if (line == "[ASSETS]") { section = SCENE_SECTION_ASSETS; continue; };
 		if (line == "[OBJECTS]") { section = SCENE_SECTION_OBJECTS; continue; };
 		if (line == "[UI]") { LoadUI(); continue; }
@@ -491,44 +352,27 @@ void CPlayScene::Load()
 		//
 		// data section
 		//
-		if (isOnOverworldMap) {
-			switch (section)
-			{
-			case SCENE_SECTION_ASSETS: LoadVisual::GetInstance()->_ParseSection_ASSETS(line); break;
-			case SCENE_SECTION_OBJECTS: _ParseSection_OW_OBJECTS(line); break;
-			case SCENE_SECTION_SETTINGS: _ParseSection_SETTINGS(line); break;
-			}
+		
+		switch (section)
+		{
+		case SCENE_SECTION_ASSETS: LoadVisual::GetInstance()->_ParseSection_ASSETS(line); break;
+		case SCENE_SECTION_OBJECTS: _ParseSection_OBJECTS(line); break;
+		case SCENE_SECTION_SETTINGS: _ParseSection_SETTINGS(line); break;
 		}
-		else {
-			switch (section)
-			{
-			case SCENE_SECTION_ASSETS: LoadVisual::GetInstance()->_ParseSection_ASSETS(line); break;
-			case SCENE_SECTION_OBJECTS: _ParseSection_OBJECTS(line); break;
-			case SCENE_SECTION_SETTINGS: _ParseSection_SETTINGS(line); break;
-			}
-		}
+		
 	}
 
 	f.close();
+
+	//set background color
+	CGame::GetInstance()->SetBackgroundColor(backgroundColor);
 
 	DebugOut(L"[INFO] Done loading scene  %s\n", sceneFilePath);
 }
 
 void CPlayScene::LoadUI()
 {
-	DebugOut(L"[INFO] Start loading UI\n");
-	mainHUD = new CHUD(0, 0);
-
-	LPSAVEFILE saveFile = SaveFile::GetInstance();
-
-	mainHUD->SetCoin(saveFile->GetCoin());
-	mainHUD->SetScore(saveFile->GetScore());
-	mainHUD->SetLife(saveFile->GetLife());
-	mainHUD->SetLevel(saveFile->GetLevel());
-
-	mainHUD->SetFirstCard(saveFile->GetCardSlot1());
-	mainHUD->SetSecondCard(saveFile->GetCardSlot2());
-	mainHUD->SetThirdCard(saveFile->GetCardSlot3());
+	CScene::LoadUI();
 
 	UpdateUIPosFixedCam();
 }
@@ -536,6 +380,18 @@ void CPlayScene::LoadUI()
 void CPlayScene::Unload()
 {
 	isFreeze = false;
+
+	if (player != NULL)
+	{
+		delete player;
+		player = NULL;
+	}
+
+	if (mainHUD != NULL)
+	{
+		delete mainHUD;
+		mainHUD = NULL;
+	}
 
 	//unload enemyObjs
 	for (int i = 0; i < enemyObjs.size(); i++)
@@ -587,8 +443,6 @@ void CPlayScene::Unload()
 		delete attackObjs[i];
 	attackObjs.clear();
 
-	player = NULL;
-
 	DebugOut(L"[INFO] Scene %d unloaded! \n", id);
 }
 
@@ -597,21 +451,7 @@ void CPlayScene::Unload()
 #pragma region Update
 void CPlayScene::Update(DWORD dt)
 {
-	if (isOnOverworldMap) {
-		Update_OW(dt);
-		return;
-
-	}
-
-	if(isFreeze) {
-		if(GetTickCount64() - freeze_start >= freezeTime) {
-			isFreeze = false;
-		}
-		else {
-			UpdateOnFreeze(dt);
-			return;
-		}
-	}
+	CScene::Update(dt);
 
 	vector<LPGAMEOBJECT> coObjects;
 	//push back all objects in enemyObjs and terrainObjs to coObjects
@@ -684,32 +524,7 @@ void CPlayScene::Update(DWORD dt)
 
 	UpdateUI(dt);
 
-
 	PurgeDeletedObjects();
-}
-
-void CPlayScene::Update_OW(DWORD dt) {
-	vector<COWGameObject*> coObjects;
-
-	//check item in OW_pathObjs
-	for (int i = 0; i < OW_pathObjs.size(); i++) {
-		if (!OW_pathObjs[i]->CanGoIn()) continue;
-		coObjects.push_back(OW_pathObjs[i]);
-	}
-
-	//check item in OW_pointObjs
-	for (int i = 0; i < OW_pointObjs.size(); i++) {
-		if (!OW_pointObjs[i]->CanGoIn()) continue;
-		coObjects.push_back(OW_pointObjs[i]);
-	}
-
-	//check item in OW_portalObjs
-	for (int i = 0; i < OW_portalObjs.size(); i++) {
-		if (!OW_portalObjs[i]->CanGoIn()) continue;
-		coObjects.push_back(OW_portalObjs[i]);
-	}
-
-	OW_player->Update(dt, &coObjects);
 }
 
 void CPlayScene::UpdateOnFreeze(DWORD dt) {
@@ -733,11 +548,6 @@ void CPlayScene::UpdateOnFreeze(DWORD dt) {
 
 void CPlayScene::Render()
 {
-	if (isOnOverworldMap) {
-		Render_OW();
-		return;
-	}
-
 	if (isFreeze) {
 		RenderOnFreeze();
 	}
@@ -836,32 +646,6 @@ void CPlayScene::Render()
 		for (int i = 0; i < effectObjs.size(); i++)
 			effectObjs[i]->Render();
 	}
-}
-
-void CPlayScene::Render_OW() {
-
-	OW_mapHolder->Render();
-
-	for (int i = 0; i < OW_pathObjs.size(); i++) {
-		OW_pathObjs[i]->Render();
-	}
-
-	for (int i = 0; i < OW_terrainObjs.size(); i++) {
-		OW_terrainObjs[i]->Render();
-	}
-
-	for (int i = 0; i < OW_portalObjs.size(); i++) {
-		OW_portalObjs[i]->Render();
-	}
-
-	for (int i = 0; i < OW_pointObjs.size(); i++) {
-		OW_pointObjs[i]->Render();
-	}
-
-	OW_player->Render();
-
-	if (mainHUD != NULL) 
-		mainHUD->Render();
 }
 
 void CPlayScene::RenderOnFreeze() {
@@ -1068,20 +852,14 @@ void CPlayScene::ChangeBrickCoin(int type)
 
 void CPlayScene::UpdateUI(DWORD dt) {
 	if (mainHUD == NULL) return;
+
+	CScene::UpdateUI(dt);
+
 	float cx, cy;
+
 	CGame::GetInstance()->GetCamPos(cx, cy);
 	UpdateUIPosFixedCam(cx, cy);
 
-	LPSAVEFILE saveFile = SaveFile::GetInstance();
-
-	mainHUD->SetCoin(saveFile->GetCoin());
-	mainHUD->SetScore(saveFile->GetScore());
-	mainHUD->SetLife(saveFile->GetLife());
-	mainHUD->SetLevel(saveFile->GetLevel());
-
-	mainHUD->SetFirstCard(saveFile->GetCardSlot1());
-	mainHUD->SetSecondCard(saveFile->GetCardSlot2());
-	mainHUD->SetThirdCard(saveFile->GetCardSlot3());
 
 	UpdateUITimeLimit(dt);
 	UpdateUIPower();
@@ -1125,12 +903,6 @@ void CPlayScene::UpdateUIPower() {
 		mario->GetGearUpState(power);
 	}
 	mainHUD->SetPower(power);
-}
-
-void CPlayScene::FreezeScene(int freezeTime) { 
-	this->isFreeze = true; 
-	this->freezeTime = freezeTime; 
-	this->freeze_start = GetTickCount64();
 }
 
 void CPlayScene::SetDefaultPos(float x, float y) {

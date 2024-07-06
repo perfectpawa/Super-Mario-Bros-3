@@ -5,6 +5,7 @@
 #include "Brick.h"
 #include "ScoreEffect.h"
 #include "CollisionEffect.h"
+#include "PlayScene.h"
 
 CKoopas::CKoopas(float x, float y, int type) :CGameObject(x, y)
 {
@@ -88,7 +89,7 @@ void CKoopas::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 		float x, y;
 		goomba->GetPosition(x, y);
 		CEffectObject* effect = new CCollisionEffect(x, y);
-		CGame::GetInstance()->GetCurrentScene()->AddEffect(effect);
+		dynamic_cast<CPlayScene*>(CGame::GetInstance()->GetCurrentScene())->AddEffect(effect);
 	}
 }
 
@@ -313,8 +314,9 @@ void CKoopas::KnockDown() {
 	die_start = GetTickCount64();
 
 	CEffectObject* effect = new CScoreEffect(x, y, 100);
-	CGame::GetInstance()->GetCurrentScene()->AddEffect(effect);
+	CPlayScene * scene = dynamic_cast<CPlayScene*>(CGame::GetInstance()->GetCurrentScene());
+	scene->AddEffect(effect);
 
 	effect = new CCollisionEffect(x, y);
-	CGame::GetInstance()->GetCurrentScene()->AddEffect(effect);
+	scene->AddEffect(effect);
 }

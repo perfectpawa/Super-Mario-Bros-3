@@ -3,8 +3,6 @@
 #include "Textures.h"
 #include "Scene.h"
 #include "GameObject.h"
-#include "OW_MapHolder.h"
-#include "OW_GameObject.h"
 #include "BackgroundObject.h"
 #include "EffectObject.h"
 #include "HUD.h"
@@ -35,45 +33,11 @@ protected:
 
 	vector<LPGAMEOBJECT> barrierObjs;
 
-	bool isOnOverworldMap = false;
-	LPOWGAMEOBJECT OW_player;
-	COWMapHolder* OW_mapHolder;
-	vector<LPOWGAMEOBJECT> OW_pathObjs;
-	vector<LPOWGAMEOBJECT> OW_terrainObjs;
-	vector<LPOWGAMEOBJECT> OW_portalObjs;
-	vector<LPOWGAMEOBJECT> OW_pointObjs;
-
-	int overworld_current_level = 0;
-
 	vector<CBackgroundObject*> backgroundObjs;
 
-	CHUD* mainHUD;
-
-	//scene setting
-	float timeLimit = -1;
-
-	float camLimitLeft = NULL;
-	float camLimitRight = NULL;
-	float camLimitTop = NULL;
-	float camLimitBottom = NULL;
-
-	float camVerticalFreeZone = NULL;
-	
-	//
-	BOOLEAN isFreeze = false;
-	ULONGLONG freezeTime = -1;
-	ULONGLONG freeze_start = -1;
-
-	
 	bool firstRender = false;
 
 	void _ParseSection_OBJECTS(string line);
-	void _ParseSection_SETTINGS(string line);
-	void _ParseSection_OW_OBJECTS(string line);
-
-	virtual void AddObject(LPGAMEOBJECT obj, int type);
-	virtual void AddEffect(LPEFFECTOBJECT obj);
-	virtual void ChangeBrickCoin(int type);
 
 	virtual void CamPosFollowPlayer();
 
@@ -93,11 +57,9 @@ public:
 	virtual void RenderOnFreeze();
 	virtual void UpdateOnFreeze(DWORD dt);
 
-	virtual void FreezeScene(int freezeTime);
-	virtual void GetIsFreeze(bool& isFreeze) { isFreeze = this->isFreeze; }
-
-	virtual void Update_OW(DWORD dt);
-	virtual void Render_OW();
+	virtual void AddObject(LPGAMEOBJECT obj, int type);
+	virtual void AddEffect(LPEFFECTOBJECT obj);
+	virtual void ChangeBrickCoin(int type);
 
 	virtual void LoadUI();
 	virtual void UpdateUI(DWORD dt);
@@ -109,14 +71,13 @@ public:
 	bool InPlayerViewPort(float x);
 
 	LPGAMEOBJECT GetPlayer() { return player; }
-	LPOWGAMEOBJECT GetOWPlayer() { return OW_player; }
 
-	void Clear();
+	virtual void Clear();
 	void ClearGameObject(vector<LPGAMEOBJECT>& objs);
 	void ClearEffectObject(vector<LPEFFECTOBJECT>& objs);
 	void ClearBackgroundObject(vector<CBackgroundObject*>& objs);
 
-	void PurgeDeletedObjects();
+	virtual void PurgeDeletedObjects();
 	void PurgeDeletedGameObjects(vector<LPGAMEOBJECT>& objs);
 	void PurgeDeletedEffectObjects(vector<LPEFFECTOBJECT>& objs);
 

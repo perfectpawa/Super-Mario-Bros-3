@@ -1,4 +1,5 @@
 #include "CoinEffect.h"
+#include "PlayScene.h"
 
 
 CCoinEffect::CCoinEffect(float x, float y) : CEffectObject(x, y)
@@ -27,7 +28,7 @@ void CCoinEffect::Update(DWORD dt)
 	{
 		CEffectObject* effect = new CScoreEffect(x, y, 100);
 
-		CGame::GetInstance()->GetCurrentScene()->AddEffect(effect);
+		dynamic_cast<CPlayScene*>(CGame::GetInstance()->GetCurrentScene())->AddEffect(effect);
 		this->Delete();
 		return;
 	}

@@ -25,6 +25,7 @@
 #include "BrickCoin.h"
 
 #include "CardBlock.h"
+#include "PlayScene.h"
 
 
 CMario::CMario(float x, float y) : CGameObject(x, y)
@@ -71,8 +72,8 @@ CMario::CMario(float x, float y) : CGameObject(x, y)
 	rightTail->SetPosition(x, y + 8);
 	leftTail->SetPosition(x, y + 8);
 
-	CGame::GetInstance()->GetCurrentScene()->AddObject(rightTail, OBJECT_TYPE_ATTACK);
-	CGame::GetInstance()->GetCurrentScene()->AddObject(leftTail, OBJECT_TYPE_ATTACK);
+	dynamic_cast<CPlayScene*>(CGame::GetInstance()->GetCurrentScene())->AddObject(rightTail, OBJECT_TYPE_ATTACK);
+	dynamic_cast<CPlayScene*>(CGame::GetInstance()->GetCurrentScene())->AddObject(leftTail, OBJECT_TYPE_ATTACK);
 
 
 }
@@ -392,7 +393,7 @@ void CMario::OnCollisionWithCoin(LPCOLLISIONEVENT e)
 	e->obj->GetPosition(x, y);
 
 	CEffectObject* scoreEffect = new CScoreEffect(x, y, 100);
-	CGame::GetInstance()->GetCurrentScene()->AddEffect(scoreEffect);
+	dynamic_cast<CPlayScene*>(CGame::GetInstance()->GetCurrentScene())->AddEffect(scoreEffect);
 
 	e->obj->Delete();
 	
@@ -430,7 +431,7 @@ void CMario::OnCollisionWithMushroom(LPCOLLISIONEVENT e)
 
 	if (mushroom->GetIs1Up()) {
 		CEffectObject* effect = new CScoreEffect(x, y, 9999);
-		CGame::GetInstance()->GetCurrentScene()->AddEffect(effect);
+		dynamic_cast<CPlayScene*>(CGame::GetInstance()->GetCurrentScene())->AddEffect(effect);
 	}
 
 	else if (level == MARIO_LEVEL_SMALL)
@@ -439,7 +440,7 @@ void CMario::OnCollisionWithMushroom(LPCOLLISIONEVENT e)
 
 		SaveFile::GetInstance()->SetMarioLevel(level);
 		CEffectObject* effect = new CScoreEffect(x - 8, y, 1000);
-		CGame::GetInstance()->GetCurrentScene()->AddEffect(effect);
+		dynamic_cast<CPlayScene*>(CGame::GetInstance()->GetCurrentScene())->AddEffect(effect);
 
 		y -= (float)(MARIO_BIG_BBOX_HEIGHT - MARIO_SMALL_BBOX_HEIGHT) / 2;
 

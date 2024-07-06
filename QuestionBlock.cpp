@@ -4,6 +4,7 @@
 #include "CoinEffect.h"
 #include "Mario.h"
 #include "debug.h"
+#include "PlayScene.h"
 
 
 CQuestionBlock::CQuestionBlock(float x, float y, int reward_type) : CGameObject(x, y)
@@ -96,7 +97,7 @@ void CQuestionBlock::GetReward()
 		break;
 	case REWARD_POWERUP:
 		int level;
-		CGameObject* playerObj = CGame::GetInstance()->GetCurrentScene()->GetPlayer();
+		CGameObject* playerObj = dynamic_cast<CPlayScene*>(CGame::GetInstance()->GetCurrentScene())->GetPlayer();
 		CMario* player = dynamic_cast<CMario*>(playerObj);
 		
 		player->GetLevel(level);
@@ -118,22 +119,22 @@ void CQuestionBlock::GetReward()
 
 void CQuestionBlock::SpawnCoinEffect() {
 	CEffectObject* coinEffect = new CCoinEffect(x, y - 16);
-	CGame::GetInstance()->GetCurrentScene()->AddEffect(coinEffect);
+	dynamic_cast<CPlayScene*>(CGame::GetInstance()->GetCurrentScene())->AddEffect(coinEffect);
 	SaveFile::GetInstance()->AddCoin(1);
 }
 
 void CQuestionBlock::SpawnMusroom()
 {
 	CMushroom* mushroom = new CMushroom(x, y);
-	CGame::GetInstance()->GetCurrentScene()->AddObject(mushroom, OBJECT_TYPE_MUSHROOM);
+	dynamic_cast<CPlayScene*>(CGame::GetInstance()->GetCurrentScene())->AddObject(mushroom, OBJECT_TYPE_MUSHROOM);
 }
 void CQuestionBlock::SpawnLeaf()
 {
 	CLeaf* leaf = new CLeaf(x, y - 16);
-	CGame::GetInstance()->GetCurrentScene()->AddObject(leaf, OBJECT_TYPE_LEAF);
+	dynamic_cast<CPlayScene*>(CGame::GetInstance()->GetCurrentScene())->AddObject(leaf, OBJECT_TYPE_LEAF);
 }
 void CQuestionBlock::Spawn1Up()
 {
 	CMushroom* mushroom = new CMushroom(x, y, true);
-	CGame::GetInstance()->GetCurrentScene()->AddObject(mushroom, OBJECT_TYPE_MUSHROOM);
+	dynamic_cast<CPlayScene*>(CGame::GetInstance()->GetCurrentScene())->AddObject(mushroom, OBJECT_TYPE_MUSHROOM);
 }

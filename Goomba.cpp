@@ -1,5 +1,6 @@
 #include "Goomba.h"
 #include "ScoreEffect.h"
+#include "PlayScene.h"
 
 CGoomba::CGoomba(float x, float y):CGameObject(x, y)
 {
@@ -119,5 +120,5 @@ void CGoomba::TakeDamage(bool isKnockOut)
 	}
 
 	CEffectObject* effect = new CScoreEffect(x, y, 100);
-	CGame::GetInstance()->GetCurrentScene()->AddEffect(effect);
+	dynamic_cast<CPlayScene*>(CGame::GetInstance()->GetCurrentScene())->AddEffect(effect);
 }

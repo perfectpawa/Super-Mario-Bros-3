@@ -7,7 +7,7 @@
 #include "Texture.h"
 #include "Animations.h"
 #include "PlayScene.h"
-#include "OW_Mario.h"
+#include "PlayOverworldScene.h"
 
 CGame * CGame::__instance = NULL;
 
@@ -461,8 +461,20 @@ void CGame::_ParseSection_SCENES(string line)
 	int id = atoi(tokens[0].c_str());
 	LPCWSTR path = ToLPCWSTR(tokens[1]);   // file: ASCII format (single-byte char) => Wide Char
 
+	if(tokens.size() == 3)
+	{
+		bool isOW = atoi(tokens[2].c_str()) == 1;
+		if(isOW)
+		{
+			LPSCENE scene = new CPlayOverworldScene(id, path);
+			scenes[id] = scene;
+			return;
+		}
+	}
+
 	LPSCENE scene = new CPlayScene(id, path);
 	scenes[id] = scene;
+
 }
 
 void CGame::_ParseSection_SAVEFILES(string line)

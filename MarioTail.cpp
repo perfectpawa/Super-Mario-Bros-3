@@ -9,6 +9,7 @@
 #include "QuestionBlock.h"
 
 #include "debug.h"
+#include "PlayScene.h"
 
 CMarioTail::CMarioTail()
 {
@@ -33,7 +34,7 @@ void CMarioTail::OnCollisionWith(LPCOLLISIONEVENT e)
 			float x, y;
 			goomba->GetPosition(x, y);
 			CEffectObject* effect = new CCollisionEffect(x, y);
-			CGame::GetInstance()->GetCurrentScene()->AddEffect(effect);
+			dynamic_cast<CPlayScene*>(CGame::GetInstance()->GetCurrentScene())->AddEffect(effect);
 		}
 	}
 	else if(dynamic_cast<CParaGoomba*>(e->obj))
@@ -47,7 +48,7 @@ void CMarioTail::OnCollisionWith(LPCOLLISIONEVENT e)
 			float x, y;
 			goomba->GetPosition(x, y);
 			CEffectObject* effect = new CCollisionEffect(x, y);
-			CGame::GetInstance()->GetCurrentScene()->AddEffect(effect);
+			dynamic_cast<CPlayScene*>(CGame::GetInstance()->GetCurrentScene())->AddEffect(effect);
 		}
 	}
 	if(dynamic_cast<CKoopas*>(e->obj))
@@ -57,7 +58,7 @@ void CMarioTail::OnCollisionWith(LPCOLLISIONEVENT e)
 		float x, y;
 		koopas->GetPosition(x, y);
 		CEffectObject* effect = new CCollisionEffect(x, y);
-		CGame::GetInstance()->GetCurrentScene()->AddEffect(effect);
+		dynamic_cast<CPlayScene*>(CGame::GetInstance()->GetCurrentScene())->AddEffect(effect);
 	}
 
 	if(dynamic_cast<CBrickCoin*>(e->obj))

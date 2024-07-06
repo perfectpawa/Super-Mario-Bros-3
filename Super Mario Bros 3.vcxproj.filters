@@ -309,6 +309,9 @@
     <ClCompile Include="LoadVisual.cpp">
       <Filter>Source Files\Visual</Filter>
     </ClCompile>
+    <ClCompile Include="PlayOverworldScene.cpp">
+      <Filter>Source Files\Scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AssetIDs.h">
@@ -493,6 +496,9 @@
     </ClInclude>
     <ClInclude Include="LoadVisual.h">
       <Filter>Header Files\Visual</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayOverworldScene.h">
+      <Filter>Header Files\Scene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -1,6 +1,7 @@
 #include "BrickCoin.h"
 #include "Animations.h"
 #include "Button.h"
+#include "PlayScene.h"
 
 CBrickCoin::CBrickCoin(float x, float y, int type) : CBrick(x, y, 0)
 {
@@ -26,5 +27,5 @@ void CBrickCoin::Breaking(bool canTakeButton)
 	hited = true;
 	
 	CButton* button = new CButton(x, y - 16);
-	CGame::GetInstance()->GetCurrentScene()->AddObject(button, OBJECT_TYPE_BUTTON);
+	dynamic_cast<CPlayScene*>(CGame::GetInstance()->GetCurrentScene())->AddObject(button, OBJECT_TYPE_BUTTON);
 }

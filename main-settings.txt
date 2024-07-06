@@ -6,7 +6,7 @@ savefile	1
 # type: 0: intro, 1: play scene 
 [SCENES]
 0	intro.txt
-1	overworld.txt
+1	overworld.txt	1
 10	scene001.txt
 11	scene001-bonus.txt
 99	playground.txt

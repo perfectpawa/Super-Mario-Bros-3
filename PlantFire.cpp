@@ -2,6 +2,7 @@
 #include "Sprites.h"
 #include "AssetIDs.h"
 #include "FireBall.h"
+#include "PlayScene.h"
 
 CPlantFire::CPlantFire(float x, float y, int height) : CPlant(x, y, height, PLANT_COLOR_RED)
 {
@@ -52,7 +53,7 @@ void CPlantFire::Attack()
 		if (playerInLeft) xx -= 2;
 		else xx += 2;
 
-		CGame::GetInstance()->GetCurrentScene()->AddObject(new CFireBall(xx, y, mx, my), OBJECT_TYPE_ATTACK);
+		dynamic_cast<CPlayScene*>(CGame::GetInstance()->GetCurrentScene())->AddObject(new CFireBall(xx, y, mx, my), OBJECT_TYPE_ATTACK);
 	}
 
 	CPlant::Attack();

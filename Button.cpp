@@ -1,5 +1,6 @@
 #include "Button.h"
 #include "debug.h"
+#include "PlayScene.h"
 CButton::CButton(float x, float y) : CGameObject(x, y)
 {
 }
@@ -16,7 +17,7 @@ void CButton::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	if (pressed && GetTickCount64() - countdown_start > COUNTDOWN)
 	{
-		CGame::GetInstance()->GetCurrentScene()->ChangeBrickCoin(1);
+		dynamic_cast<CPlayScene*>(CGame::GetInstance()->GetCurrentScene())->ChangeBrickCoin(1);
 		countdown_start = -1;
 	}
 }
@@ -32,5 +33,5 @@ void CButton::Pressing()
 	if(pressed) return;
 	pressed = true;
 	countdown_start = GetTickCount64();
-	CGame::GetInstance()->GetCurrentScene()->ChangeBrickCoin(0);
+	dynamic_cast<CPlayScene*>(CGame::GetInstance()->GetCurrentScene())->ChangeBrickCoin(0);
 }

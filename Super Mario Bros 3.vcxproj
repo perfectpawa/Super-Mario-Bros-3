@@ -169,6 +169,7 @@
     <ClCompile Include="Plant.cpp" />
     <ClCompile Include="PlantFire.cpp" />
     <ClCompile Include="Platform.cpp" />
+    <ClCompile Include="PlayOverworldScene.cpp" />
     <ClCompile Include="PlayScene.cpp" />
     <ClCompile Include="Portal.cpp" />
     <ClCompile Include="QuestionBlock.cpp" />
@@ -224,6 +225,7 @@
     <ClInclude Include="OW_Terrain.h" />
     <ClInclude Include="Plant.h" />
     <ClInclude Include="PlantFire.h" />
+    <ClInclude Include="PlayOverworldScene.h" />
     <ClInclude Include="PlayScene.h" />
     <ClInclude Include="SaveFile.h" />
     <ClInclude Include="ScoreEffect.h" />
