@@ -1,11 +1,12 @@
 [PLAYER]
-mario_level	1
+mario_level	3
 life	3
-coin	55
-score	5799
+coin	67
+score	6999
 [CARD]
 1	2	3
 [OVERWORLD]
 world	1
 save_point	16.000000	32.000000
 last_stand	48.000000	0.000000
+[SUBWORLDHAVECOMPLETE]

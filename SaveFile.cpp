@@ -58,6 +58,13 @@ void SaveFile::Save(int save_file_id)
 	f << "save_point\t" << to_string(save_point_x) << "\t" << to_string(save_point_y) << endl;
 	f << "last_stand\t" << to_string(last_stand_x) << "\t" << to_string(last_stand_y) << endl;
 
+	f << "[SUBWORLDHAVECOMPLETE]" << endl;
+	for (int i = 0; i < subWorldHasComplete.size(); i++)
+	{
+		f << to_string(subWorldHasComplete[i]) << "\t";
+	}
+
+
 	f.close();
 }
 
@@ -114,6 +121,15 @@ void SaveFile::LoadWorld(string line)
 	}
 }
 
+void SaveFile::LoadSubWorldHasComplete(string line)
+{
+	vector<string> tokens = split(line);
+	for (int i = 0; i < tokens.size(); i++)
+	{
+		subWorldHasComplete.push_back(atoi(tokens[i].c_str()));
+	}
+}
+
 void SaveFile::Load(int save_file_id)
 {
 	this->save_file_id = save_file_id;
@@ -135,6 +151,7 @@ void SaveFile::Load(int save_file_id)
 		if (line == "[PLAYER]") { section = SECTION_PLAYER; continue; };
 		if (line == "[CARD]") { section = SECTION_CARD; continue; };
 		if (line == "[OVERWORLD]") { section = SECTION_OVERWORLD; continue; };
+		if (line == "[SUBWORLDHAVECOMPLETE]") { section = SECTION_SUBWORLDHAVECOMPLETE; continue; };
 		if (line[0] == '[') { section = SECTION_UNKNOWN; continue; }
 
 
@@ -143,6 +160,7 @@ void SaveFile::Load(int save_file_id)
 		case SECTION_PLAYER: LoadPlayer(line); break;
 		case SECTION_CARD: LoadCard(line); break;
 		case SECTION_OVERWORLD: LoadWorld(line); break;
+		case SECTION_SUBWORLDHAVECOMPLETE: LoadSubWorldHasComplete(line); break;
 		}
 	}
 	f.close();
