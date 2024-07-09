@@ -1,6 +1,7 @@
 #include "BrickCoin.h"
 #include "Animations.h"
 #include "Button.h"
+#include "BreakingEffect.h"
 #include "PlayScene.h"
 
 CBrickCoin::CBrickCoin(float x, float y, int type) : CBrick(x, y, 0)
@@ -18,6 +19,8 @@ void CBrickCoin::Breaking(bool canTakeButton)
 {
 	if (type != TYPE_HAVE_BUTTON) {
 		this->Delete();
+		CEffectObject* effect = new CBreakingEffect(x, y);
+		dynamic_cast<CPlayScene*>(CGame::GetInstance()->GetCurrentScene())->AddEffect(effect);
 		return;
 	}
 

@@ -131,6 +131,7 @@
     <ClCompile Include="Animation.cpp" />
     <ClCompile Include="Animations.cpp" />
     <ClCompile Include="BackgroundObject.cpp" />
+    <ClCompile Include="BreakingEffect.cpp" />
     <ClCompile Include="Brick.cpp" />
     <ClCompile Include="BrickCoin.cpp" />
     <ClCompile Include="Button.cpp" />
@@ -191,6 +192,7 @@
     <ClInclude Include="Animations.h" />
     <ClInclude Include="AssetIDs.h" />
     <ClInclude Include="BackgroundObject.h" />
+    <ClInclude Include="BreakingEffect.h" />
     <ClInclude Include="Brick.h" />
     <ClInclude Include="BrickCoin.h" />
     <ClInclude Include="Button.h" />

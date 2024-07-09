@@ -205,7 +205,7 @@ void CMario::PickUpBehavior() {
 }
 
 void CMario::RacoonBehavior() {
-	if (wantWhip) SetState(MARIO_STATE_WHIP);
+	if (wantWhip && !isSitting) SetState(MARIO_STATE_WHIP);
 	
 	if(!isFlying && wantFloat) SetState(MARIO_STATE_FLOAT);
 

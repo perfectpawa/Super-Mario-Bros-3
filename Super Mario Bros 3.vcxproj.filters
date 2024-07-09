@@ -312,6 +312,9 @@
     <ClCompile Include="PlayOverworldScene.cpp">
       <Filter>Source Files\Scene</Filter>
     </ClCompile>
+    <ClCompile Include="BreakingEffect.cpp">
+      <Filter>Source Files\Object\EffectObject</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AssetIDs.h">
@@ -499,6 +502,9 @@
     </ClInclude>
     <ClInclude Include="PlayOverworldScene.h">
       <Filter>Header Files\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="BreakingEffect.h">
+      <Filter>Header Files\Object\EffectObject</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

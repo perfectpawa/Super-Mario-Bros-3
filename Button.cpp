@@ -7,9 +7,9 @@ CButton::CButton(float x, float y) : CGameObject(x, y)
 
 void CButton::GetBoundingBox(float& l, float& t, float& r, float& b)
 {
-	l = x - 16 / 2;
+	l = x - 12 / 2;
 	t = y - 16 / 2;
-	r = l + 16;
+	r = l + 12;
 	b = t + 16;
 }
 
