@@ -33,5 +33,7 @@ void CButton::Pressing()
 	if(pressed) return;
 	pressed = true;
 	countdown_start = GetTickCount64();
-	dynamic_cast<CPlayScene*>(CGame::GetInstance()->GetCurrentScene())->ChangeBrickCoin(0);
+	CPlayScene* scene = dynamic_cast<CPlayScene*>(CGame::GetInstance()->GetCurrentScene());
+	scene->ChangeBrickCoin(0);
+	scene->CamSkake();
 }

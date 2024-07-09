@@ -9,6 +9,8 @@
 
 #define VIEWPORT_WIDTH 528
 
+#define CAM_SHAKE_TIME 200
+
 class CPlayScene : public CScene
 {
 protected:
@@ -36,6 +38,9 @@ protected:
 	vector<CBackgroundObject*> backgroundObjs;
 
 	bool firstRender = false;
+
+	bool isCamShaking = false;
+	ULONGLONG camShake_start = -1;
 
 	void _ParseSection_OBJECTS(string line);
 
@@ -67,6 +72,8 @@ public:
 	virtual void UpdateUIPosFixedCam(float cx, float cy);
 	virtual void UpdateUITimeLimit(DWORD dt);
 	virtual void UpdateUIPower();
+
+	void CamSkake() { this->isCamShaking = true; this->camShake_start = GetTickCount64(); }
 
 	bool InPlayerViewPort(float x);
 

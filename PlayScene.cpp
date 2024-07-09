@@ -786,6 +786,20 @@ void CPlayScene::CamPosFollowPlayer() {
 
 	if (camLimitBottom != NULL && cy > camLimitBottom) cy = camLimitBottom;
 
+	//check is cam shaking
+	if (isCamShaking) {
+		ULONGLONG now = GetTickCount64();
+		if (now - camShake_start > CAM_SHAKE_TIME) {
+			isCamShaking = false;
+		}
+		else {
+			//random dx, dy from -5 to 5
+			int dx = (rand() % 11 - 5);
+			int dy = (rand() % 11 - 5);
+			cx += dx;
+			cy += dy;
+		}
+	}
 
 	CGame::GetInstance()->SetCamPos(cx, cy);
 }
