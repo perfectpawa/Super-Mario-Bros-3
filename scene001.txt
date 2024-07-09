@@ -33,7 +33,7 @@ background_color	156	252	240
 cam_limit	8	2824	32	-16	64	
 [OBJECTS]
 # MARIO
-0	2272	-160
+0	16	144
 
 # CARD BLOCK
 699	2720	96

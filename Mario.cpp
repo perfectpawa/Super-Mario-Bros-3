@@ -97,18 +97,27 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	
 	if (koopasPickedUp != NULL) PickUpBehavior();
 
+	UpdateTail(dt, coObjects);
+
+	if (y > MARIO_MAX_Y) {
+		SetLevel(MARIO_LEVEL_SMALL);
+		TakingDamage();
+	}
+}
+
+void CMario::UpdateTail(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 	float rightTail_vx = vx;
 	float leftTail_vx = vx;
 
-	if (state == MARIO_STATE_WHIP) {
+	if (state == MARIO_STATE_WHIP && (GetTickCount64() - whip_start > MARIO_WHIP_TIME / 2)) {
 		rightTail_vx = MARIO_RUNNING_SPEED;
 		leftTail_vx = -MARIO_RUNNING_SPEED;
 
 		float rightTail_x, rightTail_y;
 		rightTail->GetPosition(rightTail_x, rightTail_y);
 
-		if(abs(x - rightTail_x) > 12) rightTail->SetPosition(x, y + 8);
-		
+		if (abs(x - rightTail_x) > 12) rightTail->SetPosition(x, y + 8);
+
 		float leftTail_x, leftTail_y;
 		leftTail->GetPosition(leftTail_x, leftTail_y);
 
@@ -125,11 +134,6 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 	rightTail->SetSpeed(rightTail_vx, vy);
 	leftTail->SetSpeed(leftTail_vx, vy);
-
-	if (y > MARIO_MAX_Y) {
-		SetLevel(MARIO_LEVEL_SMALL);
-		TakingDamage();
-	}
 }
 
 void CMario::MovingBehavior(DWORD dt) {

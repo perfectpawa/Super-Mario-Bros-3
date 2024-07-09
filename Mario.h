@@ -200,6 +200,7 @@ class CMario : public CGameObject
 public:
 	CMario(float x, float y);
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
+	void UpdateTail(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	void Render();
 	void SetState(int state);
 	void GetState(int& s) { s = this->state; }

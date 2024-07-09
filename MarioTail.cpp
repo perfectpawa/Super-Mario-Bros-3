@@ -64,13 +64,13 @@ void CMarioTail::OnCollisionWith(LPCOLLISIONEVENT e)
 	if(dynamic_cast<CBrickCoin*>(e->obj))
 	{
 		CBrickCoin* brick = dynamic_cast<CBrickCoin*>(e->obj);
-		brick->Breaking(false);
+		brick->Breaking(true);
 	}
 	else
 	if(dynamic_cast<CBrick*>(e->obj))
 	{
 		CBrick* brick = dynamic_cast<CBrick*>(e->obj);
-		brick->Breaking(true);
+		brick->Breaking();
 	}
 
 	if(dynamic_cast<CQuestionBlock*>(e->obj))
