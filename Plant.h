@@ -48,4 +48,5 @@ public:
 	virtual int IsBlocking() { return 0; }
 	virtual void SetState(int state);
 	virtual void Attack();
+	virtual void TakeDamage();
 };

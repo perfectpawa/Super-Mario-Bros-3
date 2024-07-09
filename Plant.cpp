@@ -3,6 +3,10 @@
 #include "Animations.h"
 #include "AssetIDs.h"
 
+#include "CollisionEffect.h"
+#include "ScoreEffect.h"
+#include "PlayScene.h"
+
 CPlant::CPlant(float x, float y, int height, int color) : CGameObject(x,y)
 {
 	this->height = height;
@@ -101,4 +105,15 @@ void CPlant::Attack()
 		attack_start = -1;
 		SetState(PLANT_STATE_GROW_DOWN);
 	}
+}
+
+void CPlant::TakeDamage()
+{
+	CEffectObject* effect = new CCollisionEffect(x, y);
+	dynamic_cast<CPlayScene*>(CGame::GetInstance()->GetCurrentScene())->AddEffect(effect);
+	
+	effect = new CScoreEffect(x, y, 100);
+	dynamic_cast<CPlayScene*>(CGame::GetInstance()->GetCurrentScene())->AddEffect(effect);
+
+	this->Delete();
 }

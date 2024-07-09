@@ -3,6 +3,7 @@
 #include "Goomba.h"
 #include "ParaGoomba.h"
 #include "Koopas.h"
+#include "Plant.h"
 #include "Brick.h"
 #include "BrickCoin.h"
 #include "CollisionEffect.h"
@@ -79,6 +80,12 @@ void CMarioTail::OnCollisionWith(LPCOLLISIONEVENT e)
 		if (questionBlock->GetState() == QBLOCK_STATE_IDLE) {
 			questionBlock->SetState(QBLOCK_STATE_BOUND_UP);
 		}
+	}
+
+	if(dynamic_cast<CPlant*>(e->obj))
+	{
+		CPlant* plant = dynamic_cast<CPlant*>(e->obj);
+		plant->TakeDamage();
 	}
 
 }

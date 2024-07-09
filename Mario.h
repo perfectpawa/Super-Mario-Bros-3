@@ -160,7 +160,7 @@ class CMario : public CGameObject
 
 	CCardBlock* cardBlock = nullptr;
 
-	int freezeId = -1;
+	int freezeId = ID_ANI_MARIO_IDLE_LEFT;
 
 	void OnCollisionWithGoomba(LPCOLLISIONEVENT e);
 	void OnCollisionWithKoopas(LPCOLLISIONEVENT e);
