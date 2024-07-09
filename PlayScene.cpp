@@ -644,14 +644,14 @@ void CPlayScene::Render()
 	for (int i = 0; i < tubeObjs.size(); i++)
 		tubeObjs[i]->Render();
 
-	//render hud
-	if (mainHUD != NULL) mainHUD->Render();
-
 	//render effectObjs
 	if (!isFreeze) {
 		for (int i = 0; i < effectObjs.size(); i++)
 			effectObjs[i]->Render();
 	}
+
+	//render hud
+	if (mainHUD != NULL) mainHUD->Render();
 }
 
 void CPlayScene::RenderOnFreeze() {
