@@ -1,6 +1,6 @@
 [PLAYER]
 mario_level	1
-life	2
+life	1
 coin	70
 score	7699
 [CARD]

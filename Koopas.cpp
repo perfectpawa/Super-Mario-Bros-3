@@ -95,8 +95,13 @@ void CKoopas::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 
 void CKoopas::OnCollisionWithKoopas(LPCOLLISIONEVENT e)
 {
-	if (state != KOOPAS_STATE_SLIDE) return;
 	CKoopas* koopas = dynamic_cast<CKoopas*>(e->obj);
+	
+	if (koopas->GetState() == KOOPAS_STATE_HIDE && this->state == KOOPAS_STATE_WALKING) {
+		vx = -vx;
+	}
+
+	if (state != KOOPAS_STATE_SLIDE) return;
 
 	if (koopas->GetState() != KOOPAS_STATE_SLIDE)
 	{
