@@ -82,9 +82,6 @@ void COWMario::Moving(DWORD dt)
 	x += moveHorizontal * MOVE_SPEED * dt;
 	y += moveVertical * MOVE_SPEED * dt;
 
-	//debug out x,y, end_x, end_y
-	DebugOut(L"[INFO] x: %f, y: %f, end_x: %f, end_y: %f\n", x, y, end_x, end_y);
-
 	if (moveHorizontal > 0) {
 		if (x > end_x) x = end_x;
 	}
@@ -117,13 +114,28 @@ void COWMario::GetMoveDestination(vector<COWGameObject*>* coObjects)
 		end_y += moveVertical * 16;
 
 		if (CheckValid(end_x, end_y, coObjects, obj)) {
-			if (dynamic_cast<COWPath*>(obj) 
-				&& !dynamic_cast<COWPath*>(obj)->CanGoIn()) {
+			if (dynamic_cast<COWPath*>(obj)) {
+				COWPath* path = (COWPath*)obj;
+				
+				if(!path->CanGoIn() && path->IsPoint()) {
+					end_x = start_x;
+					end_y = start_y;
+					break;
+				}
+
+				if (path->IsPoint()) break;
+
 				continue;
 			}
 
 			if (obj->CanGoIn()) {
-				portalId = ((COWPortal*)obj)->GetSceneId();
+				if (dynamic_cast<COWPortal*>(obj)) {
+					COWPortal* portal = (COWPortal*)obj;
+					portalId = portal->GetSceneId();
+				}
+				else {
+					portalId = -1;
+				}
 				break;
 			}
 

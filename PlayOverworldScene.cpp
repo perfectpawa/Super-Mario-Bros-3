@@ -46,7 +46,18 @@ void CPlayOverworldScene::_ParseSection_OBJECTS(string line) {
 		bool isVertical = (atoi(tokens[4].c_str()) == 1);
 		bool haveTurn = (atoi(tokens[5].c_str()) == 1);
 
-		COWPath* path = new COWPath(x, y, isGoIn, isVertical, haveTurn);
+		bool isPoint = isGoIn;
+
+		bool levelBlock = 0;
+
+		if (tokens.size() == 7) {
+			levelBlock = (atoi(tokens[6].c_str()) == 1);
+		}
+
+		if(levelBlock != 0 && !SaveFile::GetInstance()->isLevelHasComplete(levelBlock)) isGoIn = false;
+
+
+		COWPath* path = new COWPath(x, y, isGoIn, isPoint, isVertical, haveTurn);
 		pathObjs.push_back(path);
 
 		break;
@@ -67,8 +78,16 @@ void CPlayOverworldScene::_ParseSection_OBJECTS(string line) {
 	case OW_OBJ_TYPE_PORTAL: {
 		int portalId = atoi(tokens[3].c_str());
 
-		COWPortal* portal = new COWPortal(x, y, true, portalId);
-		portalObjs.push_back(portal);
+		//check is level has complete
+		if (SaveFile::GetInstance()->isLevelHasComplete(portalId)) {
+			COWPoint* levelCompleted = new COWPoint(x, y, true, OW_POINT_TYPE_LEVEL_COMPLETED);
+			pointObjs.push_back(levelCompleted);
+		}
+		else {
+			COWPortal* portal = new COWPortal(x, y, true, portalId);
+			portalObjs.push_back(portal);
+		}
+
 		break;
 	}
 	case OW_OBJ_TYPE_POINT: {

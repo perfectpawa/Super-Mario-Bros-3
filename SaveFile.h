@@ -14,7 +14,7 @@ using namespace std;
 #define SECTION_PLAYER 1
 #define SECTION_CARD 2
 #define SECTION_OVERWORLD 3
-#define SECTION_SUBWORLDHAVECOMPLETE	4
+#define SECTION_LEVELHAVECOMPLETE	4
 
 class SaveFile {
 	static SaveFile* __instance;
@@ -35,7 +35,7 @@ class SaveFile {
 	float last_stand_x;
 	float last_stand_y;
 
-	vector<int> subWorldHasComplete;
+	vector<int> levelHasComplete;
 
 public:
 	SaveFile();
@@ -47,7 +47,14 @@ public:
 	void LoadPlayer(string line);
 	void LoadCard(string line);
 	void LoadWorld(string line);
-	void LoadSubWorldHasComplete(string line);
+	void LoadLevelHasComplete(string line);
+
+	bool isLevelHasComplete(int level) {
+		for (int i = 0; i < levelHasComplete.size(); i++) {
+			if (levelHasComplete[i] == level) return true;
+		}
+		return false;
+	}
 
 	void SetMarioLevel(int mario_level) { this->mario_level = mario_level; }
 	int GetMarioLevel() { return mario_level; }
