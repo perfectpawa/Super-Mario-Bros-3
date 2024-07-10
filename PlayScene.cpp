@@ -43,8 +43,8 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath) :
 	mainHUD = NULL;
 	key_handler = new CLevelKeyHandler(this);
 
-	minCamOffset = CGame::GetInstance()->GetBackBufferHeight() / 2.0f;
-	maxCamOffset = CGame::GetInstance()->GetBackBufferHeight() / 4.0f;
+	minCamOffset = CGame::GetInstance()->GetBackBufferHeight() / 4.0f;
+	maxCamOffset = CGame::GetInstance()->GetBackBufferHeight() / 2.0f;
 }
 
 #pragma region Parse Section
@@ -81,8 +81,8 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		player = (CMario*)obj;  */
 
 		player = new CMario(x, y);
-		minCamPos = y - maxCamOffset;
-		maxCamPos = y - minCamOffset;
+		maxCamPos = y - maxCamOffset;
+		minCamPos = y - minCamOffset;
 
 		DebugOut(L"[INFO] Player object has been created!\n");
 
@@ -783,12 +783,12 @@ void CPlayScene::CamPosFollowPlayer() {
 	game->GetCamPos(ocx, ocy);
 
 	float cx = px - (float)game->GetBackBufferWidth() / 2;
-	float cy = py - minCamOffset;
+	float cy = py - maxCamOffset;
 
 	if (cy >= maxCamPos) {
 		isReachMaxCamPos = true;
-		maxCamPos = py - minCamOffset;
-		minCamPos = py - maxCamOffset;
+		maxCamPos = py - maxCamOffset;
+		minCamPos = py - minCamOffset;
 		cy = maxCamPos;
 	}
 	else {
@@ -797,8 +797,8 @@ void CPlayScene::CamPosFollowPlayer() {
 
 	if (cy <= minCamPos) {
 		isReachMinCamPos = true;
-		maxCamPos = py - minCamOffset;
-		minCamPos = py - maxCamOffset;
+		maxCamPos = py - maxCamOffset;
+		minCamPos = py - minCamOffset;
 		cy = minCamPos;
 	}
 	else {
@@ -960,8 +960,8 @@ void CPlayScene::UpdateUIPower() {
 
 void CPlayScene::SetDefaultPos(float x, float y) {
 	this->player->SetPosition(x, y);
-	minCamPos = y - maxCamOffset;
-	maxCamPos = y - minCamOffset;
+	maxCamPos = y - maxCamOffset;
+	minCamPos = y - minCamOffset;
 	CamPosFollowPlayer();
 }
 
