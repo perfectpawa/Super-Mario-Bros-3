@@ -42,6 +42,9 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath) :
 	player = NULL;
 	mainHUD = NULL;
 	key_handler = new CLevelKeyHandler(this);
+
+	minCamOffset = CGame::GetInstance()->GetBackBufferHeight() / 2.0f;
+	maxCamOffset = CGame::GetInstance()->GetBackBufferHeight() / 4.0f;
 }
 
 #pragma region Parse Section
@@ -78,6 +81,8 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		player = (CMario*)obj;  */
 
 		player = new CMario(x, y);
+		minCamPos = y - maxCamOffset;
+		maxCamPos = y - minCamOffset;
 
 		DebugOut(L"[INFO] Player object has been created!\n");
 
@@ -769,24 +774,52 @@ bool CPlayScene::IsEffectObjectDeleted(const LPEFFECTOBJECT& o) { return o == NU
 #pragma region Utils
 
 void CPlayScene::CamPosFollowPlayer() {
-	float cx, cy, ocx, ocy;
-	player->GetPosition(cx, cy);
 	CGame* game = CGame::GetInstance();
+	float px, py, vx, vy, ocx, ocy;
+	
+	player->GetPosition(px, py);
+	player->GetSpeed(vx, vy);
+
 	game->GetCamPos(ocx, ocy);
 
+	float cx = px - (float)game->GetBackBufferWidth() / 2;
+	float cy = py - minCamOffset;
 
-	cx -= (float)game->GetBackBufferWidth() / 2;
-	cy -= (float)game->GetBackBufferHeight() / 2;
+	if (cy >= maxCamPos) {
+		isReachMaxCamPos = true;
+		maxCamPos = py - minCamOffset;
+		minCamPos = py - maxCamOffset;
+		cy = maxCamPos;
+	}
+	else {
+		isReachMaxCamPos = false;
+	}
 
-	if(camLimitLeft != NULL && cx < camLimitLeft) cx = camLimitLeft;
-	if (camLimitRight != NULL && cx > camLimitRight - game->GetBackBufferWidth()) cx = camLimitRight - game->GetBackBufferWidth();
+	if (cy <= minCamPos) {
+		isReachMinCamPos = true;
+		maxCamPos = py - minCamOffset;
+		minCamPos = py - maxCamOffset;
+		cy = minCamPos;
+	}
+	else {
+		isReachMinCamPos = false;
+	}
 
+	if (!isReachMaxCamPos && !isReachMinCamPos) {
+		cy = ocy;
+	}
 
-	if (camLimitTop != NULL && cy < camLimitTop - game->GetBackBufferHeight()) cy = camLimitTop - game->GetBackBufferHeight();
+	if(camLimitLeft != NULL && cx < camLimitLeft) 
+		cx = camLimitLeft;
+	if (camLimitRight != NULL && cx > camLimitRight - game->GetBackBufferWidth()) 
+		cx = camLimitRight - game->GetBackBufferWidth();
 
-	if (camLimitBottom != NULL && cy > camLimitBottom) cy = camLimitBottom;
+	if (camLimitBottom != NULL && cy > camLimitBottom) 
+		cy = camLimitBottom;
+	if (camLimitTop != NULL && cy < camLimitTop - game->GetBackBufferHeight()) 
+		cy = camLimitTop - game->GetBackBufferHeight();
 
-	//check is cam shaking
+	//cam shake behavior
 	if (isCamShaking) {
 		ULONGLONG now = GetTickCount64();
 		if (now - camShake_start > CAM_SHAKE_TIME) {
@@ -927,6 +960,8 @@ void CPlayScene::UpdateUIPower() {
 
 void CPlayScene::SetDefaultPos(float x, float y) {
 	this->player->SetPosition(x, y);
+	minCamPos = y - maxCamOffset;
+	maxCamPos = y - minCamOffset;
 	CamPosFollowPlayer();
 }
 

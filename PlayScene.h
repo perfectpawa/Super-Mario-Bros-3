@@ -37,6 +37,15 @@ protected:
 
 	vector<CBackgroundObject*> backgroundObjs;
 
+	float minCamOffset = 0;
+	float maxCamOffset = 0;
+
+	float minCamPos = 0;
+	float maxCamPos = 0;
+
+	bool isReachMinCamPos = false;
+	bool isReachMaxCamPos = false;
+
 	bool firstRender = false;
 
 	bool isCamShaking = false;
