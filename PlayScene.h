@@ -7,7 +7,7 @@
 #include "EffectObject.h"
 #include "HUD.h"
 
-#define VIEWPORT_WIDTH 528
+#define VIEWPORT_WIDTH 534
 
 #define CAM_SHAKE_TIME 200
 

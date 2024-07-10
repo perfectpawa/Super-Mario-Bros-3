@@ -29,6 +29,8 @@ public:
 	virtual void Load();
 	virtual void Unload();
 
+	virtual void LoadSave();
+
 	virtual void Update(DWORD dt);
 	virtual void Render();
 

@@ -5,9 +5,8 @@
 class COWPath: public COWGameObject {
 protected:
 	bool isVertical;
-	bool haveCoin;
 	bool haveTurn;
 public:
-	COWPath(float x, float y, bool canGoIn, bool isVertical, bool haveCoin, bool haveTurn);
+	COWPath(float x, float y, bool canGoIn, bool isVertical, bool haveTurn);
 	void Render();
 };

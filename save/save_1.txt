@@ -1,8 +1,8 @@
 [PLAYER]
 mario_level	1
-life	-2
-coin	70
-score	7699
+life	-3
+coin	93
+score	20298
 [CARD]
 1	2	3
 [OVERWORLD]

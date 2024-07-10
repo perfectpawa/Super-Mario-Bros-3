@@ -30,8 +30,6 @@ void CPlayOverworldScene::_ParseSection_OBJECTS(string line) {
 			return;
 		}
 
-		SaveFile::GetInstance()->GetLastStand(x, y);
-
 		player = new COWMario(x, y, true);
 
 		DebugOut(L"[INFO] Player object has been created!\n");
@@ -44,17 +42,12 @@ void CPlayOverworldScene::_ParseSection_OBJECTS(string line) {
 		break;
 	}
 	case OW_OBJ_TYPE_PATH: {
-		int prePortal = atoi(tokens[3].c_str());
+		bool isGoIn = (atoi(tokens[3].c_str()) == 1);
 		bool isVertical = (atoi(tokens[4].c_str()) == 1);
-		bool haveCoin = (atoi(tokens[5].c_str()) == 1);
-		bool haveTurn = (atoi(tokens[6].c_str()) == 1);
+		bool haveTurn = (atoi(tokens[5].c_str()) == 1);
 
-		bool isGoIn = true;
-
-		COWPath* path = new COWPath(x, y, isGoIn, isVertical, haveCoin, haveTurn);
+		COWPath* path = new COWPath(x, y, isGoIn, isVertical, haveTurn);
 		pathObjs.push_back(path);
-
-
 
 		break;
 	}
@@ -74,9 +67,7 @@ void CPlayOverworldScene::_ParseSection_OBJECTS(string line) {
 	case OW_OBJ_TYPE_PORTAL: {
 		int portalId = atoi(tokens[3].c_str());
 
-		bool isGoIn = true;
-
-		COWPortal* portal = new COWPortal(x, y, isGoIn, portalId);
+		COWPortal* portal = new COWPortal(x, y, true, portalId);
 		portalObjs.push_back(portal);
 		break;
 	}
@@ -131,7 +122,17 @@ void CPlayOverworldScene::Load()
 
 	CGame::GetInstance()->SetBackgroundColor(backgroundColor);
 
+	LoadSave();
+
 	DebugOut(L"[INFO] Done loading scene  %s\n", sceneFilePath);
+}
+
+void CPlayOverworldScene::LoadSave()
+{
+	SaveFile* saveFile = SaveFile::GetInstance();
+	float default_x = 0, default_y = 0;
+	saveFile->GetLastStand(default_x, default_y);
+	player->SetPosition(default_x, default_y);
 }
 
 void CPlayOverworldScene::Unload()
@@ -179,7 +180,6 @@ void CPlayOverworldScene::Update(DWORD dt)
 
 	//check item in OW_pathObjs
 	for (int i = 0; i < pathObjs.size(); i++) {
-		if (!pathObjs[i]->CanGoIn()) continue;
 		coObjects.push_back(pathObjs[i]);
 	}
 

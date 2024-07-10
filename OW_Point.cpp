@@ -10,7 +10,7 @@ COWPoint::COWPoint(float x, float y, bool canGoIn, int type) : COWGameObject(x, 
 void COWPoint::Render()
 {
 	if (type == OW_POINT_TYPE_LOCK_BIG_CASTLE) {
-		CAnimations::GetInstance()->Get(ID_ANI_POINT_LOCK_BIG_CASTLE)->Render(x, y);
+		CAnimations::GetInstance()->Get(ID_ANI_POINT_LOCK_BIG_CASTLE)->Render(x + 8, y - 8);
 		return;
 	}
 

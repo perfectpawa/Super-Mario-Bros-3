@@ -2,6 +2,7 @@
 #include "debug.h"
 #include "Animations.h"
 #include "OW_Portal.h"
+#include "OW_Path.h"
 
 COWMario::COWMario(float x, float y, bool canGoIn) : COWGameObject(x, y, canGoIn)
 {
@@ -37,13 +38,24 @@ void COWMario::Update(DWORD dt, vector<COWGameObject*>* coObjects)
 		x += dir_x * MOVE_SPEED * dt;
 		y += dir_y * MOVE_SPEED * dt;
 
-		if(round(x) == round(end_x) && round(y) == round(end_y))
-		{
-			x = end_x;
-			y = end_y;
-			isTravel = false;
+		if (dir_x > 0) {
+			if(x > end_x) x = end_x;
+		}
+		else {
+			if(x < end_x) x = end_x;
 		}
 
+		if (dir_y > 0) {
+			if(y > end_y) y = end_y;
+		}
+		else {
+			if(y < end_y) y = end_y;
+		}
+
+		if (x == end_x && y == end_y)
+		{
+			isTravel = false;
+		}
 		return;
 	}
 
@@ -53,7 +65,7 @@ void COWMario::Update(DWORD dt, vector<COWGameObject*>* coObjects)
 	}
 	else if (wantMove)
 	{
-		GetMovDestination(coObjects);
+		GetMoveDestination(coObjects);
 	}
 }
 
@@ -67,92 +79,92 @@ void COWMario::Render()
 
 void COWMario::Moving(DWORD dt)
 {
-	if(moveHorizontal == 1)
-	{
-		x += MOVE_SPEED * dt;
-		if (x >= end_x)
-		{
-			x = end_x;
-			isMoving = false;
-		}
+	x += moveHorizontal * MOVE_SPEED * dt;
+	y += moveVertical * MOVE_SPEED * dt;
+
+	//debug out x,y, end_x, end_y
+	DebugOut(L"[INFO] x: %f, y: %f, end_x: %f, end_y: %f\n", x, y, end_x, end_y);
+
+	if (moveHorizontal > 0) {
+		if (x > end_x) x = end_x;
 	}
-	else if (moveHorizontal == -1)
-	{
-		x -= MOVE_SPEED * dt;
-		if (x <= end_x)
-		{
-			x = end_x;
-			isMoving = false;
-		}
+	else {
+		if (x < end_x) x = end_x;
 	}
-	else if (moveVertical == 1)
-	{
-		y += MOVE_SPEED * dt;
-		if (y >= end_y)
-		{
-			y = end_y;
-			isMoving = false;
-		}
+
+	if (moveVertical > 0) {
+		if (y > end_y) y = end_y;
 	}
-	else if (moveVertical == -1)
-	{
-		y -= MOVE_SPEED * dt;
-		if (y <= end_y)
-		{
-			y = end_y;
-			isMoving = false;
-		}
+	else{
+		if (y < end_y) y = end_y;
 	}
+
+	if (x == end_x && y == end_y)
+		isMoving = false;
 }
 
-void COWMario::GetMovDestination(vector<COWGameObject*>* coObjects)
+void COWMario::GetMoveDestination(vector<COWGameObject*>* coObjects)
 {
-	if (moveHorizontal == 1)
-	{
-		end_x = x + 16;
-	}
-	else if (moveHorizontal == -1)
-	{
-		end_x = x - 16;
-	}
-	else if (moveVertical == 1)
-	{
-		end_y = y + 16;
-	}
-	else if (moveVertical == -1)
-	{
-		end_y = y - 16;
-	}
-	isMoving = true;
-	wantMove = false;
-
-	CheckEndPointValid(coObjects);
-}
-
-void COWMario::CheckEndPointValid(vector<COWGameObject*>* coObjects)
-{
-	for (size_t i = 0; i < coObjects->size(); i++)
-	{
-		float pos_x, pos_y;
-		coObjects->at(i)->GetPosition(pos_x, pos_y);
-
-		if (end_x == pos_x && end_y == pos_y) {
-			COWPortal* portal = dynamic_cast<COWPortal*>(coObjects->at(i));
-
-			if (portal != NULL)
-			{
-				portalId = portal->GetSceneId();
-			}else{
-				portalId = -1;
-			}
-			return;
-		}
-	}
+	start_x = x;
+	start_y = y;
 
 	end_x = x;
 	end_y = y;
-	isMoving = false;
+
+	COWGameObject* obj = nullptr;
+	for (int i = 0; i < coObjects->size(); i++) {
+		end_x += moveHorizontal * 16;
+		end_y += moveVertical * 16;
+
+		if (CheckValid(end_x, end_y, coObjects, obj)) {
+			if (dynamic_cast<COWPath*>(obj) 
+				&& !dynamic_cast<COWPath*>(obj)->CanGoIn()) {
+				continue;
+			}
+
+			if (obj->CanGoIn()) {
+				portalId = ((COWPortal*)obj)->GetSceneId();
+				break;
+			}
+
+		}
+		else {
+			if(obj != nullptr 
+				&& dynamic_cast<COWPath*>(obj)
+				&& !dynamic_cast<COWPath*>(obj)->CanGoIn()
+				) {
+				end_x = start_x;
+				end_y = start_y;
+				break;
+			}
+
+			end_x -= moveHorizontal * 16;
+			end_y -= moveVertical * 16;
+			break;
+		}
+	}
+	wantMove = false;
+
+	if(end_x == x && end_y == y) return;
+
+	isMoving = true;
 }
+
+bool COWMario::CheckValid(float x, float y, vector<COWGameObject*>* coObjects, COWGameObject*& obj)
+{
+	for (int i = 0; i < coObjects->size(); i++)
+	{
+		float co_x, co_y;
+		(*coObjects)[i]->GetPosition(co_x, co_y);
+
+		if (x == co_x && y == co_y) {
+			obj = (*coObjects)[i];
+			return true;
+		}
+	}
+	return false;
+}
+
 
 void COWMario::GetInLevel()
 {
