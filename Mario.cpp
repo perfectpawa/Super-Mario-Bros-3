@@ -25,11 +25,12 @@
 #include "BrickCoin.h"
 
 #include "CardBlock.h"
-#include "PlayScene.h"
 
 
-CMario::CMario(float x, float y) : CGameObject(x, y)
+CMario::CMario(float x, float y, CPlayScene* currentScene) : CGameObject(x, y)
 {
+	this->currentScene = currentScene;
+
 	isSitting = false;
 	lookingRight = true;
 
@@ -72,8 +73,8 @@ CMario::CMario(float x, float y) : CGameObject(x, y)
 	rightTail->SetPosition(x, y + 8);
 	leftTail->SetPosition(x, y + 8);
 
-	dynamic_cast<CPlayScene*>(CGame::GetInstance()->GetCurrentScene())->AddObject(rightTail, OBJECT_TYPE_ATTACK);
-	dynamic_cast<CPlayScene*>(CGame::GetInstance()->GetCurrentScene())->AddObject(leftTail, OBJECT_TYPE_ATTACK);
+	dynamic_cast<CPlayScene*>(currentScene)->AddObject(rightTail, OBJECT_TYPE_ATTACK);
+	dynamic_cast<CPlayScene*>(currentScene)->AddObject(leftTail, OBJECT_TYPE_ATTACK);
 
 
 }
@@ -397,7 +398,7 @@ void CMario::OnCollisionWithCoin(LPCOLLISIONEVENT e)
 	e->obj->GetPosition(x, y);
 
 	CEffectObject* scoreEffect = new CScoreEffect(x, y, 100);
-	dynamic_cast<CPlayScene*>(CGame::GetInstance()->GetCurrentScene())->AddEffect(scoreEffect);
+	dynamic_cast<CPlayScene*>(currentScene)->AddEffect(scoreEffect);
 
 	e->obj->Delete();
 	
@@ -435,7 +436,7 @@ void CMario::OnCollisionWithMushroom(LPCOLLISIONEVENT e)
 
 	if (mushroom->GetIs1Up()) {
 		CEffectObject* effect = new CScoreEffect(x, y, 9999);
-		dynamic_cast<CPlayScene*>(CGame::GetInstance()->GetCurrentScene())->AddEffect(effect);
+		dynamic_cast<CPlayScene*>(currentScene)->AddEffect(effect);
 	}
 
 	else if (level == MARIO_LEVEL_SMALL)
@@ -444,11 +445,11 @@ void CMario::OnCollisionWithMushroom(LPCOLLISIONEVENT e)
 
 		SaveFile::GetInstance()->SetMarioLevel(level);
 		CEffectObject* effect = new CScoreEffect(x - 8, y, 1000);
-		dynamic_cast<CPlayScene*>(CGame::GetInstance()->GetCurrentScene())->AddEffect(effect);
+		dynamic_cast<CPlayScene*>(currentScene)->AddEffect(effect);
 
 		y -= (float)(MARIO_BIG_BBOX_HEIGHT - MARIO_SMALL_BBOX_HEIGHT) / 2;
 
-		CGame::GetInstance()->GetCurrentScene()->FreezeScene(400);
+		currentScene->FreezeScene(400);
 		isMovingLeft = isMovingRight = false;
 		freezeId = ID_ANI_MARIO_SMALL_TO_BIG_RIGHT;
 		if (!lookingRight) freezeId += 10;
@@ -464,7 +465,7 @@ void CMario::OnCollisionWithLeaf(LPCOLLISIONEVENT e)
 
 	SaveFile::GetInstance()->SetMarioLevel(level);
 
-	CGame::GetInstance()->GetCurrentScene()->FreezeScene(400);
+	currentScene->FreezeScene(400);
 	isMovingLeft = isMovingRight = false;
 	freezeId = ID_ANI_MARIO_SMOKE;
 
@@ -532,7 +533,7 @@ void CMario::TakingDamage() {
 			SetState(MARIO_STATE_DIE);
 		}
 
-		CGame::GetInstance()->GetCurrentScene()->FreezeScene(freezeTime);
+		currentScene->FreezeScene(freezeTime);
 	}
 }
 
@@ -853,15 +854,7 @@ void CMario::UpdateOnFreeze(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 
 
 		if (GetTickCount64() - die_start > MARIO_DIE_TIME) {
-			CGame::GetInstance()->InitiateSwitchScene(1);
-
-			float saveX, saveY;
-			SaveFile::GetInstance()->GetSavePoint(saveX, saveY);
-			CGame::GetInstance()->InitSavePointToGo(saveX, saveY);
-
-			SaveFile::GetInstance()->SetMarioLevel(MARIO_LEVEL_SMALL);
-			SaveFile::GetInstance()->AddLife(-1);
-			SaveFile::GetInstance()->Save();
+			dynamic_cast<CPlayScene*>(currentScene)->LosingLevel();
 		}
 	}
 
@@ -881,9 +874,7 @@ void CMario::UpdateOnFreeze(DWORD dt, vector<LPGAMEOBJECT>* coObjects) {
 		CCollision::GetInstance()->Process(this, dt, coObjects);
 
 		if (GetTickCount64() - clear_level_start > MARIO_CLEAR_LEVEL_TIME) {
-			CGame::GetInstance()->InitiateSwitchScene(1);
-
-			SaveFile::GetInstance()->Save();
+			currentScene->StartComplete();
 		}
 	}
 
@@ -909,11 +900,11 @@ void CMario::RenderOnFreeze() {
 }
 
 void CMario::StartSwitchingScene() {
-	CGame::GetInstance()->GetCurrentScene()->FreezeScene(600);
+	currentScene->FreezeScene(600);
 	switch_delay_start = GetTickCount64();
 
 
-	float time = CGame::GetInstance()->GetCurrentScene()->GetTimeLimit();
+	float time = currentScene->GetTimeLimit();
 
 	CGame::GetInstance()->InitDefauleTimeLimit(time);
 
@@ -922,8 +913,8 @@ void CMario::StartSwitchingScene() {
 
 	SetState(first_state);
 
-	int freezeTime = 500;
-	if (first_state == MARIO_STATE_OUT_TUBE) freezeTime = 500;
+	int freezeTime = 300;
+	if (first_state == MARIO_STATE_OUT_TUBE) freezeTime = 200;
 
 	CGame::GetInstance()->InitDefauleState(first_state, freezeTime);
 }
@@ -932,5 +923,6 @@ void CMario::TakeCard() {
 	state = MARIO_STATE_COMPLETE_LEVEL;
 	lookingRight = true;
 	clear_level_start = GetTickCount64();
-	CGame::GetInstance()->GetCurrentScene()->FreezeScene(MARIO_CLEAR_LEVEL_TIME + 1000);
+	currentScene->SetCardCollectId(cardBlock->GetType());
+	currentScene->FreezeScene(MARIO_CLEAR_LEVEL_TIME + 500);
 }

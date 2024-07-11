@@ -41,6 +41,8 @@ protected:
 	CHUD* mainHUD;
 
 	//scene setting
+	int level_id = -1;
+
 	float timeLimit = -1;
 
 	float camLimitLeft = NULL;

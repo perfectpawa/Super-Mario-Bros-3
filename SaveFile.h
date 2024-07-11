@@ -93,6 +93,7 @@ public:
 	void SetLastStand(float x, float y) { last_stand_x = x; last_stand_y = y; }
 	void GetLastStand(float& x, float& y) { x = last_stand_x; y = last_stand_y; }
 
+	void AddLevelCompleted(int level_id) { levelHasComplete.push_back(level_id); }
 
 };
 

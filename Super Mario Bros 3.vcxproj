@@ -181,6 +181,7 @@
     <ClCompile Include="SpawnCheck.cpp" />
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="Sprites.cpp" />
+    <ClCompile Include="TextEffect.cpp" />
     <ClCompile Include="Textures.cpp" />
     <ClCompile Include="Tube.cpp" />
     <ClCompile Include="UIObject.cpp" />
@@ -231,6 +232,7 @@
     <ClInclude Include="PlayScene.h" />
     <ClInclude Include="SaveFile.h" />
     <ClInclude Include="ScoreEffect.h" />
+    <ClInclude Include="TextEffect.h" />
     <ClInclude Include="Tube.h" />
     <ClInclude Include="UI.txt" />
     <ClInclude Include="KeyEventHandler.h" />
@@ -281,6 +283,7 @@
     <Text Include="save\save_1.txt" />
     <Text Include="scene001-bonus.txt" />
     <Text Include="scene001.txt" />
+    <Text Include="text_effect.txt" />
     <Text Include="tube.txt" />
   </ItemGroup>
   <ItemGroup>

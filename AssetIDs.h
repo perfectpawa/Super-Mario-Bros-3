@@ -226,6 +226,9 @@
 
 #define ID_SPRITE_UI_POWER_BAR 1000500
 #define ID_ANI_UI_POWER_ACTIVE 1000501
+
+#define ID_SPRITE_CHAR_UI_BASE 1000600
+
 #pragma endregion
 
 

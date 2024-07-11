@@ -10,6 +10,7 @@ koopas.txt
 plant.txt
 
 effect.txt
+text_effect.txt
 reward.txt
 coin.txt
 button.txt
@@ -30,11 +31,13 @@ UI.txt
 [SETTINGS]
 time	300
 background_color	156	252	240
-cam_limit	8	2824	32	-16	64	
+cam_limit	8	2824	32	-16	64
+level_id	1
 [OBJECTS]
 # MARIO
 #0	16	176
-0	2280	-160
+#0	2280	-160
+0	2720	160
 
 # CARD BLOCK
 699	2720	96
@@ -123,8 +126,11 @@ cam_limit	8	2824	32	-16	64
 600	2272	80	1
 600	2288	80	1
 
-600	2848	176	1
 600	2832	192	1
+600	2864	176	1
+600	2864	160	1
+600	2848	192	1
+600	2848	144	1
 
 #BREAKABLE BRICK
 603	1968	176	0

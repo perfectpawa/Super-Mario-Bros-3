@@ -315,6 +315,9 @@
     <ClCompile Include="BreakingEffect.cpp">
       <Filter>Source Files\Object\EffectObject</Filter>
     </ClCompile>
+    <ClCompile Include="TextEffect.cpp">
+      <Filter>Source Files\Object\EffectObject</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AssetIDs.h">
@@ -506,6 +509,9 @@
     <ClInclude Include="BreakingEffect.h">
       <Filter>Header Files\Object\EffectObject</Filter>
     </ClInclude>
+    <ClInclude Include="TextEffect.h">
+      <Filter>Header Files\Object\EffectObject</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="main-settings.txt">
@@ -596,6 +602,9 @@
       <Filter>Resource Files\Misc</Filter>
     </Text>
     <Text Include="effect.txt">
+      <Filter>Resource Files\Effect</Filter>
+    </Text>
+    <Text Include="text_effect.txt">
       <Filter>Resource Files\Effect</Filter>
     </Text>
   </ItemGroup>

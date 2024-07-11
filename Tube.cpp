@@ -14,11 +14,15 @@ CTube::CTube(float x, float y, int length, BOOLEAN isUpsideDown, int type)
 
 void CTube::RenderInViewport(int spriteId, float x, float y)
 {
-	CMario* player = dynamic_cast<CMario*>(CGame::GetInstance()->GetCurrentScene()->GetPlayer());
+	CGame* game = CGame::GetInstance();
+	float cam_x, cam_y;
+	game->GetCamPos(cam_x, cam_y);
 
-	if (player->isInMarioViewPort(x)) {
+	float min_x = cam_x - 16;
+	float max_x = cam_x + game->GetBackBufferWidth() + 16;
+
+	if (x >= min_x && x <= max_x)
 		CSprites::GetInstance()->Get(spriteId)->Draw(x, y);
-	}
 }
 
 void CTube::Render()

@@ -11,6 +11,10 @@
 
 #define CAM_SHAKE_TIME 200
 
+#define DELAY_TIME 500
+
+
+class CBackgroundObject;
 
 class CPlayScene : public CScene
 {
@@ -52,6 +56,11 @@ protected:
 	bool isCamShaking = false;
 	ULONGLONG camShake_start = -1;
 
+	bool isComplete = false;
+	int cardCollectedId = 0;
+
+	ULONGLONG delay_time = -1;
+
 	void _ParseSection_OBJECTS(string line);
 
 	virtual void CamPosFollowPlayer();
@@ -71,6 +80,7 @@ public:
 
 	virtual void RenderOnFreeze();
 	virtual void UpdateOnFreeze(DWORD dt);
+	virtual void UpdateComplete(DWORD dt);
 
 	virtual void AddObject(LPGAMEOBJECT obj, int type);
 	virtual void AddEffect(LPEFFECTOBJECT obj);
@@ -89,6 +99,11 @@ public:
 
 	void RenderBlackScreen(float alpha);
 
+	void StartComplete();
+	void LosingLevel();
+
+	void GetBonusScore(DWORD dt);
+
 	LPGAMEOBJECT GetPlayer() { return player; }
 
 	virtual void Clear();
@@ -103,6 +118,8 @@ public:
 
 	static bool IsGameObjectDeleted(const LPGAMEOBJECT& o);
 	static bool IsEffectObjectDeleted(const LPEFFECTOBJECT& o);
+
+	void SetCardCollectId(int id) { cardCollectedId = id; }
 };
 
 typedef CPlayScene* LPPLAYSCENE;

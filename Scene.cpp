@@ -33,6 +33,10 @@ void CScene::_ParseSection_SETTINGS(string line)
 		if (tokens.size() > 4) camLimitTop = (float)atof(tokens[4].c_str());
 		if (tokens.size() > 5) camVerticalFreeZone = (float)atof(tokens[5].c_str());
 	}
+
+	if (tokens[0] == "level_id") {
+		this->level_id = atoi(tokens[1].c_str());
+	}
 }
 
 void CScene::FreezeScene(ULONGLONG time)
@@ -46,6 +50,7 @@ void CScene::Update(DWORD dt)
 {
 	if (isFreeze)
 	{
+		if (loadingStart || loadingEnd) freeze_start = GetTickCount64();
 		if (GetTickCount64() - freeze_start > freezeTime)
 		{
 			isFreeze = false;

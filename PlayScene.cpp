@@ -34,6 +34,8 @@
 
 #include "SpawnCheck.h"
 
+#include "TextEffect.h"
+
 using namespace std;
 
 CPlayScene::CPlayScene(int id, LPCWSTR filePath) :
@@ -80,7 +82,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		/*obj = new CMario(x,y);
 		player = (CMario*)obj;  */
 
-		player = new CMario(x, y);
+		player = new CMario(x, y, this);
 		maxCamPos = y - maxCamOffset;
 		minCamPos = y - minCamOffset;
 
@@ -352,7 +354,6 @@ void CPlayScene::Load()
 	while (f.getline(str, MAX_SCENE_LINE))
 	{
 		string line(str);
-
 		if (line[0] == '#') continue;	// skip comment lines	
 		if (line == "[ASSETS]") { section = SCENE_SECTION_ASSETS; continue; };
 		if (line == "[OBJECTS]") { section = SCENE_SECTION_OBJECTS; continue; };
@@ -464,6 +465,11 @@ void CPlayScene::Update(DWORD dt)
 {
 	CScene::Update(dt);
 
+	if(isComplete) {
+		UpdateComplete(dt);
+		return;
+	}
+
 	if (isFreeze) {
 		UpdateOnFreeze(dt);
 		return;
@@ -537,6 +543,10 @@ void CPlayScene::Update(DWORD dt)
 	for (int i = 0; i < frontTerrainObjs.size(); i++)
 		frontTerrainObjs[i]->Update(dt, &coObjects);
 
+	//update terrainObjs
+	for (int i = 0; i < terrainObjs.size(); i++)
+		terrainObjs[i]->Update(dt, &coObjects);
+
 	CamPosFollowPlayer();
 
 	UpdateUI(dt);
@@ -547,14 +557,11 @@ void CPlayScene::Update(DWORD dt)
 void CPlayScene::UpdateOnFreeze(DWORD dt) {
 	vector<LPGAMEOBJECT> coObjects;
 
-	if (loadingStart || loadingEnd) {
-		freeze_start = GetTickCount64();
-		return;
-	}
-
 	//push back all objects in terrainObjs to coObjects
 	for (int i = 0; i < platformObjs.size(); i++)
 		coObjects.push_back(platformObjs[i]);
+	for (int i = 0; i < terrainObjs.size(); i++)
+		coObjects.push_back(terrainObjs[i]);
 
 	CMario* mario = dynamic_cast<CMario*>(player);
 
@@ -562,6 +569,21 @@ void CPlayScene::UpdateOnFreeze(DWORD dt) {
 
 	CamPosFollowPlayer();
 	UpdateUIPosFixedCam();
+}
+
+void CPlayScene::UpdateComplete(DWORD dt) {
+	CGame* game = CGame::GetInstance();
+	SaveFile* saveFile = SaveFile::GetInstance();
+	
+	if (timeLimit > 0) GetBonusScore(dt);
+
+	if (delay_time != -1 && GetTickCount64() - delay_time > DELAY_TIME) {
+
+		game->InitiateSwitchScene(1);
+
+		saveFile->AddLevelCompleted(level_id);
+		saveFile->Save();
+	}
 }
 
 #pragma endregion
@@ -656,12 +678,12 @@ void CPlayScene::Render()
 			frontTerrainObjs[i]->Render();
 	}
 
-	//render tubeobjects
+	//render tubeObjects
 	for (int i = 0; i < tubeObjs.size(); i++)
 		tubeObjs[i]->Render();
 
 	//render effectObjs
-	if (!isFreeze) {
+	if (!isFreeze || isComplete) {
 		for (int i = 0; i < effectObjs.size(); i++)
 			effectObjs[i]->Render();
 	}
@@ -1001,6 +1023,56 @@ bool CPlayScene::InPlayerViewPort(float x) {
 
 	if (x >= min_x && x <= max_x) return true;
 	return false;
+}
+
+void CPlayScene::StartComplete() {
+	FreezeScene(5000);
+	isComplete = true;
+
+	CGame* game = CGame::GetInstance();
+	SaveFile* saveFile = SaveFile::GetInstance();
+
+	CEffectObject* textEffect = new CTextEffect(2656, 48, "course clear");
+	effectObjs.push_back(textEffect);
+	textEffect = new CTextEffect(2640, 72, "you got a card", ID_SPRITE_UI_CARD_HUD_EMPTY + cardCollectedId, 16);
+	effectObjs.push_back(textEffect);
+
+	saveFile->SetCard(cardCollectedId);
+
+}
+
+void CPlayScene::LosingLevel() {
+	CGame* game = CGame::GetInstance();
+	SaveFile* saveFile = SaveFile::GetInstance();
+
+	game->InitiateSwitchScene(1);
+
+	float saveX, saveY;
+	saveFile->GetSavePoint(saveX, saveY);
+	game->InitSavePointToGo(saveX, saveY);
+
+	saveFile->SetMarioLevel(MARIO_LEVEL_SMALL);
+	saveFile->AddLife(-1);
+	saveFile->Save();
+}
+
+void CPlayScene::GetBonusScore(DWORD dt) {
+	float oldTimeLimit = timeLimit;
+
+	if (timeLimit <= 0) {
+		timeLimit = 0;
+	}
+	else {
+		timeLimit -= dt;
+	}
+	mainHUD->SetTime((int)timeLimit);
+
+	SaveFile::GetInstance()->AddScore(trunc(oldTimeLimit - timeLimit) * 100);
+	mainHUD->SetScore(SaveFile::GetInstance()->GetScore());
+
+	if (timeLimit <= 0) {
+		delay_time = GetTickCount64();
+	}
 }
 
 #pragma endregion

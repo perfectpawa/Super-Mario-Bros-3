@@ -18,7 +18,6 @@ void CCardBlock::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		item_y -= 0.1f * dt;
 		if (item_y < min_y) {
 			geted = true;
-			SaveFile::GetInstance()->SetCard(type);
 		}
 	}
 

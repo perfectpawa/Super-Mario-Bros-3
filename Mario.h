@@ -11,6 +11,9 @@
 
 #include "AssetIDs.h"
 
+#include "PlayScene.h"
+
+
 #define MARIO_WALKING_SPEED		0.08f
 #define MARIO_GEARING_SPEED		0.12f
 #define MARIO_RUNNING_SPEED		0.16f
@@ -40,7 +43,7 @@
 
 #define MARIO_DIE_TIME 3000
 
-#define MARIO_CLEAR_LEVEL_TIME 3000
+#define MARIO_CLEAR_LEVEL_TIME 1500
 
 
 #define MARIO_GEAR_UP_TIME 150
@@ -106,9 +109,13 @@
 
 class CCardBlock;
 
+class CPlayScene;
+
 
 class CMario : public CGameObject
 {
+	CPlayScene* currentScene;
+
 	BOOLEAN isSitting;
 	BOOLEAN lookingRight;
 
@@ -198,7 +205,7 @@ class CMario : public CGameObject
 	int GetAniIdSmall();
 
 public:
-	CMario(float x, float y);
+	CMario(float x, float y, CPlayScene* currentScene);
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	void UpdateTail(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	void Render();
