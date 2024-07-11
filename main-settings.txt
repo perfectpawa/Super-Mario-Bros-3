@@ -14,6 +14,7 @@ savefile	1
 # id	file 
 [TEXTURES]
 -100	textures\bbox.png
+-10	textures\black_screen.png
 1	textures\mario_new.png
 
 12	textures\enemies.png

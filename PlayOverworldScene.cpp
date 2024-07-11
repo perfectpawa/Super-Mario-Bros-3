@@ -1,6 +1,7 @@
 #include "PlayOverworldScene.h"
 
 #include "OverworldKeyHandler.h"
+#include "Textures.h"
 
 
 CPlayOverworldScene::CPlayOverworldScene(int id, LPCWSTR filePath) : CScene(id, filePath)
@@ -104,6 +105,8 @@ void CPlayOverworldScene::_ParseSection_OBJECTS(string line) {
 void CPlayOverworldScene::Load()
 {
 	DebugOut(L"[INFO] Start loading scene from : %s \n", sceneFilePath);
+
+	LoadIntro();
 
 	ifstream f;
 	f.open(sceneFilePath);
@@ -214,6 +217,8 @@ void CPlayOverworldScene::Update(DWORD dt)
 		coObjects.push_back(portalObjs[i]);
 	}
 
+	if (loadingStart || loadingEnd) return;
+
 	player->Update(dt, &coObjects);
 }
 
@@ -241,6 +246,11 @@ void CPlayOverworldScene::Render()
 	
 	if (mainHUD != NULL)
 		mainHUD->Render();
+
+	if (loadingStart)
+		RenderLoadingStart();
+	if (loadingEnd)
+		RenderLoadingEnd();
 }
 
 void CPlayOverworldScene::LoadUI()
@@ -255,4 +265,13 @@ void CPlayOverworldScene::LoadUI()
 	hud_y = (float)cam_y + game->GetBackBufferHeight() - 16 * 1.75f;
 
 	mainHUD->SetPosition(hud_x, hud_y);
+}
+
+void CPlayOverworldScene::RenderBlackScreen(float alpha) {
+	LPTEXTURE bbox = CTextures::GetInstance()->Get(BLACK_SCREEN_ID);
+
+	float x = CGame::GetInstance()->GetBackBufferWidth() / 2.0f;
+	float y = CGame::GetInstance()->GetBackBufferHeight() / 2.0f;
+
+	CGame::GetInstance()->Draw(x, y, bbox, NULL, alpha);
 }

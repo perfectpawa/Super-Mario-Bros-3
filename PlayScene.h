@@ -11,6 +11,7 @@
 
 #define CAM_SHAKE_TIME 200
 
+
 class CPlayScene : public CScene
 {
 protected:
@@ -85,6 +86,8 @@ public:
 	void CamSkake() { this->isCamShaking = true; this->camShake_start = GetTickCount64(); }
 
 	bool InPlayerViewPort(float x);
+
+	void RenderBlackScreen(float alpha);
 
 	LPGAMEOBJECT GetPlayer() { return player; }
 

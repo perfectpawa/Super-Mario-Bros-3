@@ -39,6 +39,8 @@ public:
 	virtual void Clear() {};
 
 	virtual LPOWGAMEOBJECT GetOWPlayer() { return player; }
+
+	virtual void RenderBlackScreen(float alpha);
 };
 
 typedef CPlayOverworldScene* LPPLAYOVERWORLDSCENE;

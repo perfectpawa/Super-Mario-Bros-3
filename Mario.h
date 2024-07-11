@@ -257,4 +257,6 @@ public:
 	bool isInMarioViewPort(float x) {
 		return (abs(x - this->x) < MARIO_VIEW_PORT / 2);
 	};
+
+	void SetFreezeId(int id) { freezeId = id; }
 };

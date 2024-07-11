@@ -9,7 +9,6 @@ CBackgroundObject::CBackgroundObject(float x, float y, int type, int length)
 	this->y = y;
 	this->type = type;
 	this->length = length;
-	this->player = dynamic_cast<CMario*>(CGame::GetInstance()->GetCurrentScene()->GetPlayer());
 }
 
 void CBackgroundObject::Render()
@@ -53,10 +52,15 @@ void CBackgroundObject::Render()
 
 void CBackgroundObject::RenderInViewport(int spriteId, float x, float y)
 {
-	if(player->isInMarioViewPort(x))
+	CGame* game = CGame::GetInstance();
+	float cam_x, cam_y;
+	game->GetCamPos(cam_x, cam_y);
+
+	float min_x = cam_x - 16;
+	float max_x = cam_x + game->GetBackBufferWidth() + 16;
+
+	if(x >= min_x && x <= max_x)
 		CSprites::GetInstance()->Get(spriteId)->Draw(x, y);
-
-
 }
 
 void CBackgroundObject::RenderCloud()

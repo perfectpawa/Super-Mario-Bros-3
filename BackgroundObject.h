@@ -19,7 +19,6 @@ protected:
 	float y;
 	int type;
 	int length;
-	CMario* player;
 public:
 	CBackgroundObject(float x, float y, int type, int length = 1);
 	void Render();

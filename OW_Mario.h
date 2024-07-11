@@ -40,7 +40,10 @@ public:
 		moveVertical = direction; moveHorizontal = 0; wantMove = true; 
 	}
 
-	void SetTravelPoint(float x, float y) { end_x = x; end_y = y; isTravel = true; }
+	void SetTravelPoint(float x, float y) { 
+		start_x = this->x; start_y = this->y;
+		end_x = x; end_y = y; isTravel = true; 
+	}
 
 	void GetInLevel();
 };

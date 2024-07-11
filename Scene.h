@@ -16,6 +16,9 @@
 
 #define MAX_SCENE_LINE 1024
 
+#define LOADING_START_TIME 500
+#define LOADING_END_TIME 1000
+#define BLACK_SCREEN_ID	-10
 
 using namespace std;
 
@@ -52,6 +55,12 @@ protected:
 	ULONGLONG freezeTime = -1;
 	ULONGLONG freeze_start = -1;
 
+	bool loadingStart = false;
+	ULONGLONG loading_start = -1;
+
+	bool loadingEnd = false;
+	ULONGLONG loading_end = -1;
+
 	D3DXCOLOR backgroundColor = D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.0f);
 
 
@@ -71,9 +80,15 @@ public:
 	virtual void RenderOnFreeze() {};
 	virtual void UpdateOnFreeze(DWORD dt) {};
 
+	virtual void RenderLoadingStart();
+	virtual void RenderLoadingEnd();
+	virtual void RenderBlackScreen(float alpha) {};
+
 	virtual void FreezeScene(ULONGLONG freezeTime);
 	virtual void GetIsFreeze(bool& isFreeze) { isFreeze = this->isFreeze; }
 
+	void LoadIntro();
+	void LoadOutro();
 
 	virtual void SetDefaultPos(float x, float y) {};
 

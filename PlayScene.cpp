@@ -84,6 +84,10 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		maxCamPos = y - maxCamOffset;
 		minCamPos = y - minCamOffset;
 
+		int level = SaveFile::GetInstance()->GetMarioLevel();
+
+		((CMario*)player)->SetFreezeId(ID_ANI_MARIO_SMALL_IDLE_RIGHT + (level - 1) * 10000);
+
 		DebugOut(L"[INFO] Player object has been created!\n");
 
 		CamPosFollowPlayer();
@@ -336,6 +340,8 @@ void CPlayScene::Load()
 {
 	DebugOut(L"[INFO] Start loading scene from : %s \n", sceneFilePath);
 
+	LoadIntro();
+
 	ifstream f;
 	f.open(sceneFilePath);
 
@@ -457,7 +463,7 @@ void CPlayScene::Unload()
 void CPlayScene::Update(DWORD dt)
 {
 	CScene::Update(dt);
-	
+
 	if (isFreeze) {
 		UpdateOnFreeze(dt);
 		return;
@@ -540,6 +546,11 @@ void CPlayScene::Update(DWORD dt)
 
 void CPlayScene::UpdateOnFreeze(DWORD dt) {
 	vector<LPGAMEOBJECT> coObjects;
+
+	if (loadingStart || loadingEnd) {
+		freeze_start = GetTickCount64();
+		return;
+	}
 
 	//push back all objects in terrainObjs to coObjects
 	for (int i = 0; i < platformObjs.size(); i++)
@@ -657,10 +668,25 @@ void CPlayScene::Render()
 
 	//render hud
 	if (mainHUD != NULL) mainHUD->Render();
+
+	if (loadingStart)
+		RenderLoadingStart();
+	if (loadingEnd)
+		RenderLoadingEnd();
 }
 
 void CPlayScene::RenderOnFreeze() {
 	dynamic_cast<CMario*>(player)->RenderOnFreeze();
+
+}
+
+void CPlayScene::RenderBlackScreen(float alpha) {
+	LPTEXTURE bbox = CTextures::GetInstance()->Get(BLACK_SCREEN_ID);
+
+	float x = CGame::GetInstance()->GetBackBufferWidth() / 2.0f;
+	float y = CGame::GetInstance()->GetBackBufferHeight() / 2.0f;
+
+	CGame::GetInstance()->Draw(x, y, bbox, NULL, alpha);
 }
 
 #pragma endregion
@@ -966,12 +992,15 @@ void CPlayScene::SetDefaultPos(float x, float y) {
 }
 
 bool CPlayScene::InPlayerViewPort(float x) {
+	CGame* game = CGame::GetInstance();
+	float cam_x, cam_y;
+	game->GetCamPos(cam_x, cam_y);
 
-	float player_x, player_y;
-	player->GetPosition(player_x, player_y);
+	float min_x = cam_x - 16;
+	float max_x = cam_x + game->GetBackBufferWidth() + 16;
 
-	if (x < player_x - VIEWPORT_WIDTH / 2 || x > player_x + VIEWPORT_WIDTH / 2) return false;
-	return true;
+	if (x >= min_x && x <= max_x) return true;
+	return false;
 }
 
 #pragma endregion

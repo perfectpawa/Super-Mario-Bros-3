@@ -37,8 +37,8 @@ void CScene::_ParseSection_SETTINGS(string line)
 
 void CScene::FreezeScene(ULONGLONG time)
 {
-	isFreeze = true;
 	freezeTime = time;
+	isFreeze = true;
 	freeze_start = GetTickCount64();
 }
 
@@ -82,4 +82,29 @@ void CScene::UpdateUI(DWORD dt) {
 	mainHUD->SetFirstCard(saveFile->GetCardSlot1());
 	mainHUD->SetSecondCard(saveFile->GetCardSlot2());
 	mainHUD->SetThirdCard(saveFile->GetCardSlot3());
+}
+
+void CScene::LoadIntro() {
+	loadingStart = true;
+	loading_start = GetTickCount64();
+}
+
+void CScene::LoadOutro() {
+	loadingEnd = true;
+	loading_end = GetTickCount64();
+}
+
+
+void CScene::RenderLoadingStart() {
+	float alpha = (GetTickCount64() - loading_start) / (float)LOADING_START_TIME;
+	if (alpha > 1) alpha = 1;
+	RenderBlackScreen(1 - alpha);
+	if (alpha >= 0.75f) {
+		loading_start = -1;
+		loadingStart = false;
+	}
+}
+
+void CScene::RenderLoadingEnd() {
+
 }
