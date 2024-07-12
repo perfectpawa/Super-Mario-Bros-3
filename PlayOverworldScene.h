@@ -9,6 +9,7 @@
 #include "OW_Terrain.h"
 #include "OW_Portal.h"
 #include "OW_Point.h"
+#include "OW_Boss.h"
 
 
 class CPlayOverworldScene : public CScene
@@ -20,6 +21,7 @@ protected:
 	vector<LPOWGAMEOBJECT> terrainObjs;
 	vector<LPOWGAMEOBJECT> portalObjs;
 	vector<LPOWGAMEOBJECT> pointObjs;
+	COWBoss* boss;
 
 	void _ParseSection_OBJECTS(string line);
 

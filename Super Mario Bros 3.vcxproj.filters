@@ -318,6 +318,9 @@
     <ClCompile Include="TextEffect.cpp">
       <Filter>Source Files\Object\EffectObject</Filter>
     </ClCompile>
+    <ClCompile Include="OW_Boss.cpp">
+      <Filter>Source Files\Object\OverworldGameObject</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AssetIDs.h">
@@ -512,6 +515,9 @@
     <ClInclude Include="TextEffect.h">
       <Filter>Header Files\Object\EffectObject</Filter>
     </ClInclude>
+    <ClInclude Include="OW_Boss.h">
+      <Filter>Header Files\Object\OverworldGameObject</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="main-settings.txt">
@@ -606,6 +612,9 @@
     </Text>
     <Text Include="text_effect.txt">
       <Filter>Resource Files\Effect</Filter>
+    </Text>
+    <Text Include="ow_boss.txt">
+      <Filter>Resource Files\Overworld</Filter>
     </Text>
   </ItemGroup>
   <ItemGroup>

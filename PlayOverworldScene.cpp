@@ -7,6 +7,7 @@
 CPlayOverworldScene::CPlayOverworldScene(int id, LPCWSTR filePath) : CScene(id, filePath)
 {
 	player = NULL;
+	boss = NULL;
 	mapHolder = NULL;
 	mainHUD = NULL;
 	key_handler = new COverworldKeyHandler(this);
@@ -96,6 +97,14 @@ void CPlayOverworldScene::_ParseSection_OBJECTS(string line) {
 		int type = atoi(tokens[4].c_str());
 		COWPoint* point = new COWPoint(x, y, isGoIn, type);
 		pointObjs.push_back(point);
+		break;
+	}
+	case OW_OBJ_TYPE_BOSS: {
+		float right_x = (float)atof(tokens[3].c_str());
+		float right_y = (float)atof(tokens[4].c_str());
+
+		boss = new COWBoss(x, y, right_x, right_y);
+
 		break;
 	}
 	}
@@ -219,6 +228,8 @@ void CPlayOverworldScene::Update(DWORD dt)
 
 	if (loadingStart || loadingEnd) return;
 
+	boss->Update(dt, NULL);
+
 	player->Update(dt, &coObjects);
 }
 
@@ -241,6 +252,8 @@ void CPlayOverworldScene::Render()
 	for (int i = 0; i < pointObjs.size(); i++) {
 		pointObjs[i]->Render();
 	}
+
+	boss->Render();
 
 	player->Render();
 	

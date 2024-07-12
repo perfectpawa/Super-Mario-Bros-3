@@ -6,6 +6,8 @@
 
 COWMario::COWMario(float x, float y, bool canGoIn) : COWGameObject(x, y, canGoIn)
 {
+	level = SaveFile::GetInstance()->GetMarioLevel();
+
 	start_x = x;
 	start_y = y;
 	end_x = x;
@@ -72,7 +74,7 @@ void COWMario::Update(DWORD dt, vector<COWGameObject*>* coObjects)
 void COWMario::Render()
 {
 	CAnimations* animations = CAnimations::GetInstance();
-	int aniId = ID_ANI_OW_MARIO_SMALL;
+	int aniId = ID_ANI_OW_MARIO_SMALL + (level - 1) * 10;
 
 	animations->Get(aniId)->Render(x, y);
 }

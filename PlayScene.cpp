@@ -1067,7 +1067,7 @@ void CPlayScene::GetBonusScore(DWORD dt) {
 	}
 	mainHUD->SetTime((int)timeLimit);
 
-	SaveFile::GetInstance()->AddScore(trunc(oldTimeLimit - timeLimit) * 100);
+	SaveFile::GetInstance()->AddScore((int)(trunc(oldTimeLimit - timeLimit)) * 100);
 	mainHUD->SetScore(SaveFile::GetInstance()->GetScore());
 
 	if (timeLimit <= 0) {

@@ -7,6 +7,8 @@
 
 class COWMario: public COWGameObject {
 protected:
+	int level;
+
 	float start_x;
 	float start_y;
 	float end_x;

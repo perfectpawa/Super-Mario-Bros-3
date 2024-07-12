@@ -48,7 +48,7 @@ void CQuestionBlock::Render()
 		aniId = ID_ANI_QUESTION_BLOCK;
 
 	if (reward_type == REWARD_1UP) {
-		int aniId = ID_ANI_BRICK_BREAKABLE_HIT;
+		aniId = ID_ANI_BRICK_BREAKABLE_HIT;
 
 		if (state == QBLOCK_STATE_IDLE)
 			aniId = ID_ANI_BRICK_BREAKABLE;

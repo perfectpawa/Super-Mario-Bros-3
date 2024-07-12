@@ -1,6 +1,7 @@
 [OVERWORLD]
 [ASSETS]
 ow_mario.txt
+ow_boss.txt
 ow_path.txt
 ow_terrain.txt
 ow_map_holder.txt
@@ -14,6 +15,9 @@ background_color	255	216	160
 [OBJECTS]
 #MARIO
 88880001	0	0
+
+#BOSS
+88880006	144	96	160	96
 
 #MAP_HOLDER
 88880099	0	0	14	10
