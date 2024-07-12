@@ -23,8 +23,8 @@ SaveFile::SaveFile()
 	this->world = 1;
 	this->save_point_x = 0;
 	this->save_point_y = 0;
-	this->last_stand_x = 0;
-	this->last_stand_y = 0;
+	this->last_stand_x = 16;
+	this->last_stand_y = 32;
 }
 
 SaveFile::~SaveFile()

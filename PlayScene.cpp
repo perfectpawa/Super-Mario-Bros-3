@@ -1063,7 +1063,7 @@ void CPlayScene::GetBonusScore(DWORD dt) {
 		timeLimit = 0;
 	}
 	else {
-		timeLimit -= dt;
+		timeLimit -= dt / 5;
 	}
 	mainHUD->SetTime((int)timeLimit);
 
