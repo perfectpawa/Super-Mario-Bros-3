@@ -171,7 +171,8 @@ void CParaGoomba::SetState(int state)
 void CParaGoomba::TakeDamage(bool isKnockOut)
 {
 	if (isKnockOut) {
-		SetState(GOOMBA_STATE_KNOCKOUT);
+		if (state != GOOMBA_STATE_KNOCKOUT)
+			SetState(GOOMBA_STATE_KNOCKOUT);
 		return;
 	}
 

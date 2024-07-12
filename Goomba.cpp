@@ -113,7 +113,8 @@ void CGoomba::SetState(int state)
 void CGoomba::TakeDamage(bool isKnockOut)
 {
 	if (isKnockOut) {
-		SetState(GOOMBA_STATE_KNOCKOUT);
+		if(state != GOOMBA_STATE_KNOCKOUT)
+			SetState(GOOMBA_STATE_KNOCKOUT);
 	}
 	else {
 		SetState(GOOMBA_STATE_DIE);

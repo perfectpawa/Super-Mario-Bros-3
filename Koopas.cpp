@@ -80,6 +80,16 @@ void CKoopas::OnCollisionWith(LPCOLLISIONEVENT e)
 
 void CKoopas::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 {
+	if (state == KOOPAS_STATE_HIDE || state == KOOPAS_STATE_REVIVE) {
+
+		CGoomba* goomba = dynamic_cast<CGoomba*>(e->obj);
+		float vx, vy;
+		goomba->GetSpeed(vx, vy);
+		goomba->SetSpeed(-vx, vy);
+
+		return;
+	}
+
 	if (state != KOOPAS_STATE_SLIDE) return;
 	CGoomba* goomba = dynamic_cast<CGoomba*>(e->obj);
 
