@@ -56,7 +56,7 @@ void CPortal::GetBoundingBox(float &l, float &t, float &r, float &b)
 
 void CPortal::SwitchScene()
 {
-	CGame::GetInstance()->InitiateSwitchScene(scene_id);
+	CGame::GetInstance()->GetCurrentScene()->ReadyToSwitchScene(scene_id);
 	if(haveStartPos)
 		CGame::GetInstance()->InitDefaulePos(start_x, start_y);
 	DebugOut(L"[INFO] Switching to scene %d\n", scene_id);

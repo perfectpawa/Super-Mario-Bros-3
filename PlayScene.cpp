@@ -342,6 +342,11 @@ void CPlayScene::Load()
 {
 	DebugOut(L"[INFO] Start loading scene from : %s \n", sceneFilePath);
 
+	loadingEnd = false;
+	loadingStart = false;
+	isSwitchingScene = false;
+	isFreeze = false;
+
 	LoadIntro();
 
 	ifstream f;
@@ -579,10 +584,14 @@ void CPlayScene::UpdateComplete(DWORD dt) {
 
 	if (delay_time != -1 && GetTickCount64() - delay_time > DELAY_TIME) {
 
-		game->InitiateSwitchScene(1);
 
 		saveFile->AddLevelCompleted(level_id);
 		saveFile->Save();
+
+		delay_time = -1;
+
+		ReadyToSwitchScene(1);
+		//game->InitiateSwitchScene(1);
 	}
 }
 
@@ -693,7 +702,7 @@ void CPlayScene::Render()
 
 	if (loadingStart)
 		RenderLoadingStart();
-	if (loadingEnd)
+	if (loadingEnd || isSwitchingScene)
 		RenderLoadingEnd();
 }
 

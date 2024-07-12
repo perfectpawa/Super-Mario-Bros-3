@@ -17,7 +17,7 @@
 #define MAX_SCENE_LINE 1024
 
 #define LOADING_START_TIME 500
-#define LOADING_END_TIME 1000
+#define LOADING_END_TIME 500
 #define BLACK_SCREEN_ID	-10
 
 using namespace std;
@@ -63,6 +63,9 @@ protected:
 	bool loadingEnd = false;
 	ULONGLONG loading_end = -1;
 
+	int switchSceneID = -1;
+	bool isSwitchingScene = false;
+
 	D3DXCOLOR backgroundColor = D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.0f);
 
 
@@ -91,6 +94,8 @@ public:
 
 	void LoadIntro();
 	void LoadOutro();
+
+	virtual void ReadyToSwitchScene(int switchSceneID);
 
 	virtual void SetDefaultPos(float x, float y) {};
 

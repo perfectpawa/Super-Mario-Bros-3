@@ -115,6 +115,11 @@ void CPlayOverworldScene::Load()
 {
 	DebugOut(L"[INFO] Start loading scene from : %s \n", sceneFilePath);
 
+	loadingEnd = false;
+	loadingStart = false;
+	isSwitchingScene = false;
+	isFreeze = false;
+
 	LoadIntro();
 
 	ifstream f;
@@ -262,7 +267,7 @@ void CPlayOverworldScene::Render()
 
 	if (loadingStart)
 		RenderLoadingStart();
-	if (loadingEnd)
+	if (loadingEnd || isSwitchingScene)
 		RenderLoadingEnd();
 }
 

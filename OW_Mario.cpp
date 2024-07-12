@@ -187,6 +187,6 @@ void COWMario::GetInLevel()
 
 	SaveFile::GetInstance()->SetLastStand(x, y);
 
-	CGame::GetInstance()->InitiateSwitchScene(portalId);
+	CGame::GetInstance()->GetCurrentScene()->ReadyToSwitchScene(portalId);
 
 }

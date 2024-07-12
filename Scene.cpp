@@ -57,6 +57,12 @@ void CScene::Update(DWORD dt)
 			freeze_start = -1;
 		}
 	}
+
+	if(isSwitchingScene && !loadingEnd)
+	{
+		CGame::GetInstance()->InitiateSwitchScene(switchSceneID);
+		switchSceneID = -1;
+	}
 }
 
 void CScene::LoadUI() {
@@ -102,7 +108,9 @@ void CScene::LoadOutro() {
 
 void CScene::RenderLoadingStart() {
 	float alpha = (GetTickCount64() - loading_start) / (float)LOADING_START_TIME;
-	if (alpha > 1) alpha = 1;
+
+	if (alpha < 0.25f) alpha = 0;
+
 	RenderBlackScreen(1 - alpha);
 	if (alpha >= 0.75f) {
 		loading_start = -1;
@@ -111,5 +119,23 @@ void CScene::RenderLoadingStart() {
 }
 
 void CScene::RenderLoadingEnd() {
+	float alpha = (GetTickCount64() - loading_end) / (float)LOADING_END_TIME;
+
+	if (alpha > 0.75f) {
+		alpha = 1;
+		loading_end = -1;
+		loadingEnd = false;
+	}
+
+	RenderBlackScreen(alpha);
+}
+
+void CScene::ReadyToSwitchScene(int switchSceneID) {
+	this->switchSceneID = switchSceneID;
+	isSwitchingScene = true;
+	LoadOutro();
+
+	DebugOut(L"[INFO] Ready to switch scene\n");
+	DebugOut(L"[INFO] switchSceneID: %d\n", switchSceneID);
 
 }
