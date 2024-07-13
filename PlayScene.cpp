@@ -1054,15 +1054,18 @@ void CPlayScene::LosingLevel() {
 	CGame* game = CGame::GetInstance();
 	SaveFile* saveFile = SaveFile::GetInstance();
 
-	game->InitiateSwitchScene(1);
+	if (!isSwitchingScene) {
+		ReadyToSwitchScene(1);
+		
+		float saveX, saveY;
+		saveFile->GetSavePoint(saveX, saveY);
+		game->InitSavePointToGo(saveX, saveY);
 
-	float saveX, saveY;
-	saveFile->GetSavePoint(saveX, saveY);
-	game->InitSavePointToGo(saveX, saveY);
+		saveFile->SetMarioLevel(MARIO_LEVEL_SMALL);
+		saveFile->AddLife(-1);
+		saveFile->Save();
+	}
 
-	saveFile->SetMarioLevel(MARIO_LEVEL_SMALL);
-	saveFile->AddLife(-1);
-	saveFile->Save();
 }
 
 void CPlayScene::GetBonusScore(DWORD dt) {
