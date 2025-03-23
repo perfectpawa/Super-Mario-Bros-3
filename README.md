@@ -20,7 +20,4 @@ The project aims to replicate the classic gameplay, physics, and mechanics of th
 | Chose Map          | **A**          |
 
 ## Demo
-<video width="640" height="360" controls>
-  <source src="demo.mkv" type="video/mp4">
-  Your browser does not support the video tag.
-</video>
+[![Watch the video](https://img.youtube.com/vi/1Y9_AIWJ7dU/0.jpg)](https://www.youtube.com/watch?v=1Y9_AIWJ7dU)
